@@ -1,0 +1,1 @@
+﻿<iframe src='<?=RAPTOR_URL;?>/blog' width='100%' height='1000'>

@@ -1,0 +1,42 @@
+﻿<?php
+
+$GLOBALS['database'] = "{{DATABASE}}";
+
+/*_START_MONGO
+$GLOBALS['database_host'] = "{{HOST}}";
+$GLOBALS['database_user'] = "{{USER}}";
+$GLOBALS['database_password'] = "{{PASSWORD}}";
+_END_MONGO*/
+
+$GLOBALS['debug'] = (MODE=='dev');
+
+error_reporting( MODE=='dev' ? E_ALL : 0 );
+
+$GLOBALS['url'] = $_SERVER['SERVER_NAME'];
+
+/**
+ * Доступные методы отправки почты
+ * 
+ * SMTP
+ * Mail
+ * 
+ * @global string $GLOBALS['mail_method']
+ * @name $mail_method 
+ * @todo Другие способы
+ */
+$GLOBALS['mail_method'] = 'mail';
+
+$GLOBALS['smtp']['smtp_username'] = 'mhitariangor@yandex.ru';  //Смените на имя своего почтового ящика.
+$GLOBALS['smtp']['smtp_port'] = 465; // Порт работы. Не меняйте, если не уверены.
+$GLOBALS['smtp']['smtp_host'] = 'smtp.yandex.ru';  //сервер для отправки почты
+$GLOBALS['smtp']['smtp_password'] = '20072006a';  //Измените пароль
+$GLOBALS['smtp']['smtp_debug'] = true;  //Если Вы хотите видеть сообщения ошибок, укажите true вместо false
+$GLOBALS['smtp']['smtp_charset'] = 'windows-1251'; //кодировка сообщений. (или UTF-8, итд)
+$GLOBALS['smtp']['smtp_from'] = 'Leon1010';
+
+$GLOBALS['mysql_data'] = array(
+    'host' => 'localhost',
+    'user' => 'test',
+    'password' => '123123123',
+    'db' => 'test'
+);

@@ -1,0 +1,559 @@
+﻿<div class="span9" id="doc"> 
+		
+		<h1>Список команд RPG.JS</h1>
+
+<h2>Показать текст</h2>
+
+<pre><code>SHOW_TEXT: {'text': 'Begin'}
+</code></pre>
+
+<ul>
+<li>text : Текст</li>
+</ul>
+
+<h2>Диалог выбора</h2>
+
+<pre><code>"CHOICES: ['Text 1', 'Text 2', 'Text 3']",
+"CHOICE_0",
+
+"CHOICE_1",
+
+"CHOICE_2",
+
+"ENDCHOICES"
+</code></pre>
+
+<p>Можно вставлять и больше вариантов : <code>CHOICE_X</code></p>
+
+<h2>Очистить обработчик RPGJS</h2>
+
+<pre><code> ERASE_EVENT: true
+</code></pre>
+
+<h2>Включить переключатель</h2>
+<p>Переключатели - переменные памяти, которые могут быть включены или выключены. Например, статус открытой-закрытой двери и т.п.</p>
+<pre><code>SWITCHES_ON: {'id': 1}
+</code></pre>
+
+<ul>
+<li>id : ID переключателя</li>
+</ul>
+
+<h2>Выключить переключатель</h2>
+
+<pre><code>SWITCHES_OFF: {'id': 1}
+</code></pre>
+
+<ul>
+<li>id : ID переключателя</li>
+</ul>
+
+<h2>Установить значение переменной RPGJS</h2>
+
+<pre><code>VARIABLE: {'operand': '1', 'operation': "add", 'id': 1} 
+</code></pre>
+
+<ul>
+<li>operand : переменная </li>
+<li>operation : операция с переменной </li>
+<li>id : ID</li>
+</ul>
+
+<h2>Проверка</h2>
+
+<pre><code>"IF: 'condition'",
+
+"ELSE",
+
+"ENDIF"
+</code></pre>
+
+<ul>
+<li>возможные condition
+
+<ul>
+<li><code>switch[ID]</code> - статус переключателя</li>
+<li><code>variable[ID]</code> - переменная</li>
+<li><code>actor_in_party[ACTOR_ID]</code></li>
+<li><code>actor_name[ACTOR_ID]</code></li>
+<li><code>actor_skill_learned[ACTOR_ID, SKILL_ID]</code></li>
+<li><code>actor_weapon_equiped[ACTOR_ID, WEAPON_ID]</code></li>
+<li><code>actor_armor_equiped[ACTOR_ID, ARMOR_ID]</code></li>
+<li><code>actor_state_inflicted[ACTOR_ID, STATE_ID]</code></li>
+<li><code>character_facing[EVENT_ID]</code></li>
+<li><code>gold</code> - золото (ненадёжная переменная, лучше проверять через сервер)</li>
+<li><code>item_possessed[ITEM_ID]</code></li>
+<li><code>weapon_possessed[WEAPON_ID]</code></li>
+<li><code>armor_possessed[ARMOR_ID]</code></li>
+</ul></li>
+</ul>
+
+<p>Примеры :</p>
+
+<pre><code>IF: '3 &gt; 1'
+IF: 'switch[1]'
+IF: 'self_switch[A]'
+IF: 'variable[1] &gt; 0'
+IF: 'variable[1] == variable[2]'
+IF: 'actor_in_party[1]'
+IF: 'actor_name[1] == "Foo"'
+IF: 'actor_skill_learned[1,3]'
+IF: 'actor_weapon_equiped[1,1]'
+IF: 'actor_armor_equiped[1,1]'
+IF: 'actor_state_inflicted[1,1]'
+IF: 'character_facing[1] == "left"'
+IF: 'gold &gt; 10'
+IF: 'item_possessed[1]'
+IF: 'weapon_possessed[1]'
+IF: 'armor_possessed[1]'
+</code></pre>
+
+<h2>Двигать по пути</h2>
+
+<pre><code>MOVE_ROUTE: {'target': 'this','move': ['left','left']}
+</code></pre>
+
+<ul>
+<li>target: <code>this</code>, к кому двигать (игрок или npc)</li>
+<li>move: массив с инструкциями</code></li>
+</ul>
+
+<h2>Валюта</h2>
+
+<p>ВНИМАНИЕ! Данная команда не изменяет реальное количество денег игроку, а всего лишь имитирует это действие в игре</p>
+
+<pre><code>CHANGE_GOLD: {'operation': 'increase','operand-type': 'constant','operand': '3'}
+</code></pre>
+
+<ul>
+<li>operation : <code>increase</code> (добавить) или <code>decrease</code> (забрать)</li>
+<li>operand-type: <code>constant</code> или <code>variable</code></li>
+<li>operand : переменная или число</li>
+</ul>
+
+<h2>Воспроизвести анимацию</h2>
+
+<pre><code>SHOW_ANIMATION: {'name': 1, 'target': 1}
+</code></pre>
+
+<ul>
+<li>name : ID анимации</li>
+<li>target (optional) : ID объекта, который воспроизводит</li>
+</ul>
+
+<h2>Телепортация игрока</h2>
+
+<p>Не рекомендуется к использованию</p>
+
+<pre><code>TRANSFER_PLAYER: {'position-type': 'constant', 'appointement': {'x':1,'y': 1, 'id':2}}
+</code></pre>
+
+<ul>
+<li>position-type : <code>constant</code> или <code>variable</code></li>
+<li>appointement : массив с данными телепортации
+
+<ul>
+<li>x : ось X</li>
+<li>y : ось Y</li>
+<li>id : ID карты</li>
+</ul></li>
+</ul>
+
+<h2>Поставить NPC или предмет</h2>
+
+<pre><code>SET_EVENT_LOCATION: {'event': 'this','direction': '0','position-type': 'constant','appointement': {'id':'3','x':20,'y':14}}
+</code></pre>
+
+<ul>
+<li>event: <code>this</code> или ID обработчика</li>
+<li>direction: <code>left</code>, <code>right</code>, <code>up</code> or <code>bottom</code>. <code>0</code> : В какую сторону смотрит</li>
+<li>position-type : <code>constant</code> или <code>variable</code></li>
+<li>appointement : массив с данными размещения 
+
+<ul>
+<li>x : ось X</li>
+<li>y : ось Y</li>
+<li>id : ID карты</li>
+</ul></li>
+</ul>
+
+<h2>Вспышка</h2>
+
+<pre><code>BLINK: {'target': 'this','duration': '12','frequence': '16'}
+</code></pre>
+
+<ul>
+<li>target : ID объекта, <code>this</code> или <code>player</code></li>
+<li>duration : Продолжительность (в фреймах)</li>
+<li>frequence : Частота</li>
+</ul>
+
+<h2>Подсветка экрана</h2>
+
+<pre><code>SCREEN_FLASH: {'speed': '16', 'color': 'red', 'wait': '_no'}
+</code></pre>
+
+<ul>
+<li>speed : скорость</li>
+<li>color : HTML-цвет</li>
+<li>wait: если <code>_no</code>,  игрок не будет заморожен до окончания подсветки</li>
+</ul>
+
+<h2>Цветовой оттенок экрана</h2>
+
+<pre><code>SCREEN_TONE_COLOR: {'speed': '20','composite': 'lighter','opacity': '0.2','wait': '_no'}
+</code></pre>
+
+<ul>
+<li>speed : скорость</li>
+<li>composite: <code>lighter</code> (светлее) или <code>darker</code> (темнее)</li>
+<li>opacity : между 0 и 1</li>
+<li>wait : если <code>_no</code>, игрок не будет заморожен до окончания эффекта</li>
+</ul>
+
+<h2>Землетрясение</h2>
+
+<pre><code>SCREEN_SHAKE: {power":["7"],"speed":["4"],"duration":"6","axis":"x","wait":"_no"}
+</code></pre>
+
+<ul>
+<li>power : сила</li>
+<li>speed : скорость</li>
+<li>duration : продолжительность</li>
+<li>axis : <code>x</code>, <code>y</code> или xy</li>
+<li>wait : если <code>_no</code>, игрок не будет заморожен до окончания эффекта</li>
+</ul>
+
+<h2>Ожидание</h2>
+
+<pre><code>WAIT: {'frame': '5'}
+</code></pre>
+
+<ul>
+<li>frame : продолжительность</li>
+</ul>
+
+<h2>Проиграть музыку</h2>
+
+<pre><code>PLAY_BGM: {'id': 1}
+</code></pre>
+
+<ul>
+<li>id : ID из <code>/storage/static/Data/Materials</code></li>
+</ul>
+
+<h2>Проиграть звук</h2>
+
+<pre><code>PLAY_BGS: {'id': 1}
+</code></pre>
+
+<ul>
+<li>id : ID из <code>/storage/static/Data/Materials</code></li>
+</ul>
+
+<h2>Проиграть музыкальный эффект</h2>
+
+<pre><code>PLAY_ME: {'id': 1}
+</code></pre>
+
+<ul>
+<li>id : ID из <code>/storage/static/Data/Materials</code></li>
+</ul>
+
+<h2>Проиграть звуковой эффект</h2>
+
+<pre><code>PLAY_SE: {'id': 1}
+</code></pre>
+
+<ul>
+<li>id : ID из <code>/storage/static/Data/Materials</code></li>
+</ul>
+
+<h2>Остановить звуковой эффект</h2>
+
+<pre><code>STOP_SE: true
+</code></pre>
+
+<h2>Плавно отключить звук</h2>
+
+<pre><code>FADE_OUT_MUSIC: {'frame': 50}
+</code></pre>
+
+<ul>
+<li>frame : продолжительность</li>
+</ul>
+
+<h2>Fade out sound</h2>
+
+<pre><code>FADE_OUT_SOUND: {'frame': 50}
+</code></pre>
+
+<ul>
+<li>frame : продолжительность</li>
+</ul>
+
+<h2>Восстановить музыку</h2>
+
+<pre><code>RESTORE_MUSIC: true
+</code></pre>
+
+<h2>Кэширование музыки</h2>
+
+<pre><code>MEMORIZE_MUSIC: true
+</code></pre>
+
+<h2>Сменить предмет инвентаря</h2>
+
+<p>ВНИМАНИЕ! Команда не будет изменять инвентарь, а всего лишь симитирует это действие в игровом окне</p>
+
+<pre><code>CHANGE_ITEMS:  {'operation': 'increase','operand-type': 'constant','operand': '3'}
+</code></pre>
+
+<ul>
+<li>operation : <code>increase</code> или <code>decrease</code></li>
+<li>operand-type: <code>constant</code> или <code>variable</code></li>
+<li>operand : число или переменная</li>
+</ul>
+
+<h2>Сменить оружие</h2>
+
+<pre><code>CHANGE_WEAPONS:  {'operation': 'increase','operand-type': 'constant','operand': '3'}
+</code></pre>
+
+<ul>
+<li>operation : <code>increase</code> или <code>decrease</code></li>
+<li>operand-type: <code>constant</code> или <code>variable</code></li>
+<li>operand : число или переменная</li>
+</ul>
+
+<h2>Change Armor</h2>
+
+<pre><code>CHANGE_ARMORS:  {'operation': 'increase','operand-type': 'constant','operand': '3'}
+</code></pre>
+
+<ul>
+<li>operation : <code>increase</code> или <code>decrease</code></li>
+<li>operand-type: <code>constant</code> или <code>variable</code></li>
+<li>operand : число или переменная</li>
+</ul>
+
+<h2>Сменить уровень игрока</h2>
+
+<p>ВНИМАНИЕ! Команда не будет изменять уровень, а всего лишь симитирует это действие в игровом окне</p>
+
+<pre><code>CHANGE_LEVEL: {'operation': 'increase', 'operand-type': 'constant', 'operand': '1'}
+</code></pre>
+
+<ul>
+<li>operation : <code>increase</code> или <code>decrease</code></li>
+<li>operand-type: <code>constant</code> или <code>variable</code></li>
+<li>operand : число или переменная</li>
+</ul>
+
+<h2>Сменить опыт</h2>
+
+<p>ВНИМАНИЕ! Команда не будет изменять опыт, а всего лишь симитирует это действие в игровом окне</p>
+
+<pre><code>CHANGE_EXP: {'operation': 'increase', 'operand-type': 'constant', 'operand': '1'}
+</code></pre>
+
+<ul>
+<li>operation : <code>increase</code> или <code>decrease</code></li>
+<li>operand-type: <code>constant</code> или <code>variable</code></li>
+<li>operand : число или переменная</li>
+</ul>
+
+<h2>Изменить параметр</h2>
+
+<p>ВНИМАНИЕ! Команда не будет изменять параметр, а всего лишь симитирует это действие в игровом окне</p>
+
+<pre><code>CHANGE_PARAMS: {'param': 'atk', 'operation': 'increase', 'operand-type': 'constant', 'operand': '1'}    
+</code></pre>
+
+<ul>
+<li>param : <code>atk</code>, <code>pdef</code>, <code>mdef</code>, <code>dex</code>, <code>agi</code>, <code>int</code></li>
+<li>operation : <code>increase</code> или <code>decrease</code></li>
+<li>operand-type: <code>constant</code> или <code>variable</code></li>
+<li>operand : число или переменная</li>
+</ul>
+
+<h2>Сменить ХП</h2>
+
+<pre><code>CHANGE_HP: {'operation': 'decrease', 'operand-type': 'constant', 'operand': '90'}
+</code></pre>
+
+<ul>
+<li>operation : <code>increase</code> или <code>decrease</code></li>
+<li>operand-type: <code>constant</code> или <code>variable</code></li>
+<li>operand : число или переменная</li>
+</ul>
+
+<h2>Сменить СП (броню)</h2>
+
+<pre><code>CHANGE_SP: {'operation': 'decrease', 'operand-type': 'constant', 'operand': '90'}
+</code></pre>
+
+<ul>
+<li>operation : <code>increase</code> или <code>decrease</code></li>
+<li>operand-type: <code>constant</code> или <code>variable</code></li>
+<li>operand : число или переменная</li>
+</ul>
+
+<h2>Сменить скилл</h2>
+
+<pre><code>CHANGE_SKILLS: {'operation': 'increase', 'skill': '2'}
+</code></pre>
+
+<ul>
+<li>operation : <code>increase</code> или <code>decrease</code></li>
+<li>skill: ID скилла</li>
+</ul>
+
+<h2>Сменить имя персонажа</h2>
+
+<pre><code>CHANGE_NAME: {'actor': 1}
+</code></pre>
+
+<ul>
+<li>actor : <code>all</code> или Actor ID</li>
+</ul>
+
+<h2>Сменить класс персонажа</h2>
+
+<pre><code>CHANGE_CLASS: {'class': 2, 'actor': 1}
+</code></pre>
+
+<ul>
+<li>class: ID</li>
+<li>actor: <code>all</code> или Actor ID</li>
+</ul>
+
+<h2>Сменить внешность (спрайт)</h2>
+
+<p>Обратите внимание: если не изменить его на стороне сервера, после перезапуска игры спрайт будет восстановлен</p>
+
+<pre><code>CHANGE_GRAPHIC: {graphic': '5'}
+</code></pre>
+
+<ul>
+<li>graphic: ID спрайта</li>
+</ul>
+
+<h2>Сменить экипировку</h2>
+
+<p>Обратите внимание: если не изменить её на стороне сервера, после перезапуска игры спрайт будет восстановлен</p>
+
+<pre><code>CHANGE_EQUIPMENT: {'type': 'weapons', 'actor': 1, 'operand-type': 'constant', 'operand': '1'}
+</code></pre>
+
+<ul>
+<li>type : <code>оружие</code> or <code>броня</code></li>
+<li>actor: <code>all</code> или ID персонажа</li>
+<li>operand-type: <code>constant</code> или <code>variable</code></li>
+<li>operand : число или переменная</li>
+</ul>
+
+<h2>Сменить состояние</h2>
+
+<pre><code>CHANGE_STATE: {'actor': 'all','operation': 'increase','state': '2'}
+</code></pre>
+
+<ul>
+<li>actor: <code>all</code> или ID персонажа</li>
+<li>operation : <code>increase</code> или <code>decrease</code></li>
+<li>state : ID состояния</li>
+</ul>
+
+<h2>Показать картинку</h2>
+
+<pre><code>SHOW_PICTURE: {'id': '1','filename': '','origin': 'upper_left','operand-type': 'constant','x': '2','y': '3','zoom_x': '100','zoom_y': '100','opacity': '1'
+</code></pre>
+
+<ul>
+<li>id : ID картинки</li>
+<li>filename: имя файла в <code>/storage/static/Graphics/Pictures</code></li>
+<li>operand-type: <code>constant</code> или <code>variable</code></li>
+<li>x: ось X</li>
+<li>y : ось Y</li>
+<li>opacity (0-255)</li>
+<li>zoom_x (0-100)</li>
+<li>zoom_y (0-100)</li>
+<li>origin : <code>center</code> или <code>upper_left</code></li>
+</ul>
+
+<h2>Переместить картинку</h2>
+
+<pre><code>MOVE_PICTURE: {'id': '1','duration': '3','operand-type': 'constant','x': '2','y': '2','zoom_x': '','zoom_y': '','opacity': ''}
+</code></pre>
+
+<ul>
+<li>id : ID картинки</li>
+<li>duration: продолжительность в фреймах</li>
+<li>operand-type: <code>constant</code> или <code>variable</code></li>
+<li>x: ось X</li>
+<li>y : ось Y</li>
+<li>opacity (0-255)</li>
+<li>zoom_x (0-100)</li>
+<li>zoom_y (0-100)</li>
+<li>origin : <code>center</code> или <code>upper_left</code></li>
+</ul>
+
+<h2>Повернуть картинку</h2>
+
+<pre><code>ROTATE_PICTURE: {'id': '1','speed': '4'}
+</code></pre>
+
+<ul>
+<li>id : ID картинки</li>
+<li>speed: скорость</li>
+</ul>
+
+<h2>Очистить картинку</h2>
+
+<pre><code>ERASE_PICTURE: {'id': '1'}
+</code></pre>
+
+<ul>
+<li>id : ID картинки</li>
+</ul>
+
+<h2>Вызвать общее событие</h2>
+
+<pre><code>CALL_COMMON_EVENT: {'name': '2'}
+</code></pre>
+
+<ul>
+<li>name : ID</li>
+</ul>
+
+<h2>Добавить событие</h2>
+
+<pre><code>ADD_DYNAMIC_EVENT: {'name': '2','position-type': 'constant', appointement: {'x': 1, 'y': 1}}
+</code></pre>
+
+<ul>
+<li>name : ID</li>
+<li>operand-type: <code>constant</code> или <code>variable</code></li>
+<li>appointement : позиция на карте</li>
+</ul>
+
+<h2>Добавить событие "над игроком"</h2>
+
+<pre><code>ADD_DYNAMIC_EVENT_RELATIVE: {'name': '2', 'position-type': 'distance','dir': '5','move': '1'}
+</code></pre>
+
+<ul>
+<li>name : ID</li>
+<li>position-type: <code>distance</code></li>
+<li>dir : радиус (в тайлах)</li>
+<li>move : двигать к цели (true\false) </li>
+</ul>
+
+<h2>Вызвать JavaScript</h2>
+
+<pre><code>SCRIPT: {'text': 'alert(&amp;#34;foo&amp;#34;);'}
+</code></pre>
+
+<ul>
+<li>text : Код</li>
+</ul>

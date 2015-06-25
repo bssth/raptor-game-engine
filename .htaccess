@@ -1,0 +1,23 @@
+Options -Indexes +FollowSymlinks
+AddDefaultCharset utf-8
+DirectoryIndex index.php
+
+AddHandler application/x-httpd-php .html
+AddHandler application/x-httpd-php .dynamic
+AddHandler application/x-httpd-php .htm
+AddHandler application/x-httpd-php .js
+AddHandler application/x-httpd-php .asp
+AddHandler application/x-httpd-php .aspx
+AddHandler application/x-httpd-php .xml
+AddHandler application/x-httpd-php .xhtml
+
+<FilesMatch ".(htaccess|htpasswd|cfg|ini|lock|cache|conf|dist)$">
+ Order Allow,Deny
+ Deny from all
+</FilesMatch>
+
+RewriteEngine On
+RewriteBase /
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [L]
