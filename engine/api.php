@@ -1,4 +1,11 @@
 <?php
+
+@session_start();
+
+if(defined("HIDE_ERRORS")) {
+	error_reporting(0);
+}
+
 if (!defined("WEBSITE")) {
     die("Hacking attempt");
 }
@@ -51,6 +58,8 @@ function loadclass($class)
 }
 function raptor_error_handler($errno, $errstr, $errfile, $errline)
 {
+	Database::Insert("errors", array("text" => $errstr, "date" => raptor_date()));
+	if(defined("HIDE_ERRORS")) { return false; }
     if (MODE != 'dev') {
 		Database::Insert("errors", array("text" => $errstr, "date" => raptor_date()));
         return false;
@@ -58,7 +67,6 @@ function raptor_error_handler($errno, $errstr, $errfile, $errline)
     if (!error_reporting()) {
         return;
     }
-    Database::Insert("errors", array("text" => $errstr, "date" => raptor_date()));
     switch ($errno)
     {
         case E_USER_ERROR:
