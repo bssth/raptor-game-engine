@@ -47,19 +47,23 @@ class indexDriver {
             $_SESSION['id'] = $res;
 			if($_SESSION['invited'] === true) { $_SESSION['invited'] = false; }
 			call_user_func("onPlayerRegister", $_POST['login'], $_POST['password'], $_POST['email']);
-			header("Location: /cabinet");
+			@header("Location: /cabinet");
+			die("<script>location.href = '/cabinet';</script>");
         } else {
-            header("Location: /index?result=regerror");
+            @header("Location: /index?result=regerror");
+			die("<script>location.href = '/index?result=regerror';</script>");
         }
     }
 
     function actionLogin() {
         if (Player::login($_POST['name'], $_POST['password'], true)) {
 			call_user_func("onPlayerLogin", $_POST['name'], $_POST['password'], true);
-            header("Location: /cabinet");
+            @header("Location: /cabinet");
+			die("<script>location.href = '/cabinet';</script>");
         } else {
 			call_user_func("onPlayerLogin", $_POST['name'], $_POST['password'], false);
-            header("Location: /index?result=loginerror");
+            @header("Location: /index?result=loginerror");
+			die("<script>location.href = '/index?result=loginerror';</script>");
         }
     }
 
