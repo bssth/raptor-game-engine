@@ -1,7 +1,5 @@
 <?php
 
-@session_start();
-
 define("STRING_SEPARATOR", " ");
 define("API_DIRECTORY", __DIR__);
 define("R_DEFINES", __FILE__);
