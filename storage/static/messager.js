@@ -1,3 +1,7 @@
+<?php
+   define('HIDE_ERRORS', 1);
+?>
+
 $(function(){
    
     var chat = $('#chat')[0]; // Окно чата
