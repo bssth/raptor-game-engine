@@ -102,7 +102,7 @@ switch ($_GET['step']) {
 			  'start_y' => '213',
 			  'start_dir' => 'bottom',
 			));
-			Database::Insert("config", array ('_id' => 
+			Database::Insert("scripts", array ('_id' => 
   MongoId::__set_state(array(
      '$id' => '55618e3c555e4ffa23c48d18',
   )),
