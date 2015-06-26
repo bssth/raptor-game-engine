@@ -1,6 +1,7 @@
 ﻿<?php
 	# @todo Убрать необходимость в использовании PHP в .js файлах
 	define('WEBSITE', 1);
+	define('HIDE_ERRORS', 1);
 	error_reporting(0);
 	require_once(__DIR__ . '/../../engine/config.php');
 	require_once(__DIR__ . '/../../engine/api.php');
