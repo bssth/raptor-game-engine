@@ -77,10 +77,10 @@
                         </ul>
                     </li>
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?= $char->name ?> <b class="caret"></b></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?= char()->name ?> <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="/player/<?= $char->name ?>"><i class="fa fa-fw fa-user"></i>Мой профиль</a>
+                                <a href="/player/<?= char()->name ?>"><i class="fa fa-fw fa-user"></i>Мой профиль</a>
                             </li>
                             <li>
                                 <a href="/admin/reports"><i class="fa fa-fw fa-envelope"></i> Репорты</a>
