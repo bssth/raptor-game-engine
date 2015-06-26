@@ -8,7 +8,7 @@ class Router {
 			$srv = $_SERVER["REDIRECT_URL"];
 		}
 		elseif(isset($_SERVER['REQUEST_URI'])) {
-			$srv = $_SERVER['REQUEST_URI'];
+			$srv = strstr($_SERVER['REQUEST_URI'], "?", true);
 		}
 		elseif($GLOBALS['disable_user_routing'] != true and isset($_GET['driver'])) {
 			$srv = "/". $_GET['driver'] ."/". @$_GET['action'];
