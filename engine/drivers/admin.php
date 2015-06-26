@@ -6,7 +6,7 @@ class adminDriver {
     {
 		$func = strtolower(str_replace("action", "", $func));
 		if(!file_exists(CACHE_ROOT . SEPARATOR . "installed.cache") and $func != 'install') { header("Location: /admin/install"); die(); }
-        if (char()->admin<1 and !in_array($func, c()->perms) and file_exists(CACHE_ROOT . SEPARATOR . "installed.cache")) {
+        if (char()->admin<1 and !in_array($func, char()->perms) and file_exists(CACHE_ROOT . SEPARATOR . "installed.cache")) {
             die("403 Forbidden");
         }
         if(!isset($_SESSION['cid']) and file_exists(CACHE_ROOT . SEPARATOR . "installed.cache")) { die("403 Forbidden"); }
