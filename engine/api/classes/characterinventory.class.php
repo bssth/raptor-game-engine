@@ -14,8 +14,8 @@ class CharacterInventory {
         }
         $this->id = $id;
         if ($inv === false) {
-            $temp = Database::GetOne('characters', array('_id' => toId($id)))['inv'];
-            $this->inv = is_array($temp) ? $temp : array();
+            $temp = Database::GetOne('characters', array('_id' => toId($id)));
+            $this->inv = is_array($temp['inv']) ? $temp['inv'] : array();
         }
         if ($conf === false) {
             $this->conf = Database::GetOne('config', array('mod' => 'inventory'));
