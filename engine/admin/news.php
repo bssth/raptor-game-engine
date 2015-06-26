@@ -1,11 +1,18 @@
 <h2>Новости</h2>
 <br>
+<form method="POST"><p><button name="new" type="submit" value="1" class="btn btn-xs btn-default">Создать новость</button></p></form>
 <hr>
 
 <?php
 if (isset($_POST['title'])) {
+	$_POST['_id'] = toId($_GET['edit']);
     Database::Edit("news", array("_id" => toId($_GET['edit'])), $_POST);
-    echo '<div class="alert alert-success">Скрипт успешно отредактирован</div>';
+    echo '<div class="alert alert-success">Новость успешно отредактирована</div>';
+}
+if(isset($_POST['new'])) {
+	$id = new MongoId();
+	Database::Insert("news", array("_id"=>$id,"short"=>'',"title"=>'',"full"=>'',"date"=>raptor_date(),"public"=>'1'));
+	die("<script>location.href = '/admin/news?edit=". $id ."';</script>");
 }
 if (isset($_GET['edit'])) {
     $array = Database::GetOne("news", array("_id" => toId($_GET['edit'])));
@@ -18,7 +25,6 @@ if (isset($_GET['edit'])) {
         <hr>";
 }
 ?>
-
 
 <div class="table-responsive">
     <table class="table table-bordered table-hover table-striped">

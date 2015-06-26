@@ -154,7 +154,10 @@ function getScript($name) {
 	return base64_decode(Database::GetOne('scripts', array('name' => $name))['code']);
 }
 
-function char() {
+function char($id = false) {
+	if(is_string($id)) {
+		return CharById($id);
+	}
 	if(isset($char) and is_object($char)) {
 		return $char;
 	}
@@ -176,7 +179,7 @@ function checkTimers() {
 	$ts = Database::Get("timers", array());
 	foreach($ts as $array) {
 		if($array['time'] <= time()) {
-			@eval($array['code']);
+			eval($array['code']);
 			Database::Remove('timers', array("id" => $array['id']));
 		}
 	}

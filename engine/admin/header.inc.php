@@ -29,7 +29,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="index">Админ-панель <?= isset($GLOBALS['name']) ? $GLOBALS['name'] : "неизвестной игры"; ?></a>
+                    <a class="navbar-brand" href="index">Админ-панель <?= $GLOBALS['name']; ?></a>
                 </div>
 
                 <ul class="nav navbar-right top-nav">
@@ -192,10 +192,11 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="javascript:;" data-toggle="collapse" data-target="#raptor"><i class="fa fa-fw fa-plane"></i> Движок RAPTOR <i class="fa fa-fw fa-caret-down"></i></a>
+                            <a href="javascript:;" data-toggle="collapse" data-target="#raptor"><i class="fa fa-fw fa-plane"></i> Движок</a>
                             <ul id="raptor" class="collapse">
                                 <li><a href="/admin/update">Новости</a></li>
 								<li><a href="/admin/register">Каталог</a></li>
+								<li><a href=#>Версия: <?=ENGINE_VERSION;?></a></li>
                             </ul>
                         </li>
 

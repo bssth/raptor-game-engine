@@ -19,8 +19,8 @@ class moadminDriver {
 	function __call($name, $args) { return true; }
 }
  
-#$accessControl = array($GLOBALS['moadmin_login'] => $GLOBALS['moadmin_password']);
-moadminModel::$databaseWhitelist = array($GLOBALS['database']);
+$accessControl = array("admin" => "123123123");
+#moadminModel::$databaseWhitelist = array($GLOBALS['database']);
 
 define('THEME', 'trontastic');
 define('MONGO_CONNECTION', '');

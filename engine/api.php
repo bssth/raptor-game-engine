@@ -21,17 +21,20 @@ if (!defined('ENGINE_ROOT')) {
     define("SCRIPTS_ROOT", ENGINE_ROOT . SEPARATOR . "scripts");
 }
 
-@include_once(API_ROOT . '/classes/database.class.php');
+
+include_once(API_ROOT . '/classes/database.class.php');
 
 $cursor = Database::GetOne("config", array("active" => '1'));
+
+if(empty($cursor['active']) and $GLOBALS['debug'] == true) {
+	echo "<h1>Configuration isn't loaded</h1>";
+}
 
 if (empty($cursor['active']) and $GLOBALS['debug'] == false and file_exists(CACHE_ROOT . SEPARATOR . "installed.cache")) {
     die("Cannot load configuration");
 }
 
-if(is_array($cursor)) {
-	$GLOBALS = array_merge($GLOBALS, $cursor);
-}
+$GLOBALS = array_merge($GLOBALS, $cursor);
 
 spl_autoload_register('loadclass');
 
@@ -47,12 +50,12 @@ spl_autoload_register('loadclass');
 
 function loadclass($class)
 {
-    if (!include_once(API_ROOT . '/classes/' . strtolower($class) . ".class.php")) {
-        if (!include_once(API_ROOT . '/classes/' . $class . ".class.php")) {
-            if (!include_once(ENGINE_ROOT . '/drivers/' . $class . ".php")) {
+    if (!@include_once(API_ROOT . '/classes/' . strtolower($class) . ".class.php")) {
+        if (!@include_once(API_ROOT . '/classes/' . $class . ".class.php")) {
+            if (!@include_once(ENGINE_ROOT . '/drivers/' . $class . ".php")) {
                 foreach ($GLOBALS['modules'] as $module) {
-                    include_once(MODS_ROOT . SEPARATOR . $module . SEPARATOR . strtolower($class) . ".class.php");
-                    include_once(MODS_ROOT . SEPARATOR . $module . SEPARATOR . $class . ".class.php");
+                    @include_once(MODS_ROOT . SEPARATOR . $module . SEPARATOR . strtolower($class) . ".class.php");
+                    @include_once(MODS_ROOT . SEPARATOR . $module . SEPARATOR . $class . ".class.php");
                 }
             }
         }
@@ -115,10 +118,8 @@ include_once(API_ROOT . "/abstract.php");
 include_once(API_ROOT . "/functions.php");
 include_once(API_ROOT . "/defines.php");
 
-if(isset($GLOBALS['modules'])) {
-	foreach ($GLOBALS['modules'] as $module) {
-		@include_once(MODS_ROOT . SEPARATOR . $module . SEPARATOR . "global.php");
-	}
+foreach ($GLOBALS['modules'] as $module) {
+    @include_once(MODS_ROOT . SEPARATOR . $module . SEPARATOR . "global.php");
 }
 
 if(isset($_SESSION['cid'])) {
@@ -130,6 +131,7 @@ if(isset($_SESSION['cid'])) {
 	$char->setOnline();
 	eval( implode(" ", check_player_events($_SESSION['cid'], false, true)['eval']) );
 }
+
 if(isset($_SESSION['id'])) {
 	if(is_object($_SESSION['id'])) {
 		__toString($_SESSION['id']);

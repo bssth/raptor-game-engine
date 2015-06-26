@@ -1,2 +1,4 @@
 User-agent: *
 Disallow: /engine/
+Disallow: /rcon/
+Disallow: /admin/

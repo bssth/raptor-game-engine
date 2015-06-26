@@ -1,5 +1,5 @@
 <style>
-    #chat { overflow-x:none; overflow-y:scroll; height: 450px; }
+    #chat { overflow-x:none; overflow-y:scroll; height: 450px; padding-left: 5px; }
 </style>
 
 <div id="chat" data-last-id="0"></div>

@@ -2,11 +2,11 @@
 
 $GLOBALS['database'] = "{{DATABASE}}";
 
-/*_START_MONGO
-$GLOBALS['database_host'] = "{{HOST}}";
-$GLOBALS['database_user'] = "{{USER}}";
-$GLOBALS['database_password'] = "{{PASSWORD}}";
-_END_MONGO*/
+/*
+$GLOBALS['database_host'] = {{HOST}};
+$GLOBALS['database_user'] = {{USER}};
+$GLOBALS['database_password'] = {{PASSWORD}};
+*/
 
 $GLOBALS['debug'] = (MODE=='dev');
 
@@ -40,3 +40,5 @@ $GLOBALS['mysql_data'] = array(
     'password' => '123123123',
     'db' => 'test'
 );
+
+$GLOBALS['disable_user_routing'] = false;

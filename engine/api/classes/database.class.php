@@ -100,6 +100,7 @@ class Database {
         $zcollection = $db->$collection;
         $d = array_merge($document, $zcollection->findOne($document));
         foreach ($edit as $key => $value) {
+			if($d[$key] === $value) { continue; }
             $d[$key] = $value;
         }
         $zcollection->save($d);

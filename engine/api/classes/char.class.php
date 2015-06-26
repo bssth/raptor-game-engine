@@ -152,7 +152,6 @@ class Char {
         $array = Database::GetOne("characters", array("name" => $data['name']));
 		$player = isset($data['player']) ? $data['player'] : __toString($_SESSION['id']);
 		$cnf = Database::GetOne("config", array("mod" => "auth"));
-		$admin = isset($data['admin']) ? $data['admin'] : '0';
         if (empty($data['about'])) {
             $data['about'] = "Этот персонаж предпочел о себе ничего не рассказывать!";
         }
@@ -164,7 +163,6 @@ class Char {
                         "player" => $player,
                         "gender" => $data['gender'],
                         "about" => $data['about'],
-						"admin" => $admin,
                         "money" => '0',
                         "lvl" => '0',
 						"avatar" => '',

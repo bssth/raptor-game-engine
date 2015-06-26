@@ -2,7 +2,7 @@
 /**
  * * @todo Оптимизировать весь этот бардак
  */
-switch($_GET['a']) {
+switch(@$_GET['a']) {
 	case "single":
 		if (isset($_POST['email'])) {
 			$mail = new Mail();
@@ -74,7 +74,7 @@ switch($_GET['a']) {
 			<button type="submit" class="btn btn-default">Отправить сообщение</button>
 		</form>';
 		break;
-	default:  #masscript
+	default:
 		raptor_print('PGRpdiBjbGFzcz0iY29udGFpbmVyIj48ZGl2IGNsYXNzPSJuYXZiYXItaGVhZGVyIj48YnV0dG9uIHR5cGU9ImJ1dHRvbiIgY2xhc3M9Im5hdmJhci10b2dnbGUiIGRhdGEtdG9nZ2xlPSJjb2xsYXBzZSIgZGF0YS10YXJnZXQ9Ii5uYXZiYXItY29sbGFwc2UiPjxzcGFuIGNsYXNzPSJzci1vbmx5Ij5Ub2dnbGUgbmF2aWdhdGlvbjwvc3Bhbj48c3BhbiBjbGFzcz0iaWNvbi1iYXIiPjwvc3Bhbj48c3BhbiBjbGFzcz0iaWNvbi1iYXIiPjwvc3Bhbj48c3BhbiBjbGFzcz0iaWNvbi1iYXIiPjwvc3Bhbj48L2J1dHRvbj48YSBjbGFzcz0ibmF2YmFyLWJyYW5kIiBocmVmPSIjIj7QoNCw0YHRgdGL0LvQutC4PC9hPjwvZGl2PjxkaXYgY2xhc3M9Im5hdmJhci1jb2xsYXBzZSBjb2xsYXBzZSI+PHVsIGNsYXNzPSJuYXYgbmF2YmFyLW5hdiI+PGxpPjxhIGhyZWY9Ij9hPXNpbmdsZSI+0J7RgtC/0YDQsNCy0LrQsCDQvdCwINCw0LTRgNC10YE8L2E+PC9saT48bGk+PGEgaHJlZj0iP2E9bWFzc2l2ZSI+0JzQsNGB0YHQvtCy0LDRjyDQvtGC0L/RgNCw0LLQutCwPC9hPjwvbGk+PGxpPjxhIGhyZWY9Ij9hPW1hc3NjcmlwdCI+0JzQsNGB0YHQvtCy0LDRjyDRgdC+INGB0LrRgNC40L/RgtC+0LLRi9C8INGD0YHQu9C+0LLQuNC10Lw8L2E+PC9saT48L3VsPjwvZGl2PjwvZGl2Pg==');
 		break;
 }
