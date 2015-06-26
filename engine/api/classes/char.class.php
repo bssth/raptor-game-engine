@@ -150,7 +150,8 @@ class Char {
         public static function create($data = array())
     {
         $array = Database::GetOne("characters", array("name" => $data['name']));
-		$player = isset($data['player']) ? $data['player'] : __toString($_SESSION['id']);
+		$player = isset($data['player']) ? $data['player'] : $_SESSION['id'];
+		$player = is_object($player) ? $player->__toString() : $player;
 		$cnf = Database::GetOne("config", array("mod" => "auth"));
 		$admin = isset($data['admin']) ? $data['admin'] : '0';
         if (empty($data['about'])) {
