@@ -1,9 +1,9 @@
-﻿<?php
+<?php
 if(file_exists(CACHE_ROOT . SEPARATOR . "installed.cache")) 
 { 
 	die('<script>location.href = "/admin/index";</script> Движок уже установлен'); 
 }
-
+error_reporting(0);
 switch ($_GET['step']) {
     case 1:
         if (class_exists("MongoClient")) {
@@ -29,16 +29,104 @@ switch ($_GET['step']) {
         echo '<p><a href="?step=2" class="btn btn-primary btn-lg" role="button">Конфигурация »</a></p>';
         break;
     case 2:
-        if (file_exists(ENGINE_ROOT . SEPARATOR . "config.php")) {
-            echo '<div class="well">Теперь найдите файл <b>config.php</b> в папке <b>engine</b>. Найдите там строчку: <samp>$GLOBALS[\'database\'] = "game";</samp>. Вместо <samp>game</samp> введите название вашей базы данных MongoDB. После этого можете переходить к следующему этапу.</div>
-			<p><a href="?step=3" class="btn btn-primary btn-lg" role="button">Установка конфигурации »</a></p>';
+        if (file_exists(ENGINE_ROOT . SEPARATOR . "config.php.dist")) {
+            raptor_print('PGRpdiBjbGFzcz0id2VsbCI+0KHQtdC50YfQsNGBINCy0LDQvCDQv9GA0LXQtNGB0YLQvtC40YIg0LLQstC10YHRgtC4INC+0YHQvdC+0LLQvdGL0LUg0LTQsNC90L3Ri9C1INCx0LDQt9GLLiDQndCw0LnQtNC40YLQtSDQsiDQv9Cw0L/QutC1IGVuZ2luZSDRhNCw0LnQuyBjb25maWcucGhwLmRpc3Qg0Lgg0L/QtdGA0LXQuNC80LXQvdGD0LnRgtC1INC10LPQviDQsiBjb25maWcucGhwIDxicj4g0J/QvtGC0L7QvCDQvtGC0LrRgNC+0LnRgtC1INC70Y7QsdGL0Lwg0YLQtdC60YHRgtC+0LLRi9C8INGA0LXQtNCw0LrRgtC+0YDQvtC8INC4INCy0LLQtdC00LjRgtC1INGC0YDQtdCx0YPQtdC80YvQtSDQtNCw0L3QvdGL0LUsINGB0LvQtdC00YPRjyDQv9C+0LTRgdC60LDQt9C60LDQvCDQsiDRhNCw0LnQu9C1LiDQnNGLINC/0L7QtNC+0LbQtNGR0LwsINC/0L7QutCwINCy0Ysg0LfQsNC60L7QvdGH0LjRgtC1LCDQv9C+0YHQu9C1INC90LDQttC80LjRgtC1INC60L3QvtC/0LrRgyDQlNCw0LvRjNGI0LU8L2Rpdj4NCgkJCTxwPjxhIGhyZWY9Ij9zdGVwPTMiIGNsYXNzPSJidG4gYnRuLXByaW1hcnkgYnRuLWxnIiByb2xlPSJidXR0b24iPtCU0LDQu9GM0YjQtSDCuzwvYT48L3A+');
         } else {
-            echo '<div class="alert alert-danger"><b>config.php</b> отсутствует</div>';
+            echo '<div class="alert alert-danger"><b>config.php.dist</b> отсутствует в папке engine. Убедитесь в целостности данных</div>';
         }
         break;
     case 3:
-        echo '<div class="alert alert-danger">Reserved</div>';
+		if (isset($_POST['name'])) {
+			$in = array_merge( array('modules'=>array(),'active'=>'1','id'=>uniqid()), $_POST );
+			Database::Insert("config", $in);
+			Database::Insert("config", array (
+			  'mod' => 'locations',
+			  '_onrun' => '[
+			  "SHOW_TEXT: {\'text\': \'Добро пожаловать в вашу новую игру!\'}"
+			]',
+			  '_onsync' => '[
+			]',
+			  '_onshake' => '[
+			]',
+			  '5570740e01f12' => 
+			  array (
+				'name' => 'Стартовая локация',
+				'name_en' => 'Starting Location',
+				'map' => '1',
+			  ),
+			  '_graphic_characters' => '{
+			"1": "event1.png",
+			"2": "event2.png"
+			}',
+			  '_tilesets' => '{
+			"1": "tileset.png"
+			}',
+			  '_music' => '{
+			"1": "Iwan Gabovitch - Dark Ambience Loop.mp3"
+			}',
+			  '_rpgjs_database' => '"autotiles":{
+					"1":{
+						"propreties":[[0,0],[0,15]],
+						"autotiles":["2","3"],
+					}
+				},
+			"tilesets": {
+				"1": {
+					"propreties":[[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[5,0],[5,0],[5],[5],[5],[],[],[],[null,15],[null,15],[null,15],[null,15],[null,15],[],[5],[5],[null,15],[0],[null,15],[5],[5],[],[null,15],[null,15],[null,15],[5],[null,15],[null,15],[null,15],[],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[],[],[],[5],[5],[5],[5],[],[],[],[],[null,15],[],[],[null,15],[],[],[],[],[null,15],[],[],[null,15],[],[],[5],[5],[5],[5],[5],[null,15],[],[null,15],[5],[5],[null,15],[null,15],[null,15],[null,15],[],[null,15],[null,15],[null,15],[],[],[],[null,15],[],[],[null,15],[null,15],[],[],[],[],[],[],[null,15],[null,15],[5],[5,0],[5,0],[5,0],[5,0],[5],[5],[5],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,0],[null,0],[null,15],[null,15],[null,15],[null,15],[],[],[],[],[],[],[null,15],[5],[],[],[],[],[],[],[null,15],[null,15],[],[],[],[],[5],[5],[5],[5],[],[],[],[],[5],[5],[5],[5],[5],[5],[null,15],[null,15],[5],[5],[5],[5],[null,15],[null,15],[],[],[],[null,15],[null,15],[],[5],[5],[null,15],[null,15],[null,15],[null,15],[],[],[null,15],[null,15],[],[],[null,15],[null,15],[null,15],[],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[],[],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[],[],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[],[],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[5],[5],[5],[5],[0],[],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[5,0],[5,0],[5,0],[5,0],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[null,15],[],[],[],[],[],[],[5],[5,0],[],[],[],[],[],[],[null,15],[null,15],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[null,15],[null,15],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[],[]],
+					"graphic": "1"
+				}
+			},
+			"map_infos": {
+				"1": {
+					"tileset_id": "1",
+							"autotiles_id": "1",
+			//		"bgm": "1"
+				}
+			}',
+			  '_defines' => 'canvas: "gui",
+			autoload: false,
+			scene_path: "",
+			tiled: true',
+			  '_autotiles' => '{
+			"2":"autotile1.png",
+			"3":"autotile2.png"
+			}',
+			));
+			Database::Insert("config", array (
+			  'mod' => 'auth',
+			  'allowRegister' => '0',
+			  'authType' => 'login',
+			  'maxchars' => '4',
+			  'start' => '5570740e01f12',
+			  'start_x' => '303',
+			  'start_y' => '213',
+			  'start_dir' => 'bottom',
+			));
+			echo "<div class='alert alert-success'>База данных заполнена. <a href='?step=4'>Перейти к последнему шагу</a></div>";
+		}
+		raptor_print('PGZvcm0gYWN0aW9uPSIiIG1ldGhvZD0iUE9TVCI+DQoJCTxkaXYgY2xhc3M9ImZvcm0tZ3JvdXAiPg0KCQkJPGxhYmVsPtCd0LDQt9Cy0LDQvdC40LUg0LjQs9GA0Ys8L2xhYmVsPg0KCQkJPGlucHV0IGNsYXNzPSJmb3JtLWNvbnRyb2wiIG5hbWU9Im5hbWUiIHZhbHVlPSIiPg0KCQk8L2Rpdj4NCgkJPGRpdiBjbGFzcz0iZm9ybS1ncm91cCI+DQoJCQk8bGFiZWw+0JLQtdGA0YHQuNGPINC40LPRgNGLPC9sYWJlbD4NCgkJCTxpbnB1dCBjbGFzcz0iZm9ybS1jb250cm9sIiBuYW1lPSJ2ZXJzaW9uIiB2YWx1ZT0iIj4NCgkJPC9kaXY+DQoJCTxkaXYgY2xhc3M9ImZvcm0tZ3JvdXAiPg0KCQkJPGxhYmVsPlB1YmxpYyBLZXkgKNC/0YPQsdC70LjRh9C90YvQuSDQutC70Y7RhyDQtNC70Y8gQVBJKTwvbGFiZWw+DQoJCQk8aW5wdXQgY2xhc3M9ImZvcm0tY29udHJvbCIgbmFtZT0icHVibGljX2tleSIgdmFsdWU9IiI+DQoJCTwvZGl2Pg0KCQk8ZGl2IGNsYXNzPSJmb3JtLWdyb3VwIj4NCgkJCTxsYWJlbD5Qcml2YXRlIEtleSAo0L/RgNC40LLQsNGC0L3Ri9C5INC60LvRjtGHINC00LvRjyBBUEk7INC90LUg0YHQvtC+0LHRidCw0LnRgtC1INC10LPQviDRgdGC0L7RgNC+0L3QvdC40Lwg0LvQuNGG0LDQvCk8L2xhYmVsPg0KCQkJPGlucHV0IGNsYXNzPSJmb3JtLWNvbnRyb2wiIG5hbWU9InByaXZhdGVfa2V5IiB2YWx1ZT0iIj4NCgkJPC9kaXY+DQoJCTxidXR0b24gdHlwZT0ic3VibWl0IiBjbGFzcz0iYnRuIGJ0bi1kZWZhdWx0Ij7QodC+0YXRgNCw0L3QuNGC0Yw8L2J1dHRvbj4NCgk8L2Zvcm0+');
         break;
+	case 4:
+		if(isset($_POST['name'])) {
+			$id = Player::register($_POST['name'], $_POST['password'], $_POST['email']);
+			Char::create(array('name'=>$_POST['name'],'player'=>$id,'about'=>$_POST['about'],'admin'=>'1'));
+			if(file_put_contents(CACHE_ROOT . SEPARATOR . "installed.cache", "What are you looking for, admin?")) {
+				echo '<h3>Игра полностью установлена. <a href="/">Вход</a></h3>';
+			}
+			else {
+				echo '<h3>Ошибка при создании файла завершения установки. <a href="?step=4&file=1">Повторить попытку</a></h3>';
+			}
+		}
+		if(isset($_GET['file'])) {
+			if(file_put_contents(CACHE_ROOT . SEPARATOR . "installed.cache", "What are you looking for, admin?")) {
+				echo '<h3>Игра полностью установлена. <a href="/">Вход</a></h3>';
+			}
+			else {
+				echo '<h3>Ошибка при создании файла завершения установки. <a href="?step=4&file=1">Повторить попытку</a></h3>';
+			}
+		}
+		raptor_print('PGgzPtCS0LLQtdC00LjRgtC1INC00LDQvdC90YvQtSDQtNC70Y8g0LLQsNGI0LXQs9C+INC40LPRgNC+0LrQsCDQuCDQv9C10YDRgdC+0L3QsNC20LA8L2gzPjxmb3JtIGFjdGlvbj0iIiBtZXRob2Q9IlBPU1QiPg0KCQk8ZGl2IGNsYXNzPSJmb3JtLWdyb3VwIj4NCgkJCTxsYWJlbD7Qm9C+0LPQuNC9INC4INC40LzRjzwvbGFiZWw+DQoJCQk8aW5wdXQgY2xhc3M9ImZvcm0tY29udHJvbCIgbmFtZT0ibmFtZSIgdmFsdWU9IiI+DQoJCTwvZGl2Pg0KCQk8ZGl2IGNsYXNzPSJmb3JtLWdyb3VwIj4NCgkJCTxsYWJlbD5FLU1BSUw8L2xhYmVsPg0KCQkJPGlucHV0IGNsYXNzPSJmb3JtLWNvbnRyb2wiIG5hbWU9ImVtYWlsIiB2YWx1ZT0iIj4NCgkJPC9kaXY+DQoJCTxkaXYgY2xhc3M9ImZvcm0tZ3JvdXAiPg0KCQkJPGxhYmVsPtCf0LDRgNC+0LvRjDwvbGFiZWw+DQoJCQk8aW5wdXQgY2xhc3M9ImZvcm0tY29udHJvbCIgbmFtZT0icGFzc3dvcmQiIHZhbHVlPSIiPg0KCQk8L2Rpdj4NCgkJPGRpdiBjbGFzcz0iZm9ybS1ncm91cCI+DQoJCQk8bGFiZWw+0JPRgNCw0YTQsCAi0J7QsdC+INC80L3QtSI8L2xhYmVsPg0KCQkJPGlucHV0IGNsYXNzPSJmb3JtLWNvbnRyb2wiIG5hbWU9ImFib3V0IiB2YWx1ZT0iIj4NCgkJPC9kaXY+DQoJCTxidXR0b24gdHlwZT0ic3VibWl0IiBjbGFzcz0iYnRuIGJ0bi1kZWZhdWx0Ij7QodC+0LfQtNCw0YLRjCDQsNC60LrQsNGD0L3RgjwvYnV0dG9uPg0KCQk8L2Zvcm0+');
+		break; 
     default:
         echo '<div class="jumbotron"><h2>Приветствуем вас!</h2><p>Данный мастер позволит вам установить игровой движок. Перед установкой убедитесь, что загрузили файлы-скрипты полностью.</p><p><a href="?step=1" class="btn btn-primary btn-lg" role="button">Проверка требований »</a></p></div>';
         break;
