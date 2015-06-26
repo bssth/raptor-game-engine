@@ -58,15 +58,10 @@ function loadclass($class)
 }
 function raptor_error_handler($errno, $errstr, $errfile, $errline)
 {
-	Database::Insert("errors", array("text" => $errstr, "date" => raptor_date()));
+	Database::Insert("errors", array("text" => $errstr, "date" => raptor_date(), "file" => $errfile, "line" => $errline));
 	if(defined("HIDE_ERRORS")) { return false; }
-    if (MODE != 'dev') {
-		Database::Insert("errors", array("text" => $errstr, "date" => raptor_date(), "file" => $errfile, "line" => $errline));
-        return false;
     }
-    if (!error_reporting()) {
-        return;
-    }
+
     switch ($errno)
     {
         case E_USER_ERROR:
