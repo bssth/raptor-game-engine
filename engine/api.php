@@ -2,13 +2,14 @@
 
 @session_start();
 
-if($GLOBALS['driver'] == "messager" or $GLOBALS['driver'] == "api") {
+if(strstr($_SERVER['REQUEST_URI'], "/messager") or strstr($_SERVER['REDIRECT_URL'], "/api")) {
 	define("HIDE_ERRORS", 1);
 	error_reporting(0);
 	$GLOBALS['debug'] = false;
 }
 if(defined("HIDE_ERRORS")) {
 	error_reporting(0);
+	$GLOBALS['debug'] = false;
 }
 
 if (!defined("WEBSITE")) {
