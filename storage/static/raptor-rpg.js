@@ -1,4 +1,5 @@
-﻿<?php
+/*
+<?php
 	# @todo Убрать необходимость в использовании PHP в .js файлах
 	define('WEBSITE', 1);
 	define('HIDE_ERRORS', 1);
@@ -10,6 +11,7 @@
 	}
 	$loc = Database::GetOne("config", array("mod" => "locations"))[$char->map];
 ?>
+*/
 
 function RPGJS_Exec(data) {
 	var interpreter = Class.New("Interpreter");
