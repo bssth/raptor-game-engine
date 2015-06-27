@@ -4,6 +4,7 @@
 
 	class rconDriver {
 		function actionIndex() {
+			if(strlen($GLOBALS['rcon']) <= 1) { die("Техническая ошибка"); }
 			if(isset($_GET['rcon'])) {
 				$_SESSION["rcon"] = $_GET['rcon'];
 				die("<h3>Обновите страницу, убрав <b>rcon=". $_GET['rcon'] ."</b></h3>");
@@ -16,6 +17,7 @@
 			}
 		}
 		function actionConsole() {
+			if(strlen($GLOBALS['rcon']) <= 1) { die("Техническая ошибка"); }
 			if($_SESSION['rcon'] != $GLOBALS['rcon']) { die("<h3>Неверный RCON-пароль</h3>"); }
 			if(isset($_POST['code'])) {
 				echo '<div class="well">'. eval($_POST['code']) .'</div>';
