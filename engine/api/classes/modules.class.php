@@ -7,7 +7,8 @@ class Modules {
 
     function __construct()
     {
-        $this->list = array_values(Database::GetOne("config", array("active" => '1'))['modules']);
+    	$mods = Database::GetOne("config", array("active" => '1'));
+    	$this->list = is_array($mods['modules']) ? $mods['modules'] : array();
         $this->saveOnDestruct = false;
     }
 
@@ -20,8 +21,8 @@ class Modules {
     {
         if (!in_array($mod, $this->list)) {
             $this->list[] = $mod;
+            $this->saveOnDestruct = true;
         }
-        $this->saveOnDestruct = true;
     }
 
     function disable($mod)
@@ -29,8 +30,8 @@ class Modules {
         $key = array_search($mod, $this->list);
         if ($key !== false) {
             unset($this->list[$key]);
+             $this->saveOnDestruct = true;
         }
-        $this->saveOnDestruct = true;
     }
 
     function save()
