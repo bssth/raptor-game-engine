@@ -4,6 +4,8 @@
 
 if($GLOBALS['driver'] == "messager" or $GLOBALS['driver'] == "api") {
 	define("HIDE_ERRORS", 1);
+	error_reporting(0);
+	$GLOBALS['debug'] = false;
 }
 if(defined("HIDE_ERRORS")) {
 	error_reporting(0);
@@ -95,7 +97,11 @@ function raptor_error_handler($errno, $errstr, $errfile, $errline)
     }
     return true;
 }
-set_error_handler("raptor_error_handler");
+
+if(!defined("HIDE_ERRORS")) {
+	set_error_handler("raptor_error_handler");
+}
+
 include_once(API_ROOT . "/abstract.php");
 include_once(API_ROOT . "/functions.php");
 include_once(API_ROOT . "/defines.php");
