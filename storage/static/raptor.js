@@ -1,4 +1,5 @@
-﻿<?php
+/*
+<?php
 	# @todo Убрать необходимость в использовании PHP в .js файлах
 	define('WEBSITE', 1);
 	define('HIDE_ERRORS', 1);
@@ -6,6 +7,7 @@
 	require_once(__DIR__ . '/../../engine/config.php');
 	require_once(__DIR__ . '/../../engine/api.php');
 ?>
+*/
 
 function ClientCall(name, params) {
 	$.get( "/api?a=call&name=" + name + "&params=" + params, function( data ) {
