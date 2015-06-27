@@ -2,6 +2,9 @@
 
 @session_start();
 
+if($GLOBALS['driver'] == "messager" or $GLOBALS['driver'] == "api") {
+	define("HIDE_ERRORS", 1);
+}
 if(defined("HIDE_ERRORS")) {
 	error_reporting(0);
 }
