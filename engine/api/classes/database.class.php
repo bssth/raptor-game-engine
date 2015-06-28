@@ -127,7 +127,7 @@ class Database {
         self::connect();
         $db = self::$conn->$GLOBALS['database'];
         $collection = $db->$collection;
-        $r = $collection->remove($item, array('safe' => true));
+        $r = $collection->remove($item);
         if ($close == true) {
             self::closeConnection();
         }

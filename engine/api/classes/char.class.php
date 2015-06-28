@@ -37,13 +37,13 @@ class Char {
 	
     function __get($name)
     {
-		if(substr($name, 0, 1) == "p_") { return $this->getParam($name); } 
+		if(strstr($name, "p_")) { return $this->getParam($name); } 
         if (!is_object($this->id)) {
             $array = Database::GetOne("characters", array("_id" => toId($this->id)));
         } else {
             $array = Database::GetOne("characters", array("_id" => $this->id));
         }
-        return $array[$name];
+        return isset($array[$name]) ? $array[$name] : false;
     }
 
 	function isOnline() {
@@ -81,10 +81,14 @@ class Char {
     {
         $param = Database::GetOne("config", array("mod" => "params"))[$pname];
         if (!is_array($param)) {
+			raptor_warning("Bad parameter for getParam ($pname)");
             return false;
         }
-        if (empty($param['type'])) {
-            return Database::GetOne("characters", array("_id" => toId($this->id)))[$pname];
+        if (!isset($param['type'])) {
+			raptor_warning("Cannot get param type for $pname");
+            $c_base = Database::GetOne("characters", array("_id" => toId($this->id)))[$pname];
+			$value = isset($c_base[$pname]) ? $c_base[$pname] : $param['def'];
+            return $value;
         }
         switch ($param['type'])
         {
@@ -93,16 +97,30 @@ class Char {
                 return eval($param['script']);
                 break;
             case "id":
-                return new Char(Database::GetOne("characters", array("_id" => toId($this->id)))[$pname]);
+				$c_base = Database::GetOne("characters", array("_id" => toId($this->id)));
+				$value = isset($c_base[$pname]) ? $c_base[$pname] : $param['def'];
+                return new Char($value);
                 break;
             case "int":
-                return (int) Database::GetOne("characters", array("_id" => toId($this->id)))[$pname];
+				$c_base = Database::GetOne("characters", array("_id" => toId($this->id)));
+				$value = isset($c_base[$pname]) ? $c_base[$pname] : $param['def'];
+                return (int) $value;
+                break;
+			case "str":
+				$c_base = Database::GetOne("characters", array("_id" => toId($this->id)));
+				$value = isset($c_base[$pname]) ? $c_base[$pname] : $param['def'];
+                return (string) $value;
                 break;
             case "float":
-                return (float) Database::GetOne("characters", array("_id" => toId($this->id)))[$pname];
+				$c_base = Database::GetOne("characters", array("_id" => toId($this->id)));
+				$value = isset($c_base[$pname]) ? $c_base[$pname] : $param['def'];
+                return (float) $value;
                 break;
             default:
-                return Database::GetOne("characters", array("_id" => toId($this->id)))[$pname];
+				raptor_warning("Cannot get param type for $pname");
+				$c_base = Database::GetOne("characters", array("_id" => toId($this->id)));
+				$value = isset($c_base[$pname]) ? $c_base[$pname] : $param['def'];
+                return $value;
                 break;
         }
     }

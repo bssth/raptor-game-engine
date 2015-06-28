@@ -68,6 +68,7 @@ function template($root)
 
 function templater($root, $replaces)
 {
+	if(filesize(TEMPLATE_ROOT . "/" . $root) <= 0) { return ""; }
 	if(!file_exists(TEMPLATE_ROOT . "/" . $root)) {  return; }
     $handle = fopen(TEMPLATE_ROOT . "/" . $root, "r");
     $html = fread($handle, filesize(TEMPLATE_ROOT . "/" . $root));
@@ -88,7 +89,6 @@ function __toString($object)
     if (is_object($object)) {
         return $object->__toString();
     } else {
-		raptor_warning("__toString for non-object");
         return $object;
     }
 }
