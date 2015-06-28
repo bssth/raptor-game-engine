@@ -108,6 +108,7 @@ include_once(API_ROOT . "/functions.php");
 include_once(API_ROOT . "/defines.php");
 if(isset($GLOBALS['modules'])) {
 	foreach ($GLOBALS['modules'] as $module) {
+		if(!file_exists(MODS_ROOT . SEPARATOR . $module . SEPARATOR . "global.php")) { continue; }
 		@include_once(MODS_ROOT . SEPARATOR . $module . SEPARATOR . "global.php");
 	}
 }
