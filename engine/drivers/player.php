@@ -1,5 +1,6 @@
 <?php
 
+
 class playerDriver {
 
     function __call($func, $args)
@@ -7,11 +8,9 @@ class playerDriver {
         $func = str_replace("action", "", $func);
         if ($func != 'index') {
             $array = Database::GetOne("characters", array("name" => $func));
-            $char = new Char(__toString($array['_id']));
         } else {
             $array = Database::GetOne("characters", array("_id" => toId($_SESSION['cid'])));
             $func = $array['name'];
-            $char = new Char(__toString($array['_id']));
         }
         if (!isset($array['name'])) {
             die("<h1>Персонаж " . $func . " не найден</h1>");
@@ -27,20 +26,24 @@ class playerDriver {
         $main->setvar("%STORAGE_STATIC_URL%", "/storage/static");
         $main->setvar("%GUI%", template("interface/GUI.tpl"));
         $main->setvar("%CHATBOX%", template("boxes/chat.tpl"));
+		$params_all = '';
 
         foreach ($array as $key => $value) {
             if (MongoReserved($key) or MongoReserved($value) or strstr($key, "p_")) {
                 continue;
             }
-            $main->setvar("%" . $key . "%", $char->$key);
+            $main->setvar("%" . $key . "%", char()->$key);
         }
 
         foreach ($params as $key => $value) {
             if (!strstr($key, "p_")) {
                 continue;
             }
-            $main->setvar("%" . $key . "%", $char->getParam($key));
+			$v = char()->getParam($key);
+            $main->setvar("%" . $key . "%", $v);
+			$params_all .= '<p><b>'. $value['name'] .'</b>: '. $v .'</p>';
         }
+		$main->setvar("%PARAMS_ALL%", $params_all);
         $main->renderEcho();
     }
 

@@ -34,8 +34,7 @@
         <h2>Информация о персонаже %name%</h2>
         <p><img style="float:right;" src='%avatar%' border='20'>
             <div style="height:500px;">
-				<p><b>p_ssss</b>: %p_ssss%</p>
-				<p><b>Уровень</b>: %p_lvl%</p>
+				%PARAMS_ALL%
             </div>
         </p>
       </div>
