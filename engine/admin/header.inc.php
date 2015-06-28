@@ -64,13 +64,6 @@
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
                         <ul class="dropdown-menu alert-dropdown">
-                            <?php
-                            $errors = Database::GetAll("errors")->limit(10);
-                            foreach ($errors as $error) {
-                                echo '<li><a href="/admin/errors"><span class="label label-danger">' . substr($error['text'], 0, 40) . '...</span></a></li>';
-                            }
-                            ?>
-                            <li class="divider"></li>
                             <li>
                                 <a href="/admin/errors">Показать все ошибки</a>
                             </li>

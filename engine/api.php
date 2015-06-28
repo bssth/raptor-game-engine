@@ -30,6 +30,7 @@ if (!defined('ENGINE_ROOT')) {
     define("SITE_URL", $_SERVER['SERVER_NAME']);
     define("TEMPLATE_ROOT", ENGINE_ROOT . SEPARATOR . "templates");
     define("SCRIPTS_ROOT", ENGINE_ROOT . SEPARATOR . "scripts");
+	define("LOGS_ROOT", ENGINE_ROOT . SEPARATOR . "logs");
 }
 @include_once(API_ROOT . '/classes/database.class.php');
 $cursor = Database::GetOne("config", array("active" => '1'));
@@ -64,7 +65,8 @@ function loadclass($class)
 }
 function raptor_error_handler($errno, $errstr, $errfile, $errline)
 {
-	Database::Insert("errors", array("text" => $errstr, "date" => raptor_date(), "file" => $errfile, "line" => $errline));
+	#Database::Insert("errors", array("text" => $errstr, "date" => raptor_date(), "file" => $errfile, "line" => $errline));
+	log_error("[$errno] $errstr (file: $errfile, line $errline) \n");
 	if(defined("HIDE_ERRORS")) { return false; }
 
     switch ($errno)

@@ -86,8 +86,8 @@
                         <i class="fa fa-exclamation-triangle fa-5x"></i>
                     </div>
                     <div class="col-xs-9 text-right">
-                        <div class="huge"><?= Database::GetAll("errors")->count(); ?></div>
-                        <div>Ошибок</div>
+                        <div class="huge"><?= filesize(LOGS_ROOT . SEPARATOR . "errors.log"); ?></div>
+                        <div>вес лога ошибок</div>
                     </div>
                 </div>
             </div>

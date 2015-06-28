@@ -101,24 +101,31 @@ function array_search_unset($array, $value)
     }
 }
 
+function log_error($data) {
+	file_put_contents(LOGS_ROOT . SEPARATOR . "errors.log", $data, FILE_APPEND);
+}
+
 function raptor_error($error, $trigger = true)
 {
 	if(!is_string($error)) { return; }
-    Database::Insert("errors", array("text" => $error, "date" => raptor_date()));
+    #Database::Insert("errors", array("text" => $error, "date" => raptor_date()));
+	log_error("RAPTOR Error: $error \n");
     if($trigger===true) trigger_error($error, E_USER_ERROR);
 }
 
 function raptor_warning($error, $trigger = true)
 {
 	if(!is_string($error)) { return; }
-    Database::Insert("errors", array("text" => $error, "date" => raptor_date()));
+    #Database::Insert("errors", array("text" => $error, "date" => raptor_date()));
+	log_error("RAPTOR Warning: $error \n");
     if($trigger===true) trigger_error($error, E_USER_WARNING);
 }
 
 function raptor_notice($error, $trigger = true)
 {
 	if(!is_string($error)) { return; }
-    Database::Insert("errors", array("text" => $error, "date" => raptor_date()));
+    #Database::Insert("errors", array("text" => $error, "date" => raptor_date()));
+	log_error("RAPTOR Notice: $error \n");
     if($trigger===true) trigger_error($error, E_USER_NOTICE);
 }
 function makeReport($name, $text, $date) {

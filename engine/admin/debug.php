@@ -30,6 +30,7 @@ foreach($_ENV as $key => $value) {
 
 echo '<thead><tr><th><h2>$GLOBALS</h2></th></tr></thead>';
 foreach($GLOBALS as $key => $value) {
+	if(!is_string($value)) { continue; }
 	echo '<tr><td>'. $key .'</td><td>'. $value .'</td></tr>';
 }
 
