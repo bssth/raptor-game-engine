@@ -1,4 +1,4 @@
-# RaptorGameEngine
+# Raptor Game Engine
 Game engine allows you to create own MMORPG
 
 # Getting started
