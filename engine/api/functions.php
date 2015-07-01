@@ -105,6 +105,7 @@ function log_error($data) {
 	file_put_contents(LOGS_ROOT . SEPARATOR . "errors.log", $data, FILE_APPEND);
 }
 
+
 function raptor_error($error, $trigger = true)
 {
 	if(!is_string($error)) { return; }
@@ -163,7 +164,7 @@ function getScript($name) {
 
 function char($id = false) {
 	if(is_string($id)) {
-		return CharById($id);
+		return new Char($id);
 	}
 	if(isset($char) and is_object($char)) {
 		return $char;
@@ -179,8 +180,13 @@ function CharById($id) {
 	return new Char($id);
 }
 function CharByName($name) {
-	$id = __toString(Database::GetOne("characters", array("name" => $name))['_id']);
-	return CharById($id);
+	$id = Database::GetOne("characters", array("name" => $name));
+	if(is_array($id)) {
+		return char(__toString($id['_id']));
+	}
+	else {
+		return false;
+	}
 }
 function checkTimers() {
 	$ts = Database::Get("timers", array());

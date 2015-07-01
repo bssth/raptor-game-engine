@@ -62,8 +62,13 @@ class cabinetDriver {
         }
         $check = Database::GetOne("characters", array("_id" => Database::toId($_GET['id'])));
         if ($check['player'] == $_SESSION['id']) {
-            $_SESSION['cid'] = $_GET['id'];
-            header("Location: /p");
+			if($check['ban'] >= time()) {
+				die('<script>alert("Вы были заблокированы \n\n Причина: '. $check['ban_reason'] .'"); location.href = "/";</script>');
+			}
+			else {
+				$_SESSION['cid'] = $_GET['id'];
+				die('<script>location.href = "/p";</script>');
+			}
         } else {
             raptor_error("Bad character id");
 			echo '<script>alert("Ошибка при выборе персонажа");</script>';

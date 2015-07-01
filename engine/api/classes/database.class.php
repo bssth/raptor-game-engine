@@ -62,6 +62,7 @@ class Database {
         if ($close == true) {
             self::closeConnection();
         }
+		if(!is_array($cursor)) { return null; }
         return $cursor;
     }
 
@@ -103,7 +104,7 @@ class Database {
 			if($d[$key] === $value) { continue; }
             $d[$key] = $value;
         }
-        $zcollection->save($d);
+        $zcollection->update($document, $d);
         if ($close == true) {
             self::closeConnection();
 			}

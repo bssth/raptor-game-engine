@@ -1,7 +1,3 @@
-<?php
-   define('HIDE_ERRORS', 1);
-?>
-
 $(function(){
    
     var chat = $('#chat')[0]; // Окно чата
@@ -16,11 +12,25 @@ $(function(){
         // выключаем форму пока не пришел ответ
         $(form).find('input').attr("disabled", true);
         
-        // отправка сообщения
-        update(text);
-        
-        // что бы форма не перезагружала страницу
-        return false;
+		// если команда, то обрабатываем как команду
+		if(text.val() && text.val().indexOf("/")+1) {
+			$.get(
+				'/api?a=handledino&string='+ text.val(),
+				{}, 
+				function (data) {
+					 var msg = $('<div>' + data + '</div>');
+                      $(chat).append(msg);
+					  $(form).find('input').attr("disabled", false);
+				},
+				'text'
+			);
+			return false;
+		}
+		else {
+			// отправка сообщения
+			update(text);
+			return false;
+		}
     });
     
     function update(text) {
@@ -54,6 +64,7 @@ $(function(){
                         $(form).find('input').attr("disabled", false);
                         // и очищаем текст
                         $(text).val('');
+						
                     }
 
                     // прокрутка
@@ -62,15 +73,15 @@ $(function(){
                     // обновим таймер 
                     update_timer();
                 }
-            },
-            'text' // полученные данные рассматривать как JSON объект
+				},
+            'text' // полученные данные рассматривать как текст, а потом обращать в JSON, во избежании проблем с кодировкой и BOM
         );
     }
 
     // что бы при загрузке получить данные в чат, вызываем сразу апдейт
     update();
     
-    // что бы окно чата обновлялось раз в 5 секунд, прицепим таймер
+    // что бы окно чата обновлялось раз в секунду, прицепим таймер
     var timer;
     function update_timer() {
         if (timer) // если таймер уже был, сбрасываем
