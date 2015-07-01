@@ -112,7 +112,7 @@ class Dino {
     {
         //Имеем аргументы в виде: p=player t=time r=reason
         //Нужно разложить их в массиве
-
+		if(char()->admin <= 0) { echo "Вы не администратор"; return; }
         if (preg_match('/p=/', $msg) && preg_match('/t=/', $msg) && preg_match('/r=/', $msg)) {
             if (substr($msg, -1) == ' ')
                 $msg = substr($msg, 0, -1);
@@ -162,6 +162,7 @@ class Dino {
 
     private static function unban($args)
     {
+		if(char()->admin <= 0) { echo "Вы не администратор"; return; }
         if (is_object(CharByName($args))) {
             CharByName($args)->ban = 0;
             CharByName($args)->ban_reason = "Разблокирован";
