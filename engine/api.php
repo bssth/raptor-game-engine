@@ -1,15 +1,13 @@
 <?php
 
-@session_start();
-
-if(strstr($_SERVER['REQUEST_URI'], "/messager") or strstr($_SERVER['REDIRECT_URL'], "/api")) {
-	define("HIDE_ERRORS", 1);
-	error_reporting(0);
-	$GLOBALS['debug'] = false;
+if (strstr($_SERVER['REQUEST_URI'], "/messager") or strstr($_SERVER['REDIRECT_URL'], "/api")) {
+    define("HIDE_ERRORS", 1);
+    error_reporting(0);
+    $GLOBALS['debug'] = false;
 }
-if(defined("HIDE_ERRORS")) {
-	error_reporting(0);
-	$GLOBALS['debug'] = false;
+if (defined("HIDE_ERRORS")) {
+    error_reporting(0);
+    $GLOBALS['debug'] = false;
 }
 
 if (!defined("WEBSITE")) {
@@ -30,15 +28,21 @@ if (!defined('ENGINE_ROOT')) {
     define("SITE_URL", $_SERVER['SERVER_NAME']);
     define("TEMPLATE_ROOT", ENGINE_ROOT . SEPARATOR . "templates");
     define("SCRIPTS_ROOT", ENGINE_ROOT . SEPARATOR . "scripts");
-	define("LOGS_ROOT", ENGINE_ROOT . SEPARATOR . "logs");
+    define("LOGS_ROOT", ENGINE_ROOT . SEPARATOR . "logs");
 }
+
 @include_once(API_ROOT . '/classes/database.class.php');
+@include_once(API_ROOT . '/classes/sessions.class.php');
+
+new Sessions;
+@session_start();
+
 $cursor = Database::GetOne("config", array("active" => '1'));
 if (empty($cursor['active']) and $GLOBALS['debug'] == false and file_exists(CACHE_ROOT . SEPARATOR . "installed.cache")) {
     die("Cannot load configuration");
 }
-if(is_array($cursor)) {
-	$GLOBALS = array_merge($GLOBALS, $cursor);
+if (is_array($cursor)) {
+    $GLOBALS = array_merge($GLOBALS, $cursor);
 }
 spl_autoload_register('loadclass');
 /* function loadclass($class) {
@@ -50,6 +54,7 @@ spl_autoload_register('loadclass');
   @include_once(MODS_ROOT . SEPARATOR . $module . SEPARATOR . $class . ".class.php");
   }
   } */
+
 function loadclass($class)
 {
     if (!@include_once(API_ROOT . '/classes/' . strtolower($class) . ".class.php")) {
@@ -63,11 +68,14 @@ function loadclass($class)
         }
     }
 }
+
 function raptor_error_handler($errno, $errstr, $errfile, $errline)
 {
-	#Database::Insert("errors", array("text" => $errstr, "date" => raptor_date(), "file" => $errfile, "line" => $errline));
-	log_error("[$errno] $errstr (file: $errfile, line $errline) \n");
-	if(defined("HIDE_ERRORS")) { return false; }
+    #Database::Insert("errors", array("text" => $errstr, "date" => raptor_date(), "file" => $errfile, "line" => $errline));
+    log_error("[$errno] $errstr (file: $errfile, line $errline) \n");
+    if (defined("HIDE_ERRORS")) {
+        return false;
+    }
 
     switch ($errno)
     {
@@ -101,34 +109,36 @@ function raptor_error_handler($errno, $errstr, $errfile, $errline)
     return true;
 }
 
-if(!defined("HIDE_ERRORS")) {
-	set_error_handler("raptor_error_handler");
+if (!defined("HIDE_ERRORS")) {
+    set_error_handler("raptor_error_handler");
 }
 
 include_once(API_ROOT . "/abstract.php");
 include_once(API_ROOT . "/functions.php");
 include_once(API_ROOT . "/defines.php");
-if(isset($GLOBALS['modules'])) {
-	foreach ($GLOBALS['modules'] as $module) {
-		if(!file_exists(MODS_ROOT . SEPARATOR . $module . SEPARATOR . "global.php")) { continue; }
-		@include_once(MODS_ROOT . SEPARATOR . $module . SEPARATOR . "global.php");
-	}
+if (isset($GLOBALS['modules'])) {
+    foreach ($GLOBALS['modules'] as $module) {
+        if (!file_exists(MODS_ROOT . SEPARATOR . $module . SEPARATOR . "global.php")) {
+            continue;
+        }
+        @include_once(MODS_ROOT . SEPARATOR . $module . SEPARATOR . "global.php");
+    }
 }
-if(isset($_SESSION['cid'])) {
-	if(is_object($_SESSION['cid'])) {
-		__toString($_SESSION['cid']);
-	}
-	global $char;
-	$char = new Char($_SESSION['cid']);
-	$char->setOnline();
-	eval( implode(" ", check_player_events($_SESSION['cid'], false, true)['eval']) );
+if (isset($_SESSION['cid'])) {
+    if (is_object($_SESSION['cid'])) {
+        __toString($_SESSION['cid']);
+    }
+    global $char;
+    $char = new Char($_SESSION['cid']);
+    $char->setOnline();
+    eval(implode(" ", check_player_events($_SESSION['cid'], false, true)['eval']));
 }
-if(isset($_SESSION['id'])) {
-	if(is_object($_SESSION['id'])) {
-		__toString($_SESSION['id']);
-	}
-	global $player;
-	$player = new Player($_SESSION['id']);
+if (isset($_SESSION['id'])) {
+    if (is_object($_SESSION['id'])) {
+        __toString($_SESSION['id']);
+    }
+    global $player;
+    $player = new Player($_SESSION['id']);
 }
 eval(getScript('main'));
 call_user_func("scriptEngineInit");

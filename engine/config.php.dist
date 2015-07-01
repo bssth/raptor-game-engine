@@ -2,10 +2,24 @@
 
 $GLOBALS['database'] = "{{DATABASE}}";
 
+# Раскомментируйте строки ниже, если необходимо использовать хост, имя и пароль базы данных
+
 /*
-$GLOBALS['database_host'] = {{HOST}};
-$GLOBALS['database_user'] = {{USER}};
-$GLOBALS['database_password'] = {{PASSWORD}};
+$GLOBALS['database_host'] = false;
+$GLOBALS['database_user'] = false;
+$GLOBALS['database_password'] = false;
+*/
+
+# IP вебсокет-сервера. Обычно совпадает с IP веб-сервера
+$GLOBALS['socket_ip'] = $_SERVER['SERVER_ADDR']; 
+# Порт сокет-сервера. По умолчанию 8873 для RAPTOR
+$GLOBALS['socket_port'] = 8873;
+
+# Раскомментируйте строки ниже, если хотите, чтобы игра кэшировала данные (необходим memcache)
+
+/*
+$GLOBALS['memcache_ip'] = '127.0.0.1';
+$GLOBALS['memcache_port'] = 11211;
 */
 
 $GLOBALS['debug'] = (MODE=='dev');
