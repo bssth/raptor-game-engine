@@ -18,6 +18,10 @@ class Templater {
 
     function import($root)
     {
+		if(is_string(Cache::get(sha1($root)))) {
+			$this->code = Cache::get(sha1($root));
+			return;
+		}
         $handle = fopen($this->tpldir . "/" . $root, "r");
         $html = fread($handle, filesize($this->tpldir . "/" . $root));
         fclose($handle);

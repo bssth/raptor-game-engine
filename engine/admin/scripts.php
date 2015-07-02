@@ -9,7 +9,8 @@
 <?php
     if(isset($_POST['file'])) {
 		Database::Edit('scripts', array('name' => $_POST['file']), array('code' => base64_encode($_POST['edit'])));
-		echo '<div class="alert alert-success">Скрипт успешно отредактирован</div>';
+		Cache::set("script_". $_POST['file'], base64_encode($_POST['edit']), 86400);
+		echo '<div class="alert alert-success">Скрипт успешно отредактирован. Кэш обновлен.</div>';
     }
     if(isset($_GET['edit'])) {
         $content = isset($_POST['edit']) ? $_POST['edit'] : base64_decode(Database::GetOne('scripts', array('name' => $_GET['edit']))['code']);

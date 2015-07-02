@@ -20,12 +20,11 @@ class Database {
     private static function connect()
     {
         if (self::$cnt == false) {
-			if(!isset($GLOBALS['database_host'])) {
-				self::$conn = new MongoClient('localhost');
-			}
-			else {
-				self::$conn = new MongoClient("mongodb://". $GLOBALS['database_user'] .":". $GLOBALS['database_password'] ."@". $GLOBALS['database_host']);
-			}
+            if (!isset($GLOBALS['database_host'])) {
+                self::$conn = new MongoClient('localhost');
+            } else {
+                self::$conn = new MongoClient("mongodb://" . $GLOBALS['database_user'] . ":" . $GLOBALS['database_password'] . "@" . $GLOBALS['database_host']);
+            }
             self::$cnt = true;
         } else {
             return false;
@@ -62,7 +61,9 @@ class Database {
         if ($close == true) {
             self::closeConnection();
         }
-		if(!is_array($cursor)) { return null; }
+        if (!is_array($cursor)) {
+            return null;
+        }
         return $cursor;
     }
 
@@ -80,17 +81,17 @@ class Database {
 
     public static function Save($collection, $find = array(), $document = array(), $close = false)
     {
-		# Don't use me. I'm too old
-        /*self::connect();
-        $db = self::$conn->$GLOBALS['database'];
-        $zcollection = $db->$collection;
-        $doc = $zcollection->findOne($find);
-        $document = array_merge($doc, $document);
-        $result = $zcollection->save($document);
-        if ($close == true) {
-            self::closeConnection();
-        }*/
-		self::Edit($collection, $find, $find, $document, $close);
+        # Don't use me. I'm too old
+        /* self::connect();
+          $db = self::$conn->$GLOBALS['database'];
+          $zcollection = $db->$collection;
+          $doc = $zcollection->findOne($find);
+          $document = array_merge($doc, $document);
+          $result = $zcollection->save($document);
+          if ($close == true) {
+          self::closeConnection();
+          } */
+        self::Edit($collection, $find, $find, $document, $close);
         return true;
     }
 
@@ -101,13 +102,15 @@ class Database {
         $zcollection = $db->$collection;
         $d = array_merge($document, $zcollection->findOne($document));
         foreach ($edit as $key => $value) {
-			if($d[$key] === $value) { continue; }
+            if ($d[$key] === $value) {
+                continue;
+            }
             $d[$key] = $value;
         }
         $zcollection->update($document, $d);
         if ($close == true) {
             self::closeConnection();
-			}
+        }
         return true;
     }
 

@@ -1,6 +1,6 @@
 <?php
 
-if (strstr($_SERVER['REQUEST_URI'], "/messager") or strstr($_SERVER['REDIRECT_URL'], "/api")) {
+if (strstr($_SERVER['REQUEST_URI'], "/messager") or strstr($_SERVER['REQUEST_URI'], "/api")) {
     define("HIDE_ERRORS", 1);
     error_reporting(0);
     $GLOBALS['debug'] = false;
@@ -31,29 +31,7 @@ if (!defined('ENGINE_ROOT')) {
     define("LOGS_ROOT", ENGINE_ROOT . SEPARATOR . "logs");
 }
 
-@include_once(API_ROOT . '/classes/database.class.php');
-@include_once(API_ROOT . '/classes/sessions.class.php');
-
-new Sessions;
-@session_start();
-
-$cursor = Database::GetOne("config", array("active" => '1'));
-if (empty($cursor['active']) and $GLOBALS['debug'] == false and file_exists(CACHE_ROOT . SEPARATOR . "installed.cache")) {
-    die("Cannot load configuration");
-}
-if (is_array($cursor)) {
-    $GLOBALS = array_merge($GLOBALS, $cursor);
-}
 spl_autoload_register('loadclass');
-/* function loadclass($class) {
-  @include_once(API_ROOT . '/classes/' . strtolower($class) . ".class.php");
-  @include_once(API_ROOT . '/classes/' . $class . ".class.php");
-  @include_once(ENGINE_ROOT . '/drivers/' . $class . ".php");
-  foreach ($GLOBALS['modules'] as $module) {
-  @include_once(MODS_ROOT . SEPARATOR . $module . SEPARATOR . strtolower($class) . ".class.php");
-  @include_once(MODS_ROOT . SEPARATOR . $module . SEPARATOR . $class . ".class.php");
-  }
-  } */
 
 function loadclass($class)
 {
@@ -67,6 +45,24 @@ function loadclass($class)
             }
         }
     }
+}
+
+new Sessions;
+@session_start();
+
+if(is_string(Cache::get("config_main"))) {
+	$cursor = Cache::get("config_main");
+}
+else {
+	$cursor = Database::GetOne("config", array("active" => '1'));
+	Cache::set("config_main", $cursor, 3600);
+}
+
+if (empty($cursor['active']) and $GLOBALS['debug'] == false and file_exists(CACHE_ROOT . SEPARATOR . "installed.cache")) {
+    die("Cannot load configuration");
+}
+if (is_array($cursor)) {
+    $GLOBALS = array_merge($GLOBALS, $cursor);
 }
 
 function raptor_error_handler($errno, $errstr, $errfile, $errline)

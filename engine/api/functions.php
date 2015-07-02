@@ -1,10 +1,10 @@
 <?php
 
 /*
-	**	Данный файл используется для объявления стандартных функций
-	**	Они такие же обычные и серые для RAPTOR, как функции PHP для PHP...
-	**	@todo Убрать лишние функции
-*/
+ * *	Данный файл используется для объявления стандартных функций
+ * *	Они такие же обычные и серые для RAPTOR, как функции PHP для PHP...
+ * *	@todo Убрать лишние функции
+ */
 
 function requestGet($param = false)
 {
@@ -59,23 +59,39 @@ function raptor_date($input = false)
 
 function template($root)
 {
-	if(!file_exists(TEMPLATE_ROOT . "/" . $root)) {  return; }
-    $handle = fopen(TEMPLATE_ROOT . "/" . $root, "r");
-    $html = fread($handle, filesize(TEMPLATE_ROOT . "/" . $root));
-    fclose($handle);
-    return $html;
+	if(is_string(Cache::get(sha1($root)))) {
+		return Cache::get(sha1($root));
+	}
+    elseif (file_exists(TEMPLATE_ROOT . "/" . $root)) {
+		$handle = fopen(TEMPLATE_ROOT . "/" . $root, "r");
+		$html = fread($handle, filesize(TEMPLATE_ROOT . "/" . $root));
+		fclose($handle);
+		return $html;
+	}
+	else {
+		return;
+	}
 }
 
 function templater($root, $replaces)
 {
-	if(filesize(TEMPLATE_ROOT . "/" . $root) <= 0) { return ""; }
-	if(!file_exists(TEMPLATE_ROOT . "/" . $root)) {  return; }
-    $handle = fopen(TEMPLATE_ROOT . "/" . $root, "r");
-    $html = fread($handle, filesize(TEMPLATE_ROOT . "/" . $root));
+	if(is_string(Cache::get(sha1($root)))) {
+		$html = Cache::get(sha1($root));
+	}
+	else {
+		if (filesize(TEMPLATE_ROOT . "/" . $root) <= 0) {
+			return "";
+		}
+		if (!file_exists(TEMPLATE_ROOT . "/" . $root)) {
+			return;
+		}
+		$handle = fopen(TEMPLATE_ROOT . "/" . $root, "r");
+		$html = fread($handle, filesize(TEMPLATE_ROOT . "/" . $root));
+		fclose($handle);
+	}
     foreach ($replaces as $key => $value) {
         $html = str_replace($key, $value, $html);
     }
-    fclose($handle);
     return $html;
 }
 
@@ -101,38 +117,50 @@ function array_search_unset($array, $value)
     }
 }
 
-function log_error($data) {
-	file_put_contents(LOGS_ROOT . SEPARATOR . "errors.log", $data, FILE_APPEND);
+function log_error($file = 'error',$data)
+{
+    file_put_contents(LOGS_ROOT . SEPARATOR . $file.".log", $data, FILE_APPEND);
 }
-
 
 function raptor_error($error, $trigger = true)
 {
-	if(!is_string($error)) { return; }
+    if (!is_string($error)) {
+        return;
+    }
     #Database::Insert("errors", array("text" => $error, "date" => raptor_date()));
-	log_error("RAPTOR Error: $error \n");
-    if($trigger===true) trigger_error($error, E_USER_ERROR);
+    log_error("RAPTOR Error: $error \n");
+    if ($trigger === true)
+        trigger_error($error, E_USER_ERROR);
 }
 
 function raptor_warning($error, $trigger = true)
 {
-	if(!is_string($error)) { return; }
+    if (!is_string($error)) {
+        return;
+    }
     #Database::Insert("errors", array("text" => $error, "date" => raptor_date()));
-	log_error("RAPTOR Warning: $error \n");
-    if($trigger===true) trigger_error($error, E_USER_WARNING);
+    log_error("RAPTOR Warning: $error \n");
+    if ($trigger === true)
+        trigger_error($error, E_USER_WARNING);
 }
 
 function raptor_notice($error, $trigger = true)
 {
-	if(!is_string($error)) { return; }
+    if (!is_string($error)) {
+        return;
+    }
     #Database::Insert("errors", array("text" => $error, "date" => raptor_date()));
-	log_error("RAPTOR Notice: $error \n");
-    if($trigger===true) trigger_error($error, E_USER_NOTICE);
+    log_error("RAPTOR Notice: $error \n");
+    if ($trigger === true)
+        trigger_error($error, E_USER_NOTICE);
 }
-function makeReport($name, $text, $date) {
-	$date = (!empty($date)) ? $date : raptor_date();
-	Database::Insert("reports", array("author" => $name, "date" => $date, "message" => $text));
+
+function makeReport($name, $text, $date)
+{
+    $date = (!empty($date)) ? $date : raptor_date();
+    Database::Insert("reports", array("author" => $name, "date" => $date, "message" => $text));
 }
+
 function checkConfig()
 {
     return false; # Function deprecated
@@ -158,70 +186,89 @@ function raptor_json_encode($string)
     return preg_replace("/\\\\u([a-f0-9]{4})/e", "iconv('UCS-4LE','UTF-8',pack('V', hexdec('U$1')))", json_encode($string));
 }
 
-function getScript($name) {
-	return base64_decode(Database::GetOne('scripts', array('name' => $name))['code']);
-}
-
-function char($id = false) {
-	if(is_string($id)) {
-		return new Char($id);
-	}
-	if(isset($char) and is_object($char)) {
-		return $char;
+function getScript($name)
+{
+	if(is_string(Cache::get("script_". $name))) {
+		return base64_decode(Cache::get("script_". $name));
 	}
 	else {
-		global $char;
-		$char = new Char();
-		return $char;
+		$code = Database::GetOne('scripts', array('name' => $name))['code'];
+		Cache::set("script_". $name, $code, 86400);
+		return base64_decode($code);
 	}
 }
 
-function CharById($id) {
-	return new Char($id);
-}
-function CharByName($name) {
-	$id = Database::GetOne("characters", array("name" => $name));
-	if(is_array($id)) {
-		return char(__toString($id['_id']));
-	}
-	else {
-		return false;
-	}
-}
-function checkTimers() {
-	$ts = Database::Get("timers", array());
-	foreach($ts as $array) {
-		if($array['time'] <= time()) {
-			eval($array['code']);
-			Database::Remove('timers', array("id" => $array['id']));
-		}
-	}
-}
-function createTimer($id, $time, $code) {
-	Database::Insert("timers", array("id" => $id, "time" => time()+$time, "code" => $code));
-}
-function createEventTimer($id, $time) {
-	createTimer($id, $time, "call_user_func('EventTimerExpired', ". $id .");");
+function char($id = false)
+{
+    if (is_string($id)) {
+        return new Char($id);
+    }
+    if (isset($char) and is_object($char)) {
+        return $char;
+    } else {
+        global $char;
+        $char = new Char();
+        return $char;
+    }
 }
 
-function check_player_events($id, $delete = false, $clearEval = true) {
-	$result = array("js" => array(), "eval" => array());
-	$all = Database::Get("events", array("char" => $id));
-	if($all->count() <= 0) { return $result; }
-	foreach($all as $a) {
-		if(isset($a['js'])) {
-			$result['js'][] = $a['js'];
-		}
-		if(isset($a['eval'])) {
-			$result['eval'][] = $a['eval'];
-		}
-	}
-	if($delete == true) {
-		Database::Remove("events", array("char" => $id));
-	}
-	elseif($clearEval == true) {
-		Database::Edit("events", array("char" => $id), array('eval' => ''));
-	}
-	return $result;
+function CharById($id)
+{
+    return new Char($id);
 }
+
+function CharByName($name)
+{
+    $id = Database::GetOne("characters", array("name" => $name));
+    if (is_array($id)) {
+        return char(__toString($id['_id']));
+    } else {
+        return false;
+    }
+}
+
+function checkTimers()
+{
+    $ts = Database::Get("timers", array());
+    foreach ($ts as $array) {
+        if ($array['time'] <= time()) {
+            eval($array['code']);
+            Database::Remove('timers', array("id" => $array['id']));
+        }
+    }
+}
+
+function createTimer($id, $time, $code)
+{
+    Database::Insert("timers", array("id" => $id, "time" => time() + $time, "code" => $code));
+}
+
+function createEventTimer($id, $time)
+{
+    createTimer($id, $time, "call_user_func('EventTimerExpired', " . $id . ");");
+}
+
+function check_player_events($id, $delete = false, $clearEval = true)
+{
+    $result = array("js" => array(), "eval" => array());
+    $all = Database::Get("events", array("char" => $id));
+    if ($all->count() <= 0) {
+        return $result;
+    }
+    foreach ($all as $a) {
+        if (isset($a['js'])) {
+            $result['js'][] = $a['js'];
+        }
+        if (isset($a['eval'])) {
+            $result['eval'][] = $a['eval'];
+        }
+    }
+    if ($delete == true) {
+        Database::Remove("events", array("char" => $id));
+    } elseif ($clearEval == true) {
+        Database::Edit("events", array("char" => $id), array('eval' => ''));
+    }
+    return $result;
+}
+
 ?>

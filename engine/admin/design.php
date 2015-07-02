@@ -10,7 +10,8 @@ if (isset($_POST['file'])) {
         $fp = fopen($file, 'w');
         fwrite($fp, $_POST['edit']);
         fclose($fp);
-        echo '<div class="alert alert-success">Шаблон успешно отредактирован</div>';
+        echo '<div class="alert alert-success">Шаблон успешно отредактирован. Кэш шаблона очищен.</div>';
+		Cache::set(sha1($file), $_POST['edit'], 3600);
     } else {
         echo '<div class="alert alert-danger">Данный файл недоступен для записи. Измените права доступа</div>';
     }
