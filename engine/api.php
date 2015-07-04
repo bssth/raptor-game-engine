@@ -122,7 +122,7 @@ if (isset($GLOBALS['modules'])) {
 }
 if (isset($_SESSION['cid'])) {
     if (is_object($_SESSION['cid'])) {
-        __toString($_SESSION['cid']);
+        $_SESSION['cid'] = __toString($_SESSION['cid']);
     }
     global $char;
     $char = new Char($_SESSION['cid']);
@@ -131,7 +131,7 @@ if (isset($_SESSION['cid'])) {
 }
 if (isset($_SESSION['id'])) {
     if (is_object($_SESSION['id'])) {
-        __toString($_SESSION['id']);
+        $_SESSION['id'] = __toString($_SESSION['id']);
     }
     global $player;
     $player = new Player($_SESSION['id']);
