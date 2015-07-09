@@ -1,6 +1,5 @@
 <?php
 
-
 class playerDriver {
 
     function __call($func, $args)
@@ -26,24 +25,24 @@ class playerDriver {
         $main->setvar("%STORAGE_STATIC_URL%", "/storage/static");
         $main->setvar("%GUI%", template("interface/GUI.tpl"));
         $main->setvar("%CHATBOX%", template("boxes/chat.tpl"));
-		$params_all = '';
+        $params_all = '';
 
         foreach ($array as $key => $value) {
             if (MongoReserved($key) or MongoReserved($value) or strstr($key, "p_")) {
                 continue;
             }
-            $main->setvar("%" . $key . "%", char()->$key);
+            $main->setvar("%" . $key . "%", $array[$key]);
         }
 
         foreach ($params as $key => $value) {
             if (!strstr($key, "p_")) {
                 continue;
             }
-			$v = char()->getParam($key);
+            $v = char(__toString($array['_id']))->getParam($key);
             $main->setvar("%" . $key . "%", $v);
-			$params_all .= '<p><b>'. $value['name'] .'</b>: '. $v .'</p>';
+            $params_all .= '<p><b>' . $value['name'] . '</b>: ' . $v . '</p>';
         }
-		$main->setvar("%PARAMS_ALL%", $params_all);
+        $main->setvar("%PARAMS_ALL%", $params_all);
         $main->renderEcho();
     }
 

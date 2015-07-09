@@ -1,45 +1,16 @@
 <?php
-if(file_exists(CACHE_ROOT . SEPARATOR . "installed.cache")) 
-{ 
-	die('<script>location.href = "/admin/index";</script> Движок уже установлен'); 
-}
-error_reporting(0);
-switch ($_GET['step']) {
-    case 1:
-        if (class_exists("MongoClient")) {
-            echo '<div class="alert alert-success">Класс MongoClient доступен</div>';
-        } else {
-            echo '<div class="alert alert-danger">Класс MongoClient недоступен (критично!); <a href="http://php.net/manual/ru/mongo.installation.php">Узнайте, как установить</a></div>';
-        }
-        if (class_exists("Memcache")) {
-            echo '<div class="alert alert-success">Класс MemCache доступен</div>';
-        } else {
-            echo '<div class="alert alert-danger">Класс MemCache недоступен (не критично)</div>';
-        }
-        if (function_exists("mysqli_connect")) {
-            echo '<div class="alert alert-success">Расширение MySQLi доступно</div>';
-        } else {
-            echo '<div class="alert alert-danger">Расширение MySQLi недоступно (не критично)</div>';
-        }
-        if (ini_get('allow_url_fopen')) {
-            echo '<div class="alert alert-success"><b>allow_url_fopen</b> допускается</div>';
-        } else {
-            echo '<div class="alert alert-danger">Ваш сервер не допускает работы с удалёнными файлами. Это может привести к проблемам с API. Измените опцию <b>allow_url_fopen</b> в php.ini</div>';
-        }
-        echo '<p><a href="?step=2" class="btn btn-primary btn-lg" role="button">Конфигурация »</a></p>';
-        break;
-    case 2:
-        if (file_exists(ENGINE_ROOT . SEPARATOR . "config.php.dist")) {
-            raptor_print('PGRpdiBjbGFzcz0id2VsbCI+0KHQtdC50YfQsNGBINCy0LDQvCDQv9GA0LXQtNGB0YLQvtC40YIg0LLQstC10YHRgtC4INC+0YHQvdC+0LLQvdGL0LUg0LTQsNC90L3Ri9C1INCx0LDQt9GLLiDQndCw0LnQtNC40YLQtSDQsiDQv9Cw0L/QutC1IGVuZ2luZSDRhNCw0LnQuyBjb25maWcucGhwLmRpc3Qg0Lgg0L/QtdGA0LXQuNC80LXQvdGD0LnRgtC1INC10LPQviDQsiBjb25maWcucGhwIDxicj4g0J/QvtGC0L7QvCDQvtGC0LrRgNC+0LnRgtC1INC70Y7QsdGL0Lwg0YLQtdC60YHRgtC+0LLRi9C8INGA0LXQtNCw0LrRgtC+0YDQvtC8INC4INCy0LLQtdC00LjRgtC1INGC0YDQtdCx0YPQtdC80YvQtSDQtNCw0L3QvdGL0LUsINGB0LvQtdC00YPRjyDQv9C+0LTRgdC60LDQt9C60LDQvCDQsiDRhNCw0LnQu9C1LiDQnNGLINC/0L7QtNC+0LbQtNGR0LwsINC/0L7QutCwINCy0Ysg0LfQsNC60L7QvdGH0LjRgtC1LCDQv9C+0YHQu9C1INC90LDQttC80LjRgtC1INC60L3QvtC/0LrRgyDQlNCw0LvRjNGI0LU8L2Rpdj4NCgkJCTxwPjxhIGhyZWY9Ij9zdGVwPTMiIGNsYXNzPSJidG4gYnRuLXByaW1hcnkgYnRuLWxnIiByb2xlPSJidXR0b24iPtCU0LDQu9GM0YjQtSDCuzwvYT48L3A+');
-        } else {
-            echo '<div class="alert alert-danger"><b>config.php.dist</b> отсутствует в папке engine. Убедитесь в целостности данных</div>';
-        }
-        break;
-    case 3:
-		if (isset($_POST['name'])) {
-			$in = array_merge( array('modules'=>array(),'active'=>'1','id'=>uniqid()), $_POST );
-			Database::Insert("config", $in);
-			Database::Insert("config", array (
+	$config = array();
+	$config[] = array (
+			  'mod' => 'auth',
+			  'allowRegister' => '0',
+			  'authType' => 'login',
+			  'maxchars' => '4',
+			  'start' => '5570740e01f12',
+			  'start_x' => '303',
+			  'start_y' => '213',
+			  'start_dir' => 'bottom',
+	);
+	$config[] = array (
 			  'mod' => 'locations',
 			  '_onrun' => '[
 			  "SHOW_TEXT: {\'text\': \'Добро пожаловать в вашу новую игру!\'}"
@@ -91,23 +62,54 @@ switch ($_GET['step']) {
 			"2":"autotile1.png",
 			"3":"autotile2.png"
 			}',
-			));
-			Database::Insert("config", array (
-			  'mod' => 'auth',
-			  'allowRegister' => '0',
-			  'authType' => 'login',
-			  'maxchars' => '4',
-			  'start' => '5570740e01f12',
-			  'start_x' => '303',
-			  'start_y' => '213',
-			  'start_dir' => 'bottom',
-			));
-			Database::Insert("scripts", array ('_id' => 
-  MongoId::__set_state(array(
-     '$id' => '55618e3c555e4ffa23c48d18',
-  )),
-  'name' => 'main',
-  'code' => 'ZnVuY3Rpb24gc2NyaXB0RW5naW5lSW5pdCgpIHsNCiAgcmV0dXJuIDE7DQp9DQoNCmZ1bmN0aW9uIG9uUGxheWVyTG9naW4oJGxvZ2luLCAkcGFzc3dvcmQsICRzdWNjZXNzKSB7DQogIHJldHVybiAxOw0KfQ0KDQpmdW5jdGlvbiBvblBsYXllclJlZ2lzdGVyKCRsb2dpbiwgJHBhc3N3b3JkLCAkZW1haWwpIHsNCiAgcmV0dXJuIDE7DQp9DQoNCmZ1bmN0aW9uIEV2ZW50VGltZXJFeHBpcmVkKCRpZCkgew0KICByZXR1cm4gMTsNCn0NCg0KZnVuY3Rpb24gVXNlSXRlbSgkaWQsICRpdGVtKSB7DQogIHJldHVybiAxOw0KfQ0KDQpmdW5jdGlvbiBvblJvdXRlZCgkZHJpdmVyLCAkYWN0aW9uLCAkbGluaykgew0KICByZXR1cm4gMTsNCn0NCg0KZnVuY3Rpb24gb25DbGllbnRDYWxsKCRpbnB1dCwgJHBhcmFtcykgew0KICByZXR1cm4gMTsNCn0NCg0KZnVuY3Rpb24gb25BcGlNZXRob2RDYWxsZWQoJG1ldGhvZCwgJHJlcXVlc3QpIHsNCiAgcmV0dXJuIGZhbHNlOw0KfQ0KDQpmdW5jdGlvbiBvbkRpYWxvZ1Jlc3BvbnNlKCRkaWFsb2dpZCwgJGFuc3dlcikgew0KICByZXR1cm4gMTsNCn0=',));
+	);
+	
+if(file_exists(CACHE_ROOT . SEPARATOR . "installed.cache")) 
+{ 
+	die('<script>location.href = "/admin/index";</script> Движок уже установлен'); 
+}
+error_reporting(0);
+switch ($_GET['step']) {
+    case 1:
+        if (class_exists("MongoClient")) {
+            echo '<div class="alert alert-success">Класс MongoClient доступен</div>';
+        } else {
+            echo '<div class="alert alert-danger">Класс MongoClient недоступен (критично!); <a href="http://php.net/manual/ru/mongo.installation.php">Узнайте, как установить</a></div>';
+        }
+        if (class_exists("Memcache")) {
+            echo '<div class="alert alert-success">Класс MemCache доступен</div>';
+        } else {
+            echo '<div class="alert alert-danger">Класс MemCache недоступен (не критично)</div>';
+        }
+        if (function_exists("mysqli_connect")) {
+            echo '<div class="alert alert-success">Расширение MySQLi доступно</div>';
+        } else {
+            echo '<div class="alert alert-danger">Расширение MySQLi недоступно (не критично)</div>';
+        }
+        if (ini_get('allow_url_fopen')) {
+            echo '<div class="alert alert-success"><b>allow_url_fopen</b> допускается</div>';
+        } else {
+            echo '<div class="alert alert-danger">Ваш сервер не допускает работы с удалёнными файлами. Это может привести к проблемам с API. Измените опцию <b>allow_url_fopen</b> в php.ini</div>';
+        }
+        echo '<p><a href="?step=2" class="btn btn-primary btn-lg" role="button">Конфигурация »</a></p>';
+        break;
+    case 2:
+        if (file_exists(ENGINE_ROOT . SEPARATOR . "config.php.dist")) {
+            raptor_print('PGRpdiBjbGFzcz0id2VsbCI+0KHQtdC50YfQsNGBINCy0LDQvCDQv9GA0LXQtNGB0YLQvtC40YIg0LLQstC10YHRgtC4INC+0YHQvdC+0LLQvdGL0LUg0LTQsNC90L3Ri9C1INCx0LDQt9GLLiDQndCw0LnQtNC40YLQtSDQsiDQv9Cw0L/QutC1IGVuZ2luZSDRhNCw0LnQuyBjb25maWcucGhwLmRpc3Qg0Lgg0L/QtdGA0LXQuNC80LXQvdGD0LnRgtC1INC10LPQviDQsiBjb25maWcucGhwIDxicj4g0J/QvtGC0L7QvCDQvtGC0LrRgNC+0LnRgtC1INC70Y7QsdGL0Lwg0YLQtdC60YHRgtC+0LLRi9C8INGA0LXQtNCw0LrRgtC+0YDQvtC8INC4INCy0LLQtdC00LjRgtC1INGC0YDQtdCx0YPQtdC80YvQtSDQtNCw0L3QvdGL0LUsINGB0LvQtdC00YPRjyDQv9C+0LTRgdC60LDQt9C60LDQvCDQsiDRhNCw0LnQu9C1LiDQnNGLINC/0L7QtNC+0LbQtNGR0LwsINC/0L7QutCwINCy0Ysg0LfQsNC60L7QvdGH0LjRgtC1LCDQv9C+0YHQu9C1INC90LDQttC80LjRgtC1INC60L3QvtC/0LrRgyDQlNCw0LvRjNGI0LU8L2Rpdj4NCgkJCTxwPjxhIGhyZWY9Ij9zdGVwPTMiIGNsYXNzPSJidG4gYnRuLXByaW1hcnkgYnRuLWxnIiByb2xlPSJidXR0b24iPtCU0LDQu9GM0YjQtSDCuzwvYT48L3A+');
+        } else {
+            echo '<div class="alert alert-danger"><b>config.php.dist</b> отсутствует в папке engine. Убедитесь в целостности данных</div>';
+        }
+        break;
+    case 3:
+		if (isset($_POST['name'])) {
+			$in = array_merge( array('modules'=>array(),'active'=>'1','id'=>uniqid()), $_POST );
+
+			foreach($config as $as) {
+				Database::Insert("config", $as);
+			}
+			Database::Insert("scripts", array (
+			  'name' => 'main',
+			  'code' => 'ZnVuY3Rpb24gc2NyaXB0RW5naW5lSW5pdCgpIHsNCiAgcmV0dXJuIDE7DQp9DQoNCmZ1bmN0aW9uIG9uUGxheWVyTG9naW4oJGxvZ2luLCAkcGFzc3dvcmQsICRzdWNjZXNzKSB7DQogIHJldHVybiAxOw0KfQ0KDQpmdW5jdGlvbiBvblBsYXllclJlZ2lzdGVyKCRsb2dpbiwgJHBhc3N3b3JkLCAkZW1haWwpIHsNCiAgcmV0dXJuIDE7DQp9DQoNCmZ1bmN0aW9uIEV2ZW50VGltZXJFeHBpcmVkKCRpZCkgew0KICByZXR1cm4gMTsNCn0NCg0KZnVuY3Rpb24gVXNlSXRlbSgkaWQsICRpdGVtKSB7DQogIHJldHVybiAxOw0KfQ0KDQpmdW5jdGlvbiBvblJvdXRlZCgkZHJpdmVyLCAkYWN0aW9uLCAkbGluaykgew0KICByZXR1cm4gMTsNCn0NCg0KZnVuY3Rpb24gb25DbGllbnRDYWxsKCRpbnB1dCwgJHBhcmFtcykgew0KICByZXR1cm4gMTsNCn0NCg0KZnVuY3Rpb24gb25BcGlNZXRob2RDYWxsZWQoJG1ldGhvZCwgJHJlcXVlc3QpIHsNCiAgcmV0dXJuIGZhbHNlOw0KfQ0KDQpmdW5jdGlvbiBvbkRpYWxvZ1Jlc3BvbnNlKCRkaWFsb2dpZCwgJGFuc3dlcikgew0KICByZXR1cm4gMTsNCn0=',));
 			echo "<div class='alert alert-success'>База данных заполнена. <a href='?step=4'>Перейти к последнему шагу</a></div>";
 		}
 		raptor_print('PGZvcm0gYWN0aW9uPSIiIG1ldGhvZD0iUE9TVCI+DQoJCTxkaXYgY2xhc3M9ImZvcm0tZ3JvdXAiPg0KCQkJPGxhYmVsPtCd0LDQt9Cy0LDQvdC40LUg0LjQs9GA0Ys8L2xhYmVsPg0KCQkJPGlucHV0IGNsYXNzPSJmb3JtLWNvbnRyb2wiIG5hbWU9Im5hbWUiIHZhbHVlPSIiPg0KCQk8L2Rpdj4NCgkJPGRpdiBjbGFzcz0iZm9ybS1ncm91cCI+DQoJCQk8bGFiZWw+0JLQtdGA0YHQuNGPINC40LPRgNGLPC9sYWJlbD4NCgkJCTxpbnB1dCBjbGFzcz0iZm9ybS1jb250cm9sIiBuYW1lPSJ2ZXJzaW9uIiB2YWx1ZT0iIj4NCgkJPC9kaXY+DQoJCTxkaXYgY2xhc3M9ImZvcm0tZ3JvdXAiPg0KCQkJPGxhYmVsPlB1YmxpYyBLZXkgKNC/0YPQsdC70LjRh9C90YvQuSDQutC70Y7RhyDQtNC70Y8gQVBJKTwvbGFiZWw+DQoJCQk8aW5wdXQgY2xhc3M9ImZvcm0tY29udHJvbCIgbmFtZT0icHVibGljX2tleSIgdmFsdWU9IiI+DQoJCTwvZGl2Pg0KCQk8ZGl2IGNsYXNzPSJmb3JtLWdyb3VwIj4NCgkJCTxsYWJlbD5Qcml2YXRlIEtleSAo0L/RgNC40LLQsNGC0L3Ri9C5INC60LvRjtGHINC00LvRjyBBUEk7INC90LUg0YHQvtC+0LHRidCw0LnRgtC1INC10LPQviDRgdGC0L7RgNC+0L3QvdC40Lwg0LvQuNGG0LDQvCk8L2xhYmVsPg0KCQkJPGlucHV0IGNsYXNzPSJmb3JtLWNvbnRyb2wiIG5hbWU9InByaXZhdGVfa2V5IiB2YWx1ZT0iIj4NCgkJPC9kaXY+DQoJCTxidXR0b24gdHlwZT0ic3VibWl0IiBjbGFzcz0iYnRuIGJ0bi1kZWZhdWx0Ij7QodC+0YXRgNCw0L3QuNGC0Yw8L2J1dHRvbj4NCgk8L2Zvcm0+');

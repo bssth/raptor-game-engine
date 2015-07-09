@@ -117,9 +117,14 @@ function array_search_unset($array, $value)
     }
 }
 
-function log_error($file = 'error',$data)
+function log_error($file = 'error', $data = false)
 {
+	if($data === false) {
+		file_put_contents(LOGS_ROOT . SEPARATOR . "error.log", $data, FILE_APPEND);
+		return 2;
+	}
     file_put_contents(LOGS_ROOT . SEPARATOR . $file.".log", $data, FILE_APPEND);
+	return 1;
 }
 
 function raptor_error($error, $trigger = true)
@@ -200,14 +205,16 @@ function getScript($name)
 
 function char($id = false)
 {
-    if (is_string($id)) {
-        return new Char($id);
+    if ($id !== false) {
+		$id = __toString($id);
+		$GLOBALS['chars'][$id] = new Char($id);
+        return $GLOBALS['chars'][$id];
     }
-    if (isset($char) and is_object($char)) {
-        return $char;
+    if (isset($GLOBALS['chars'][$_SESSION['cid']]) and is_object($GLOBALS['chars'][$_SESSION['cid']])) {
+        return $GLOBALS['chars'][$_SESSION['cid']];
     } else {
-        global $char;
         $char = new Char();
+		$GLOBALS['chars'][$_SESSION['cid']] = $char;
         return $char;
     }
 }

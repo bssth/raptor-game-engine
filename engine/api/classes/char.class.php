@@ -30,14 +30,17 @@ class Char {
     {
         return $this->name;
     }
-	
-	function __set($name, $value) {
-		return Database::Edit("characters", array("_id" => toId($this->id)), array($name => $value));
-	}
-	
+
+    function __set($name, $value)
+    {
+        return Database::Edit("characters", array("_id" => toId($this->id)), array($name => $value));
+    }
+
     function __get($name)
     {
-		if(strstr($name, "p_")) { return $this->getParam($name); } 
+        if (strstr($name, "p_")) {
+            return $this->getParam($name);
+        }
         if (!is_object($this->id)) {
             $array = Database::GetOne("characters", array("_id" => toId($this->id)));
         } else {
@@ -46,27 +49,27 @@ class Char {
         return isset($array[$name]) ? $array[$name] : false;
     }
 
-	function isOnline() {
-		$online = $this->__get("online");
-		if($online > time()) {
-			return true;
-		}
-		else {
-			return false;
-		}
-	}
-	
-	function setOnline() {
-		$online = $this->__get("online");
-		if($online > time()) {
-			return false;
-		}
-		else {
-			$this->__set("online", time()+600);
-			return true;
-		}
-	}
-		
+    function isOnline()
+    {
+        $online = $this->__get("online");
+        if ($online > time()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function setOnline()
+    {
+        $online = $this->__get("online");
+        if ($online > time()) {
+            return false;
+        } else {
+            $this->__set("online", time() + 600);
+            return true;
+        }
+    }
+
     function all()
     {
         if (!is_object($this->id)) {
@@ -81,45 +84,45 @@ class Char {
     {
         $param = Database::GetOne("config", array("mod" => "params"))[$pname];
         if (!is_array($param)) {
-			raptor_warning("Bad parameter for getParam ($pname)");
+            raptor_warning("Bad parameter for getParam ($pname)");
             return false;
         }
         if (!isset($param['type'])) {
-			raptor_warning("Cannot get param type for $pname");
+            raptor_warning("Cannot get param type for $pname");
             $c_base = Database::GetOne("characters", array("_id" => toId($this->id)))[$pname];
-			$value = isset($c_base[$pname]) ? $c_base[$pname] : $param['def'];
+            $value = isset($c_base[$pname]) ? $c_base[$pname] : $param['def'];
             return $value;
         }
         switch ($param['type'])
         {
             case "script":
-                $char = char();
+                $char = $this;
                 return eval($param['script']);
                 break;
             case "id":
-				$c_base = Database::GetOne("characters", array("_id" => toId($this->id)));
-				$value = isset($c_base[$pname]) ? $c_base[$pname] : $param['def'];
+                $c_base = Database::GetOne("characters", array("_id" => toId($this->id)));
+                $value = isset($c_base[$pname]) ? $c_base[$pname] : $param['def'];
                 return new Char($value);
                 break;
             case "int":
-				$c_base = Database::GetOne("characters", array("_id" => toId($this->id)));
-				$value = isset($c_base[$pname]) ? $c_base[$pname] : $param['def'];
+                $c_base = Database::GetOne("characters", array("_id" => toId($this->id)));
+                $value = isset($c_base[$pname]) ? $c_base[$pname] : $param['def'];
                 return (int) $value;
                 break;
-			case "str":
-				$c_base = Database::GetOne("characters", array("_id" => toId($this->id)));
-				$value = isset($c_base[$pname]) ? $c_base[$pname] : $param['def'];
+            case "str":
+                $c_base = Database::GetOne("characters", array("_id" => toId($this->id)));
+                $value = isset($c_base[$pname]) ? $c_base[$pname] : $param['def'];
                 return (string) $value;
                 break;
             case "float":
-				$c_base = Database::GetOne("characters", array("_id" => toId($this->id)));
-				$value = isset($c_base[$pname]) ? $c_base[$pname] : $param['def'];
+                $c_base = Database::GetOne("characters", array("_id" => toId($this->id)));
+                $value = isset($c_base[$pname]) ? $c_base[$pname] : $param['def'];
                 return (float) $value;
                 break;
             default:
-				raptor_warning("Cannot get param type for $pname");
-				$c_base = Database::GetOne("characters", array("_id" => toId($this->id)));
-				$value = isset($c_base[$pname]) ? $c_base[$pname] : $param['def'];
+                raptor_warning("Cannot get param type for $pname");
+                $c_base = Database::GetOne("characters", array("_id" => toId($this->id)));
+                $value = isset($c_base[$pname]) ? $c_base[$pname] : $param['def'];
                 return $value;
                 break;
         }
@@ -133,24 +136,28 @@ class Char {
         $new = (int) $this->__get($currency) + $count;
         return Database::Edit("characters", array("_id" => toId($this->id)), array($currency => $new));
     }
-	
-	function makeEvent($event) {
-		$event['char'] = $this->id;
-		return Database::Insert("events", $event);
-	}
-	
-	function sendAlert($message) {
-		return $this->makeEvent( array('js' => 'alert("'. $message .'");') );
-	}
-	
-	function sendMessage($message) {
-		return $this->makeEvent( array('js' => 'RPGJS_Exec(["SHOW_TEXT: {\'text\': \''. $message .'\'}"]);') );
-	} 
-	
-	function showDialog($id, $type, $title, $text, $params) {
-		return $this->makeEvent( array('js' => 'showDialog('. $id .', "'. $type .'", "'. $title .'", "'. $text .'", "'. $params .'");') );
-	}
-	
+
+    function makeEvent($event)
+    {
+        $event['char'] = $this->id;
+        return Database::Insert("events", $event);
+    }
+
+    function sendAlert($message)
+    {
+        return $this->makeEvent(array('js' => 'alert("' . $message . '");'));
+    }
+
+    function sendMessage($message)
+    {
+        return $this->makeEvent(array('js' => 'RPGJS_Exec(["SHOW_TEXT: {\'text\': \'' . $message . '\'}"]);'));
+    }
+
+    function showDialog($id, $type, $title, $text, $params)
+    {
+        return $this->makeEvent(array('js' => 'showDialog(' . $id . ', "' . $type . '", "' . $title . '", "' . $text . '", "' . $params . '");'));
+    }
+
     function check()
     {
         if (!is_object($this->id)) {
@@ -165,13 +172,13 @@ class Char {
         }
     }
 
-        public static function create($data = array())
+    public static function create($data = array())
     {
         $array = Database::GetOne("characters", array("name" => $data['name']));
-		$player = isset($data['player']) ? $data['player'] : $_SESSION['id'];
-		$player = is_object($player) ? $player->__toString() : $player;
-		$cnf = Database::GetOne("config", array("mod" => "auth"));
-		$admin = isset($data['admin']) ? $data['admin'] : '0';
+        $player = isset($data['player']) ? $data['player'] : $_SESSION['id'];
+        $player = is_object($player) ? $player->__toString() : $player;
+        $cnf = Database::GetOne("config", array("mod" => "auth"));
+        $admin = isset($data['admin']) ? $data['admin'] : '0';
         if (empty($data['about'])) {
             $data['about'] = "Этот персонаж предпочел о себе ничего не рассказывать!";
         }
@@ -183,16 +190,16 @@ class Char {
                         "player" => $player,
                         "gender" => $data['gender'],
                         "about" => $data['about'],
-						"admin" => $admin,
+                        "admin" => $admin,
                         "money" => '0',
                         "lvl" => '0',
-						"avatar" => '',
+                        "avatar" => '',
                         "money_donate" => '0',
-						"pos_x" => $cnf['start_x'],
-						"pos_y" => $cnf['start_y'],
-						"map" => $cnf['start'],
-						"dir" => $cnf['start_dir'],
-						"skin" => '1'
+                        "pos_x" => $cnf['start_x'],
+                        "pos_y" => $cnf['start_y'],
+                        "map" => $cnf['start'],
+                        "dir" => $cnf['start_dir'],
+                        "skin" => '1'
             ));
         }
     }

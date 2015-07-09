@@ -124,9 +124,8 @@ if (isset($_SESSION['cid'])) {
     if (is_object($_SESSION['cid'])) {
         $_SESSION['cid'] = __toString($_SESSION['cid']);
     }
-    global $char;
-    $char = new Char($_SESSION['cid']);
-    $char->setOnline();
+    $GLOBALS['chars'][$_SESSION['cid']] = new Char($_SESSION['cid']);
+    $GLOBALS['chars'][$_SESSION['cid']]->setOnline();
     eval(implode(" ", check_player_events($_SESSION['cid'], false, true)['eval']));
 }
 if (isset($_SESSION['id'])) {
