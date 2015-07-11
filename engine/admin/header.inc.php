@@ -100,6 +100,7 @@
                                 <li><a href="/admin/find">Поиск персонажа</a></li>
 								<li><a href="/admin/online">Персонажи онлайн</a></li>
                                 <li><a href="/admin/params">Параметры персонажа</a></li>
+								<li><a href="/admin/charact">Действия над персонажами</a></li>
                                 <li><a href="/admin/perms">Редактор прав доступа</a></li>
                                 <li><a href="/admin/auth">Общие настройки</a></li>
                             </ul>

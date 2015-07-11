@@ -15,7 +15,7 @@
 		<link href="/storage/game/ui.css" rel="stylesheet">
 		<script src="/storage/static/jquery.js"></script>
 		<script src="/storage/static/messager.js"></script>
-		<script src="/storage/static/raptor.js"></script>
+		<script src="/storage/static/raptor-rpg.js"></script>
 	    <script type="text/javascript" src="/storage/static/fancybox/jquery.mousewheel-3.0.6.pack.js"></script>
         <link rel="stylesheet" href="/storage/static/fancybox/jquery.fancybox.css?v=2.1.5" type="text/css" media="screen" />
         <script type="text/javascript" src="/storage/static/fancybox/jquery.fancybox.pack.js?v=2.1.5"></script>
@@ -34,8 +34,7 @@
                 afterLoad   : function() {
                 }
         });
-		document.getElementById('gui').width = window.screen.width;
-		document.getElementById('gui').height = window.screen.height;
+
         </script>
 
 		<!--[if lt IE 9]>
@@ -63,15 +62,23 @@
 				<div id="online-box">
 				</div>
 				<hr>
-				<div class="down-box">
-					%CHATBOX%
-				</div>
+				%CHATBOX%
 			</ul>
         </div>
-        <div id="page-content-wrapper">
+        <table>
+            <tr>
+        <div id="page-content-wrapper" >
+            <div>
             %GUI%
+            </div>
+        </tr>
+            <td>
+        <div class="down-box">
+            
         </div>
     </div>
+</td>
+</table>
 
     <script src="/storage/admin/bootstrap.min.js"></script>
     <script>
@@ -96,6 +103,7 @@
 		<div id="paidservices" style="display:none;width:100%;">
             <iframe src="/paidservices" width="1000" height="1000" scrolling="no">Ваш браузер не поддерживает IFrame</iframe>
         </div>
+    
 </body>
 
 </html>

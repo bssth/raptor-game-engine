@@ -100,14 +100,20 @@ class Database {
         self::connect();
         $db = self::$conn->$GLOBALS['database'];
         $zcollection = $db->$collection;
-        $d = array_merge($document, $zcollection->findOne($document));
-        foreach ($edit as $key => $value) {
-            if ($d[$key] === $value) {
-                continue;
-            }
-            $d[$key] = $value;
-        }
-        $zcollection->update($document, $d);
+		if(is_array($zcollection->findOne($document))) {
+			$d = array_merge($document, $zcollection->findOne($document));
+			foreach ($edit as $key => $value) {
+				if ($d[$key] === $value) {
+					continue;
+				}
+				$d[$key] = $value;
+			}
+			$zcollection->update($document, $d);
+		}
+		else {
+			$zcollection->update($document, $edit);
+			self::Insert($collection, array_merge($document, $edit));
+		}
         if ($close == true) {
             self::closeConnection();
         }
