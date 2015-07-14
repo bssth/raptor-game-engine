@@ -145,6 +145,7 @@
                                 <li><a href="/admin/locations">Локации</a></li>
 								<li><a href="/admin/grsettings">Настройки ресурсов</a></li>
                                 <li><a href="/admin/mapedit">Редактор карт</a></li>
+								<li><a href="/admin/loctypes">Типы локаций</a></li>
                                 <li><a href="/admin/scredit">Скрипты (javascript)</a></li>
                                 <li><a href="javascript:;" data-toggle="collapse" data-target="#graphic">Графика (тайлы, NPC и т.д.)</a></li>
                             </ul>

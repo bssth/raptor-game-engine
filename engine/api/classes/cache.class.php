@@ -14,7 +14,7 @@ class Cache {
                 self::$cnt = true;
             } else {
                 self::$cnt = false;
-				self::$conn = new StdClass;
+				self::$conn = new RaptorScratch;
             }
         } else {
             return false;

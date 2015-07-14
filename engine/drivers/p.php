@@ -21,7 +21,17 @@ class pDriver {
         $main->setvar("%CSS%", "<style>" . templater("css/game.css", array("%ROOT%" => "/storage/tpl")) . "</style>");
         $main->setvar("%GAME_TITLE%", $GLOBALS['name']);
         $main->setvar("%STORAGE_STATIC_URL%", "/storage/static");
-        $main->setvar("%GUI%", template("interface/GUI.tpl"));
+		
+		$GLOBALS['current_loc_info'] = Database::GetOne("config", array("mod" => "locations"))[char()->map];
+		if(!isset($GLOBALS['current_loc_info']['type']) or $GLOBALS['current_loc_info']['type'] == 'default') {
+			$main->setvar("%GUI%", template("interface/GUI.tpl"));
+		}
+		else {
+			$GLOBALS['current_loc_type_info'] = Database::GetOne("config", array("mod" => "location_types"))[$GLOBALS['current_loc_info']['type']];
+			require_once(MODS_ROOT . SEPARATOR . $GLOBALS['current_loc_type_info']['module'] . SEPARATOR . "location_type.php");
+			$main->setvar("%GUI%", isset($GLOBALS['to_gui']) ? $GLOBALS['to_gui'] : '' );
+		}
+		
         $main->setvar("%CHATBOX%", template("boxes/chat.tpl"));
         $main->renderEcho();
     }

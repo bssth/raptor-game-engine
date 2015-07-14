@@ -22,11 +22,29 @@ $GLOBALS['memcache_ip'] = '127.0.0.1';
 $GLOBALS['memcache_port'] = 11211;
 */
 
-$GLOBALS['debug'] = (MODE=='dev');
+if(defined("MODE")) {
+	$GLOBALS['debug'] = (MODE=='dev');
+	error_reporting( MODE=='dev' ? E_ALL : 0 );
+}
+else {
+	$GLOBALS['debug'] = false;
+	error_reporting( E_COMPILE_ERROR );
+}
 
-error_reporting( MODE=='dev' ? E_ALL : 0 );
+/*
+	** Следующие строчки до следующего комментария можно удалить, если вы хотите задать URL строго вручную
+	** Для этого надо использовать строгое присвоение: $GLOBALS['url'] = 'example.com';
+*/
 
-$GLOBALS['url'] = $_SERVER['SERVER_NAME'];
+if(isset($_SERVER['SERVER_NAME'])) {
+	$GLOBALS['url'] = $_SERVER['SERVER_NAME'];
+}
+elseif(isset($_SERVER['SERVER_ADDR'])) {
+	$GLOBALS['url'] = $_SERVER['SERVER_ADDR'];
+}
+else {
+	$GLOBALS['url'] = '0.0.0.0';
+}
 
 /**
  * Доступные методы отправки почты

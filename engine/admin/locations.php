@@ -13,7 +13,15 @@
 		<div class="form-group"><label for="disabledSelect">Код локации</label><input class="form-control" id="disabledInput" placeholder="'. $_GET['edit'] .'" disabled="" type="text"></div>
 		<div class="form-group"><label>Название локации</label><input name="name" value="'. $param['name'] .'" class="form-control"><p class="help-block">Название, отображаемое игрокам</p></div>
 		<div class="form-group"><label>Название локации на английском</label><input name="name_en" value="'. $param['name_en'] .'" class="form-control"></div>
-		<div class="form-group"><label>Номер JSON-карты</label><input name="map" value="'. $param['map'] .'" class="form-control"></div>
+		<div class="form-group"><label>Тип локации</label>
+		<select name="type" class="form-control">
+		<option '. (!$param['type'] or $param['type']=='default'?'selected':'') .' value="default">По умолчанию (RPG.JS)</option>'; 
+		foreach(Database::GetOne("config", array("mod" => "location_types")) as $key => $value) {
+			if(!is_array($value)) { continue; }
+			echo '<option '. ($param['type']==$key?'selected':'') .' value="'. $key .'">'. $value['name'] .'</option>';
+		}
+		echo '</select></div>
+		<div class="form-group"><label>'. ((!$param['type'] or $param['type']=='default') ? 'Номер JSON-карты' : 'Параметры') .'</label><input name="map" value="'. $param['map'] .'" class="form-control"></div>
 		<button type="submit" class="btn btn-default">Сохранить</button>
 		</form>';
 	}
