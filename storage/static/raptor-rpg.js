@@ -10,7 +10,13 @@
 		die("//403 Forbidden");
 	}
 	$loc = Database::GetOne("config", array("mod" => "locations"))[char()->map];
+	
 	$context = Database::GetOne("config", array("mod" => "char_actions"));
+	foreach($context as $k => $v) {
+		if(!is_array($v)) { unset($context[$k]); }
+	}
+	
+	if(!is_numeric($loc['map'])) { $loc['map'] = 1; }
 ?>
 */
 
@@ -28,20 +34,37 @@ function DialogResponse(id, answer) {
 
 // don't forget about sendContext(item, player)
 function reloadOnline() {
-	var context_actions = <?=json_encode($context);?>;
 	$.get('/api', {'a': 'online', 'map': '<?=char()->map;?>'}, function(answer) {
 					answer = eval('(' + answer + ')');
 					document.getElementById('online-box').innerHTML = '<b>Загрузка...</b>';
 					var neww = '';
 					$.each(answer, function(key, array) { 
-						neww = neww + "<a onclick='openContext("+ array.id +")'><font color='white'><p><img src='/storage/img/icons/male.jpg' width=15 height=15> "+ array.name +"</p></font></a>";
+						neww = neww + "<font color='white'><p><img src='/storage/img/icons/male.jpg' width=15 height=15> <a id='plist_"+ array.id +"' onclick='openContext(\""+ array.id +"\")'>"+ array.name +"</p></font></a>";
 					})
 					document.getElementById('online-box').innerHTML = neww;
 	}, "text");
 }
+/*
+
+*/
 
 function openContext(player) {
-	
+	if(document.getElementById("player_" + player)) {
+		document.getElementById("player_" + player).style.display = 'block';
+	}
+	else {
+		var context_actions = <?=json_encode($context);?>;
+		var html = '<nav id="player_' + player + '" class="context-menu"><ul class="context-menu__items">';
+		$.each(context_actions, function(key,action) { 
+			html = html + '<li class="context-menu__item"><a href="#" onclick="sendContext(\''+ key +'\', \''+ player +'\')" class="context-menu__link">'+ action.name +'</a></li>';
+		});
+		document.getElementById("plist_" + player).innerHTML = document.getElementById("plist_" + player).innerHTML + html;
+	}
+	setTimeout(
+		function() {
+			document.getElementById("player_" + player).style.display = 'none';
+		}, 2000
+	);
 }
 
 function showDialog(id, type, title, text, params) {
@@ -71,8 +94,8 @@ function showDialog(id, type, title, text, params) {
 }
 
 function sendContext(item, player) {
-	$.get( "/api?a=contextmenu&item=" + item + "&target=" + player, function( data ) {
-	return data;
+	return $.get( "/api?a=contextmenu&item=" + item + "&target=" + player, function( data ) {
+		return data;
 	});
 }
 
@@ -99,6 +122,16 @@ $(document).ready(function() {
 		reloadOnline();
 	}, 60000);
 
+if(!document.getElementById('gui'))	{
+	setInterval(function() {
+		$.get('/api', {'a': 'events'}, function(ans){
+			if(ans.length > 2) {
+			console.log('Evaluate code: ' + ans);
+			eval(ans);
+			}
+		}, "text");
+	}, 2500);
+}
 if(document.getElementById('gui').nodeName == 'CANVAS') {
 
 	RPGJS.RaptorPlayers = {};
@@ -158,8 +191,8 @@ if(document.getElementById('gui').nodeName == 'CANVAS') {
 					}
 					$.get('/api', {'a': 'events'}, function(ans){
 						if(ans.length > 2) {
-							console.log('Evaluate code: ' + ans);
-							eval(ans);
+						console.log('Evaluate code: ' + ans);
+						eval(ans);
 						}
 					}, "text");
 					if(last_pos.x != RPGJS.Player.x || last_pos.y != RPGJS.Player.y) {
@@ -206,4 +239,5 @@ if(document.getElementById('gui').nodeName == 'CANVAS') {
 		
 	});
 
-}});
+}
+});

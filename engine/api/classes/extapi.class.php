@@ -107,7 +107,7 @@ class ExtAPI {
     {
         return call_user_func("onDialogResponse", $array['id'], $array['answer']);
     }
-
+	
     public static function teleport($array)
     {
         if (!isset($_SESSION['cid'])) {
@@ -183,7 +183,7 @@ class ExtAPI {
 
 	public static function contextmenu($array)
 	{
-		call_user_func("onPlayerContextMenu", $array['item'], new Char($array['target']));
+		return call_user_func("onPlayerContextMenu", $array['item'], new Char($array['target']));
 	}
 }
 
