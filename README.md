@@ -12,8 +12,7 @@ To use this, you need:
 5. PHP Mongo extension 
 6. MemCache (not critical, but recommended)
 
-Copy repository files into your www directory (www, public_html, htdocs, etc.) and run in browser engine installer
-For example: http://example.com/admin/install
+Copy repository files into your www directory (www, public_html, htdocs, etc.) and run in-browser engine installer (For example: http://example.com/admin/install)
 
 Don't forget to visit documentation: http://raptor.blockstudio.net/docs
 If you need our help, use forum to contact us: http://raptor.blockstudio.net/community
