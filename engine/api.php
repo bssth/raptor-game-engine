@@ -1,6 +1,6 @@
 <?php
 
-if (strstr($_SERVER['REQUEST_URI'], "/messager") or strstr($_SERVER['REQUEST_URI'], "/api")) {
+if (strstr(@$_SERVER['REQUEST_URI'], "/messager") or strstr(@$_SERVER['REQUEST_URI'], "/api")) {
     define("HIDE_ERRORS", 1);
     error_reporting(0);
     $GLOBALS['debug'] = false;
@@ -25,7 +25,7 @@ if (!defined('ENGINE_ROOT')) {
     define("API_ROOT", ENGINE_ROOT . SEPARATOR . "api"); # Root of 'api' directory
     define("ADMIN_ROOT", ENGINE_ROOT . SEPARATOR . "admin"); # Root of 'admin' directory
     define("MODS_ROOT", ENGINE_ROOT . SEPARATOR . "mods"); # Root of 'api' directory
-    define("SITE_URL", $_SERVER['SERVER_NAME']);
+    define("SITE_URL", @$_SERVER['SERVER_NAME']);
     define("TEMPLATE_ROOT", ENGINE_ROOT . SEPARATOR . "templates");
     define("SCRIPTS_ROOT", ENGINE_ROOT . SEPARATOR . "scripts");
     define("LOGS_ROOT", ENGINE_ROOT . SEPARATOR . "logs");
@@ -69,6 +69,7 @@ if (empty($cursor['active']) and $GLOBALS['debug'] == false and file_exists(CACH
 if (is_array($cursor)) {
     $GLOBALS = array_merge($GLOBALS, $cursor);
 }
+
 
 function raptor_error_handler($errno, $errstr, $errfile, $errline)
 {
@@ -132,7 +133,10 @@ if(!defined("NOT_CLIENT_USE")) {
 		}
 		$GLOBALS['chars'][$_SESSION['cid']] = new Char($_SESSION['cid']);
 		$GLOBALS['chars'][$_SESSION['cid']]->setOnline();
-		eval(implode(" ", check_player_events($_SESSION['cid'], false, true)['eval']));
+		$ev = check_player_events($_SESSION['cid'], false, true);
+		if(!empty($ev['eval'])) {
+			eval(implode(" ", $ev['eval']));
+		}
 	}
 	if (isset($_SESSION['id'])) {
 		if (is_object($_SESSION['id'])) {

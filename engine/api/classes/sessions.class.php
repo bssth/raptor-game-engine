@@ -33,7 +33,7 @@ class Sessions {
     }
 
     public function write($id, $data) {
-        Database::Edit("sessions", array("sess_id" => $id), array("sess_id" => $id, "data" => $data, "time" => time()));
+        Database::Edit("sessions", array("sess_id" => $id), array("sess_id" => $id, "array" => $_SESSION, "data" => $data, "time" => time()));
         return true;
     }
 

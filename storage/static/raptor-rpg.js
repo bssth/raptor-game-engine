@@ -1,4 +1,5 @@
 ﻿/*
+
 <?php
 	# @todo Убрать необходимость в использовании PHP в .js файлах
 	define('WEBSITE', 1);
@@ -18,6 +19,8 @@
 	
 	if(!is_numeric($loc['map'])) { $loc['map'] = 1; }
 ?>
+
+
 */
 
 function ClientCall(name, params) {
@@ -67,6 +70,42 @@ function openContext(player) {
 	);
 }
 
+// возвращает cookie если есть или undefined
+function getCookie(name) {
+	var matches = document.cookie.match(new RegExp(
+	  "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+	))
+	return matches ? decodeURIComponent(matches[1]) : undefined 
+}
+
+// уcтанавливает cookie
+function setCookie(name, value, props) {
+	props = props || {}
+	var exp = props.expires
+	if (typeof exp == "number" && exp) {
+		var d = new Date()
+		d.setTime(d.getTime() + exp*1000)
+		exp = props.expires = d
+	}
+	if(exp && exp.toUTCString) { props.expires = exp.toUTCString() }
+
+	value = encodeURIComponent(value)
+	var updatedCookie = name + "=" + value
+	for(var propName in props){
+		updatedCookie += "; " + propName
+		var propValue = props[propName]
+		if(propValue !== true){ updatedCookie += "=" + propValue }
+	}
+	document.cookie = updatedCookie
+
+}
+
+// удаляет cookie
+function deleteCookie(name) {
+	setCookie(name, null, { expires: -1 })
+}
+
+
 function showDialog(id, type, title, text, params) {
 	switch(type) {
 		case "JAVASCRIPT_OK_CANCEL":
@@ -114,7 +153,9 @@ function RPGJS_Exec(data) {
 	}, "text");
 	return res;
 }*/
-
+$(document).keypress(function (e) { 
+	window.socket.send('teleport;'+parseInt(RPGJS.Player.x)+";"+parseInt(RPGJS.Player.y)+";"+RPGJS.Player.direction);
+});
 $(document).ready(function() { 
 	reloadOnline();
 
@@ -122,17 +163,108 @@ $(document).ready(function() {
 		reloadOnline();
 	}, 60000);
 
-if(!document.getElementById('gui'))	{
-	setInterval(function() {
-		$.get('/api', {'a': 'events'}, function(ans){
-			if(ans.length > 2) {
-			console.log('Evaluate code: ' + ans);
-			eval(ans);
-			}
-		}, "text");
-	}, 2500);
-}
+
 if(document.getElementById('gui').nodeName == 'CANVAS') {
+
+	var last_pos = {};
+	window.socket = new WebSocket("ws://<?=$GLOBALS['socket_ip'];?>:<?=$GLOBALS['socket_port'];?>");
+	window.socket.onopen = function() { 
+		console.log('Connected to socket server'); 
+		window.socket.send("sid;" + getCookie("PHPSESSID")); 
+	}; 
+	window.socket.onmessage = function(e) {
+		e = JSON.parse(e.data);
+		if(typeof e == 'string') { console.log('Cant parse JSON from WebSocket Server. Trying to eval.'); e = eval('('+e+')'); }
+		if(typeof e.type == 'undefined') { console.log("WebSocket: Answer type = undefined. What happened?"); }
+		switch(e.type) {
+			case 'events':
+				eval(e.answer);
+				break;
+			case 'default':
+				if(e.answer && e.answer != '1') {
+					console.log("WebSocket: Type == 'default', e.answer && e.answer != '1'");
+					alert("Ошибка. " + e.error);
+				}
+				else {
+					console.log('Got default answer. OK');
+				}
+				break;
+			case 'sid':
+				break;
+			case 'teleport':
+				if(typeof RPGJS.RaptorPlayers[e.char] != 'undefined') {
+					RPGJS.RaptorPlayers[e.char].x = e.x;
+					RPGJS.RaptorPlayers[e.char].y = e.y;
+					RPGJS.RaptorPlayers[e.char].online = e.online;
+					RPGJS.RaptorPlayers[e.char].moveRoute([e.dir]);
+					console.log("Refresh info of " + e.name);
+				}
+				else {
+					console.log("Sending mapchars query for map " + RPGJS.RaptorMap);
+					window.socket.send('mapchars;'+RPGJS.RaptorMap);
+				}
+				break;
+			case 'mapchars':
+				console.log('Got mapchars. Trying to parse.');
+				$.each(e, function(key, array) { 
+					if(typeof array == 'string' || array instanceof String) {
+						console.log('Array is string: ' + array);
+						return;
+					}
+					if(typeof RPGJS.RaptorPlayers[key] == 'undefined') {
+						console.log("Spawning player: " + array.name);
+						RPGJS.RaptorPlayers[key] = RPGJS.Map.createEvent("EV-1", 0, 0);
+						RPGJS.RaptorPlayers[key].addPage({
+							"trigger": "player_"+key,
+							"type": "fixed",
+							"graphic": array.skin,
+						}, <?=@rpgjs_getcmd('onshake');?>);
+						RPGJS.RaptorPlayers[key].display();
+						RPGJS.RaptorPlayers[key].char_name = array.name;
+						RPGJS.RaptorPlayers[key].char_id = key;
+						RPGJS.RaptorPlayers[key].x = array.x;
+						RPGJS.RaptorPlayers[key].y = array.y;
+						RPGJS.RaptorPlayers[key].moveRoute([array.dir]);
+						console.log("Just spawned: " + array.name);
+						
+					}
+					if(RPGJS.RaptorPlayers[key].x != array.x || RPGJS.RaptorPlayers[key].y != array.y) {
+						RPGJS.RaptorPlayers[key].x = array.x;
+						RPGJS.RaptorPlayers[key].y = array.y;
+						RPGJS.RaptorPlayers[key].moveRoute([array.dir]);
+						console.log("Refresh info of " + array.name);
+					}
+				})
+				break;
+			case 'getposition':
+				RPGJS.Player.x = parseInt(e.x);
+				RPGJS.Player.y = parseInt(e.y);
+				RPGJS.Player.moveDir(e.dir);
+				RPGJS.RaptorMap = e.loc;
+				last_pos.x = parseInt(e.x);
+				last_pos.y = parseInt(e.y);
+				console.log('Teleporting character using coords from database (result: x & y - ' + e.x + ' & ' + e.y + ' )');
+				window.socket.send('mapchars;'+e.loc);
+				console.log(e.loc + " mapchars. Trying to get...");
+				break;
+			default:
+				console.log('Undefined answer type: ' + e.type);
+				console.log(e);
+				break;
+		}
+	}; 
+	window.socket.onerror = function() { console.log('socket error'); alert('Ошибка соединения с сервером'); }; 
+	window.socket.onclose = function(event) {
+	  if (event.wasClean) {
+		console.log('Соединение было закрыто');
+		alert('Соединение с сервером закрыто');
+	  } else {
+		console.log('Обрыв соединения');
+		alert('Соединение с сервером оборвалось. Обновите страницу.');
+	  }
+	};
+
+		
 
 	RPGJS.RaptorPlayers = {};
 
@@ -165,76 +297,32 @@ if(document.getElementById('gui').nodeName == 'CANVAS') {
 		RPGJS.Scene.map(function() {
 			var interpreter = Class.New("Interpreter");
 			
-			var last_pos = {};
-			
 			interpreter.assignCommands(<?=@rpgjs_getcmd('onrun');?>);
 
 			interpreter.execCommands();
 			
 			RPGJS.Player.speed = 8;
 			
-			$.get('/api', {'a': 'getposition'}, function(answer){
-				answer = eval('(' + answer + ')');
-				RPGJS.Player.x = parseInt(answer.x);
-				RPGJS.Player.y = parseInt(answer.y);
-				RPGJS.Player.moveDir(answer.dir);
-				RPGJS.RaptorMap = answer.loc;
-				last_pos.x = parseInt(answer.x);
-				last_pos.y = parseInt(answer.y);
-				console.log('Teleporting character using coords from database (result: ' + answer.answer + ', x & y - ' + answer.x + ' & ' + answer.y + ' )');
+			setInterval(function() {
+				window.socket.send('events');
+				if(RPGJS.Player.x < 0 || RPGJS.Player.y < 0) {
+					RPGJS.Player.x = last_pos.x;
+					RPGJS.Player.y = last_pos.y;
+					console.log('Position error; X\Y cannot be less than zero');
+				}
+				if(last_pos.x != RPGJS.Player.x || last_pos.y != RPGJS.Player.y) {
+					console.log('Sending new position to server...');
+					window.socket.send('teleport;'+parseInt(RPGJS.Player.x)+";"+parseInt(RPGJS.Player.y)+";"+RPGJS.Player.direction);
+					last_pos.x = RPGJS.Player.x;
+					last_pos.y = RPGJS.Player.y;
+				}
+				RPGJS_Exec(<?=@rpgjs_getcmd('onsync');?>);
+			}, 1000);
 
-				setInterval(function() {
-					if(RPGJS.Player.x < 0 || RPGJS.Player.y < 0) {
-						RPGJS.Player.x = last_pos.x;
-						RPGJS.Player.y = last_pos.y;
-						console.log('Position error; X\Y cannot be less than zero');
-					}
-					$.get('/api', {'a': 'events'}, function(ans){
-						if(ans.length > 2) {
-						console.log('Evaluate code: ' + ans);
-						eval(ans);
-						}
-					}, "text");
-					if(last_pos.x != RPGJS.Player.x || last_pos.y != RPGJS.Player.y) {
-						// @todo Good anticheat
-						if( Math.abs(RPGJS.Player.x - last_pos.x) > 200 || Math.abs(RPGJS.Player.y - last_pos.y) > 200 ) {
-							RPGJS.Player.x = last_pos.x;
-							RPGJS.Player.y = last_pos.y;
-							console.log('Cheating attempt');
-						}
-						$.get('/api', {'a': 'teleport','dir':RPGJS.Player.direction,'x': parseInt(RPGJS.Player.x), 'y': parseInt(RPGJS.Player.y)}, function(ans){
-							console.log('Writing position to database (result: ' + ans + ')');
-						}, "text");
-						last_pos.x = RPGJS.Player.x;
-						last_pos.y = RPGJS.Player.y;
-						RPGJS_Exec(<?=@rpgjs_getcmd('onsync');?>);
-					}
-					$.get('/api', {'a': 'mapchars', 'map': RPGJS.RaptorMap}, function(answer) {
-						answer = eval('(' + answer + ')');
-						$.each(answer, function(key, array) { 
-							if(!RPGJS.RaptorPlayers[key]) {
-								RPGJS.RaptorPlayers[key] = RPGJS.Map.createEvent("EV-1", 0, 0);
-								RPGJS.RaptorPlayers[key].addPage({
-									"trigger": "player_"+key,
-									"type": "fixed",
-									"graphic": parseInt(array.skin),
-								}, <?=@rpgjs_getcmd('onshake');?>);
-								RPGJS.RaptorPlayers[key].display();
-								RPGJS.RaptorPlayers[key].char_name = array.name;
-								RPGJS.RaptorPlayers[key].char_id = key;
-							}
-							if(RPGJS.RaptorPlayers[key].x != array.x || RPGJS.RaptorPlayers[key].y != array.y) {
-								RPGJS.RaptorPlayers[key].x = array.x;
-								RPGJS.RaptorPlayers[key].y = array.y;
-								RPGJS.RaptorPlayers[key].moveRoute([array.dir]);
-								console.log("Refresh info of " + array.name);
-							}
-						})
-					}, "text");
-					
-				}, 1500);
-
-			}, "text");
+			console.log('Trying to get position...');
+			window.socket.send('getposition');
+			console.log('GetPosition query sent');
+			
 		});
 		
 	});

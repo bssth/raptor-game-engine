@@ -139,8 +139,16 @@ class Char {
 
     function makeEvent($event)
     {
+		if(!is_string(Cache::get('events_' . $this->id)) or Cache::get('events_' . $this->id) == '0') {
+			Cache::set('events_' . $this->id, array($event), 0);
+		}
+		else {
+			$orig = Cache::get('events_' . $this->id);
+			$orig[] = $event;
+			Cache::set('events_' . $this->id, $orig);
+		}
         $event['char'] = $this->id;
-        return Database::Insert("events", $event);
+        return true;
     }
 
     function sendAlert($message)

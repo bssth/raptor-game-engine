@@ -1,6 +1,6 @@
 ﻿<?php
 if (isset($_GET['clean'])) {
-	Database::Remove("errors", array());
+	file_put_contents(LOGS_ROOT . SEPARATOR . "errors.log", "");
 }
 if (isset($_GET['count'])) {
     $c = $_GET['count'];
@@ -10,9 +10,12 @@ if (isset($_GET['count'])) {
 
 $reports = Database::Get("errors", array())->limit($c);
 
-echo '<p>[<a href="?clean=1">Очистить</a>]</p> показывать на страницу: <form action="" method="GET"><input type="text" value="' . $c . '" name="count"><input type="submit" value="Показать"></form><hr>';
+echo '<p>[<a href="?clean=1">Очистить</a>]</p>';
 
-foreach ($reports as $r) {
-    echo '<div class="well">' . $r['text'] . '</p></div>';
+foreach(explode("\n", file_get_contents(LOGS_ROOT . SEPARATOR . "errors.log")) as $string) {
+	echo '<p>'. $string .'</p>';
 }
+
+
+LOGS_ROOT . SEPARATOR . "errors.log"
 ?>

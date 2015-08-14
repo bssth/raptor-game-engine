@@ -178,7 +178,14 @@ function check_syntax($code)
 
 function rpgjs_getcmd($id)
 {
-    $data = Database::GetOne("config", array("mod" => "locations"));
+	if(is_string(Cache::get("rpgjs_cmd_" . $id)) and Cache::get("rpgjs_cmd_" . $id) != 0) {
+		$data = array($id => Cache::get("rpgjs_cmd_" . $id));
+	}
+	else {
+		$data = Database::GetOne("config", array("mod" => "locations"));
+		Cache::set("rpgjs_cmd_" . $id, $data['_' . $id], 3600);
+	}
+    
     if ($data and isset($data['_' . $id])) {
         return $data['_' . $id];
     } else {
@@ -258,22 +265,24 @@ function createEventTimer($id, $time)
 function check_player_events($id, $delete = false, $clearEval = true)
 {
     $result = array("js" => array(), "eval" => array());
-    $all = Database::Get("events", array("char" => $id));
-    if ($all->count() <= 0) {
-        return $result;
-    }
+    $all = Cache::get('events_' . $_SESSION['cid']);
+	if(!is_array($all)) { return array(); }
     foreach ($all as $a) {
         if (isset($a['js'])) {
             $result['js'][] = $a['js'];
         }
         if (isset($a['eval'])) {
             $result['eval'][] = $a['eval'];
+			if ($clearEval == true) {
+				$nm = array_search($a, $all);
+				unset( $all[$nm] );
+			}
         }
     }
     if ($delete == true) {
-        Database::Remove("events", array("char" => $id));
+        Cache::set('events_' . $_SESSION['cid'], '0', 0);
     } elseif ($clearEval == true) {
-        Database::Edit("events", array("char" => $id), array('eval' => ''));
+        Cache::set('events_' . $_SESSION['cid'], $all, 0);
     }
     return $result;
 }
