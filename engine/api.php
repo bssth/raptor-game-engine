@@ -151,7 +151,7 @@ if (isset($GLOBALS['modules']))
     }
 }
 
-if(!defined("NOT_CLIENT_USE")) 
+if(!defined("NOT_CLIENT_USE") or defined("CLIENT_USE")) 
 {
 	if (isset($_SESSION['cid'])) 
 	{
