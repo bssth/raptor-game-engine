@@ -1,6 +1,7 @@
 <?php
 
 define("WEBSITE", 1); # Anti-hacking
+define("CLIENT_USE", 1);
 
 define("SITE_ROOT", __DIR__); # Root of website
 
