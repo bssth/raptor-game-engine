@@ -1,5 +1,11 @@
 ﻿<?php
 
+/*
+	** @last_edit 23.08.2015
+	** @last_autor Mike
+	** @comment Система кэширования. Используется MemCache, а также файловый кэш как альтернатива
+*/
+
 class Cache 
 {
 
@@ -19,7 +25,7 @@ class Cache
 			else
 			{
                 self::$cnt = false;
-				self::$conn = new RaptorScratch;
+				self::$conn = new FileCache;
             }
         } 
 		else 
@@ -31,7 +37,7 @@ class Cache
     public static function get($key)
     {
         self::connect();
-        return self::$conn->get($key);
+        return self::$conn->get($GLOBALS['database'] . "_" . $key);
     }
 
     public static function flush()
@@ -43,13 +49,13 @@ class Cache
     public static function replace($key, $var, $lifetime)
     {
         self::connect();
-        return self::$conn->replace($key, $var, 0, $lifetime);
+        return self::$conn->replace($GLOBALS['database'] . "_" . $key, $var, 0, $lifetime);
     }
 
     public static function set($key, $value, $lifetime)
     {
         self::connect();
-        return self::$conn->set($key, $value, 0, $lifetime);
+        return self::$conn->set($GLOBALS['database'] . "_" . $key, $value, 0, $lifetime);
     }
 
 }
