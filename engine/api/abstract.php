@@ -1,10 +1,12 @@
 <?php 
 	/*
-		** @comment Для неведомых классов, которые не будут уместны в /classes
+		** @comment Для различных классов, которые не будут уместны в /classes
 		** @comment Комментировать необязательно
 		** @comment Пример использования: абстрактные классы, шаблоны
 	*/
+	
 	class RaptorScratch {
+	
 		protected $vars;
 		
 		function __construct() 
@@ -30,6 +32,11 @@
 		function __get($key) 
 		{
 			return $this->vars[$key];
+		}
+		
+		function __call($func, $args)
+		{
+			return;
 		}
 	}
 	

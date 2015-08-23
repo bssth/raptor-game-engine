@@ -1,6 +1,6 @@
 <?php
 	/*
-		@comment Константы ядра. Комментарии необязательны
+		@comment Константы ядра
 	*/
 	
 	define("STRING_SEPARATOR", "/");
