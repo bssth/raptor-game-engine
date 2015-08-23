@@ -162,7 +162,8 @@ class Char
 
     function makeEvent($event)
     {
-		if(!is_string(Cache::get('events_' . $this->id)) or Cache::get('events_' . $this->id) == '0') 
+		$event['char'] = $this->id;
+		if((!is_string(Cache::get('events_' . $this->id)) and !is_array(Cache::get('events_' . $this->id))) or Cache::get('events_' . $this->id) == '0') 
 		{
 			Cache::set('events_' . $this->id, array($event), 0);
 		}
@@ -172,7 +173,6 @@ class Char
 			$orig[] = $event;
 			Cache::set('events_' . $this->id, $orig);
 		}
-        $event['char'] = $this->id;
         return true;
     }
 
