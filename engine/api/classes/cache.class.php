@@ -16,7 +16,7 @@ class Cache
     {
         if (self::$cnt == false) 
 		{
-            if (isset($GLOBALS['memcache_ip']) and ! empty($GLOBALS['memcache_ip'])) 
+            if (isset($GLOBALS['memcache_ip']) and !empty($GLOBALS['memcache_ip'])) 
 			{
                 self::$conn = new Memcache;
                 self::$conn->connect($GLOBALS['memcache_ip'], $GLOBALS['memcache_port']) or raptor_warning("Can't connect memcache at " . $GLOBALS['memcache_ip'] . ":" . $GLOBALS['memcache_port'], true);
