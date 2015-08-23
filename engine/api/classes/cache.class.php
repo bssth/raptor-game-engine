@@ -1,22 +1,29 @@
 ﻿<?php
 
-class Cache {
+class Cache 
+{
 
     private static $cnt = false;
     private static $conn = null;
 
     private static function connect()
     {
-        if (self::$cnt == false) {
-            if (isset($GLOBALS['memcache_ip']) and ! empty($GLOBALS['memcache_ip'])) {
+        if (self::$cnt == false) 
+		{
+            if (isset($GLOBALS['memcache_ip']) and ! empty($GLOBALS['memcache_ip'])) 
+			{
                 self::$conn = new Memcache;
                 self::$conn->connect($GLOBALS['memcache_ip'], $GLOBALS['memcache_port']) or raptor_warning("Can't connect memcache at " . $GLOBALS['memcache_ip'] . ":" . $GLOBALS['memcache_port'], true);
                 self::$cnt = true;
-            } else {
+            } 
+			else
+			{
                 self::$cnt = false;
 				self::$conn = new RaptorScratch;
             }
-        } else {
+        } 
+		else 
+		{
             return false;
         }
     }

@@ -1,17 +1,29 @@
 <?php
 
-class playerDriver {
+/*
+	@last_edit 22.08.2015
+	@last_autor Mike
+	@comment Страницы с игроками
+	@todo Качественный код
+*/
+
+class playerDriver 
+{
 
     function __call($func, $args)
     {
         $func = str_replace("action", "", $func);
-        if ($func != 'index') {
+        if ($func != 'index') 
+		{
             $array = Database::GetOne("characters", array("name" => $func));
-        } else {
+        } 
+		else
+		{
             $array = Database::GetOne("characters", array("_id" => toId($_SESSION['cid'])));
             $func = $array['name'];
         }
-        if (!isset($array['name'])) {
+        if (!isset($array['name'])) 
+		{
             die("<h1>Персонаж " . $func . " не найден</h1>");
         }
         $params = Database::GetOne("config", array("mod" => "params"));
@@ -27,15 +39,19 @@ class playerDriver {
         $main->setvar("%CHATBOX%", template("boxes/chat.tpl"));
         $params_all = '';
 
-        foreach ($array as $key => $value) {
-            if (MongoReserved($key) or MongoReserved($value) or strstr($key, "p_")) {
+        foreach ($array as $key => $value) 
+		{
+            if (MongoReserved($key) or MongoReserved($value) or strstr($key, "p_")) 
+			{
                 continue;
             }
             $main->setvar("%" . $key . "%", $array[$key]);
         }
 
-        foreach ($params as $key => $value) {
-            if (!strstr($key, "p_")) {
+        foreach ($params as $key => $value) 
+		{
+            if (!strstr($key, "p_")) 
+			{
                 continue;
             }
             $v = char(__toString($array['_id']))->getParam($key);

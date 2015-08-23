@@ -1,14 +1,24 @@
 <?php
 
-class pDriver {
+/*
+	@last_edit 22.08.2015
+	@last_autor Mike
+	@comment Главный пользовательский интерфейс в игре
+	@todo Гибкость
+*/
+
+class pDriver 
+{
 
     function actionIndex()
     {
-        if (!isset($_SESSION['id'])) {
+        if (!isset($_SESSION['id'])) 
+		{
             header("Location: /");
             die();
         }
-        if (!isset($_SESSION['cid'])) {
+        if (!isset($_SESSION['cid'])) 
+		{
             header("Location: /cabinet");
             die();
         }
@@ -23,10 +33,12 @@ class pDriver {
         $main->setvar("%STORAGE_STATIC_URL%", "/storage/static");
 		
 		$GLOBALS['current_loc_info'] = Database::GetOne("config", array("mod" => "locations"))[char()->map];
-		if(!isset($GLOBALS['current_loc_info']['type']) or $GLOBALS['current_loc_info']['type'] == 'default') {
+		if(!isset($GLOBALS['current_loc_info']['type']) or $GLOBALS['current_loc_info']['type'] == 'default') 
+		{
 			$main->setvar("%GUI%", template("interface/GUI.tpl"));
 		}
-		else {
+		else 
+		{
 			$GLOBALS['current_loc_type_info'] = Database::GetOne("config", array("mod" => "location_types"))[$GLOBALS['current_loc_info']['type']];
 			require_once(MODS_ROOT . SEPARATOR . $GLOBALS['current_loc_type_info']['module'] . SEPARATOR . "location_type.php");
 			$main->setvar("%GUI%", isset($GLOBALS['to_gui']) ? $GLOBALS['to_gui'] : '' );

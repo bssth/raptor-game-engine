@@ -14,10 +14,12 @@ define("MODE", "production");
  * production - работающий прототип или конечный продукт
  */
 
-if(file_exists(SITE_ROOT . "/engine/cache/installed.cache") or file_exists(SITE_ROOT . "/engine/config.php")) { 
+if(file_exists(SITE_ROOT . "/engine/cache/installed.cache") or file_exists(SITE_ROOT . "/engine/config.php")) 
+{ 
 	require_once(SITE_ROOT . "/engine/config.php");
 }
-else {
+else 
+{
 	$GLOBALS['database'] = "__temp";
 	$GLOBALS['debug'] = false;
 	$GLOBALS['url'] = $_SERVER['SERVER_NAME'];
@@ -26,4 +28,5 @@ require_once(SITE_ROOT . "/engine/api.php");
 require_once(SITE_ROOT . "/engine/router.php");
 
 Router::Start();
+
 ?>

@@ -18,12 +18,14 @@
             <?php
             $class = new Modules();
 
-            if (isset($_GET['enable'])) {
+            if (isset($_GET['enable'])) 
+			{
                 $class->enable($_GET['enable']);
                 $class->save();
                 echo "<div class='alert alert-success'>Модуль включён</div>";
             }
-            if (isset($_GET['disable'])) {
+            if (isset($_GET['disable'])) 
+			{
                 $class->disable($_GET['disable']);
                 $class->save();
                 echo "<div class='alert alert-success'>Модуль отключён</div>";
@@ -33,8 +35,10 @@
 
             $skip = array('.', '..', '.htaccess', '.conf');
             $files = scandir(MODS_ROOT);
-            foreach ($files as $file) {
-                if (!in_array($file, $skip)) {
+            foreach ($files as $file) 
+			{
+                if (!in_array($file, $skip)) 
+				{
                     $status = in_array($file, $mods) ? "Включён" : "Отключён";
                     echo "<tr><td> <b><font size=3>" . $file . "</font></b> </td><td> <b>" . $status . "</b> </td><td> [<a href='?enable=" . $file . "'>Включить</a>] </td><td> [<a href='?disable=" . $file . "'>Отключить</a>] </td></tr>";
                 }

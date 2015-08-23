@@ -1,6 +1,14 @@
 <?php
 
-class wikiDriver {
+/*
+	@last_edit 22.08.2015
+	@last_autor Mike
+	@comment Недоделанная вики
+	@todo Доделать
+*/
+
+class wikiDriver 
+{
 
     public function actionIndex()
     {

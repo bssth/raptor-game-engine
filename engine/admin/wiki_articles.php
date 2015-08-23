@@ -1,11 +1,13 @@
 <?php
-if (isset($_POST['edit'])) {
+if (isset($_POST['edit'])) 
+{
     Database::Edit('wiki_articles', array(
         'content' => $_POST['edit']
     ));
 }
 
-if (isset($_POST['add'])) {
+if (isset($_POST['add'])) 
+{
     Database::Insert('wiki_articles', array(
         'content' => $_POST['add'],
         'type' => 'default',
@@ -14,7 +16,8 @@ if (isset($_POST['add'])) {
     ));
 }
 
-if (isset($_GET['edit'])) {
+if (isset($_GET['edit'])) 
+{
     $content = Database::GetOne('wiki_articles', array('alias' => $_GET['edit']));
     echo "<form action='' method='POST'>
         <input type='hidden' name='file' value='" . $_GET['edit'] . "'>
@@ -22,17 +25,23 @@ if (isset($_GET['edit'])) {
         <button type='submit' class='btn btn-default'>Сохранить</button>
         </form>
         <hr>";
-} else {
+} 
+else 
+{
     echo "";
 }
 
-if (isset($_GET['remove'])) {
+if (isset($_GET['remove'])) 
+{
     $content = Database::Remove('wiki_articles', array('alias' => $_GET['remove']));
-} else {
+} 
+else 
+{
     echo "";
 }
 
-if (isset($_GET['add'])) {
+if (isset($_GET['add'])) 
+{
     echo "<form action='' method='POST'>
         <label for='title'>Название статьи</label>
         <input id='title' type='text' style='width:635px;' name='title'><br>
@@ -42,7 +51,9 @@ if (isset($_GET['add'])) {
         <button type='submit' class='btn btn-success'>Добавить</button>
         </form>
         <hr>";
-} else {
+} 
+else 
+{
     echo "";
 }
 ?>
@@ -64,7 +75,8 @@ if (isset($_GET['add'])) {
 
                 <?php
                 $articles = Database::Get('wiki_articles');
-                foreach ($articles as $item) {
+                foreach ($articles as $item) 
+				{
                     echo "<tr><td> <b><font size=3>" . $item['title'] . "</font></b> </td><td> <a href='?edit=" . $item['alias'] . "'>Редактировать</a> </td><td> <a href='?remove=" . $item['alias'] . "'>Удалить</a> </td></tr>";
                 }
                 ?>

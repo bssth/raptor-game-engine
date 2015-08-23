@@ -1,10 +1,13 @@
 <?php
-if (isset($_POST['new'])) {
+if (isset($_POST['new'])) 
+{
     Database::Edit("config", array("mod" => "params"), array("mod" => "params", $_POST['name'] => array()));
     echo '<div class="alert alert-success">Параметр <b>' . $_POST['name'] . '</b> успешно создан</div>';
 }
-if (isset($_GET['edit'])) {
-    if (isset($_POST['name'])) {
+if (isset($_GET['edit'])) 
+{
+    if (isset($_POST['name'])) 
+	{
         Database::Edit("config", array("mod" => "params"), array($_GET['edit'] => $_POST));
         echo '<div class="alert alert-success">Параметр <b>' . $_GET['edit'] . '</b> успешно отредактирован</div>';
     }
@@ -18,7 +21,9 @@ if (isset($_GET['edit'])) {
 		<div class="form-group"><label>Значение по умолчанию</label><input name="def" value="' . $param['def'] . '" class="form-control"><p class="help-block">Отображаемое значение параметра, когда оно не установлено у персонажа. Для типа Формула неактуально</p></div>
 		<button type="submit" class="btn btn-default">Сохранить</button>
 		</form>';
-} else {
+} 
+else 
+{
     echo base64_decode('PGgyPiYjMTA1NTsmIzEwNzI7JiMxMDg4OyYjMTA3MjsmIzEwODQ7JiMxMDc3OyYjMTA5MDsmIzEw
 		ODg7JiMxMDk5OyAmIzEwODc7JiMxMDc3OyYjMTA4ODsmIzEwODk7JiMxMDg2OyYjMTA4NTsmIzEw
 		NzI7JiMxMDc4OyYjMTA3Mjs8L2gyPg0KPGg1PiYjMTA1NjsmIzEwNzI7JiMxMDc5OyYjMTA4Mzsm
@@ -36,8 +41,10 @@ if (isset($_GET['edit'])) {
 		IDx0ZD4mIzEwNTM7JiMxMDcyOyYjMTA3OTsmIzEwNzQ7JiMxMDcyOyYjMTA4NTsmIzEwODA7JiMx
 		MDc3OzwvdGQ+DQoJPHRkPiYjMTA1MDsmIzEwODY7JiMxMDc2OzwvdGQ+DQogICAgPHRkPjwvdGQ+
 		DQo8L3RyPg0KPC90aGVhZD4NCjx0Ym9keT4=');
-    foreach (Database::GetOne("config", array("mod" => "params")) as $key => $value) {
-        if (!strstr($key, "p_")) {
+    foreach (Database::GetOne("config", array("mod" => "params")) as $key => $value) 
+	{
+        if (!strstr($key, "p_")) 
+		{
             continue;
         }
         echo "<tr><td> <b><font size=3>" . $value['name'] . "</font></b> </td> <td> <b><font size=3>" . $key . "</font></b> </td> <td> <a href='?edit=" . $key . "'>Редактировать</a> </td></tr>";

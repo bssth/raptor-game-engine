@@ -1,4 +1,10 @@
 ﻿<?php
+/*
+	@last_edit 22.08.2015
+	@last_autor Mike
+	@comment Архив новостей, просмотр оных
+	@todo API
+*/
 
 class newsDriver {
 
@@ -14,7 +20,8 @@ class newsDriver {
 
         $news = Database::Get("news", array('public' => 1))->sort(array('date' => -1));
         $html = '';
-        foreach ($news as $array) {
+        foreach ($news as $array) 
+		{
             $html .= templater("interface/news.tpl", array(
                 "%SUBJECT%" => $array['title'],
                 "%DATE%" => $array['date'],

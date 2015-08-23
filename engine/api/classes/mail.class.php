@@ -1,6 +1,7 @@
 <?php
 
-class Mail {
+class Mail 
+{
 
     public $method;
     private $smtp;
@@ -13,7 +14,8 @@ class Mail {
 
     public function sendMail($info = array())
     {
-        if (!empty($info)) {
+        if (!empty($info)) 
+		{
 
             switch ($this->method)
             {
@@ -35,9 +37,12 @@ class Mail {
 
     private function raw_mail($info)
     {
-        if (mail($info['to'], $info['subject'], $info['message'])) {
+        if (mail($info['to'], $info['subject'], $info['message'])) 
+		{
             return true;
-        } else {
+        } 
+		else
+		{
             return false;
         }
     }
@@ -130,7 +135,7 @@ class Mail {
     {
         $read = socket_read($socket, 1024);
 
-        if ($read{0} != '2' && $read{0} != '3') {
+if ($read{0} != '2' && $read{0} != '3') {
             if (!empty($read)) {
                 throw new Exception('SMTP failed: ' . $read . "\n");
             } else {

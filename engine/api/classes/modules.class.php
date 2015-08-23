@@ -1,6 +1,7 @@
 <?php
 
-class Modules {
+class Modules 
+{
 	
     public $list;
     protected $saveOnDestruct;
@@ -19,7 +20,8 @@ class Modules {
 
     function enable($mod)
     {
-        if (!in_array($mod, $this->list)) {
+        if (!in_array($mod, $this->list)) 
+		{
             $this->list[] = $mod;
             $this->saveOnDestruct = true;
         }
@@ -28,7 +30,8 @@ class Modules {
     function disable($mod)
     {
         $key = array_search($mod, $this->list);
-        if ($key !== false) {
+        if ($key !== false) 
+		{
             unset($this->list[$key]);
              $this->saveOnDestruct = true;
         }
@@ -42,7 +45,8 @@ class Modules {
 
     function __destruct()
     {
-        if ($this->saveOnDestruct == true) {
+        if ($this->saveOnDestruct == true) 
+		{
             $this->save();
         }
     }

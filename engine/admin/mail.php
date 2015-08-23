@@ -1,27 +1,40 @@
 ﻿<?php
 /**
- * * @todo Оптимизировать весь этот бардак
- */
-switch(@$_GET['a']) {
+	** @todo Оптимизировать весь этот бардак
+	** @last_edit 22.08.2015
+	** @last_autor Mike
+*/
+
+switch(@$_GET['a']) 
+{
 	case "single":
-		if (isset($_POST['email'])) {
+		if (isset($_POST['email'])) 
+		{
 			$mail = new Mail();
-			if ($mail->sendMail(array('to' => $_POST['email'], 'subject' => $_POST['subject'], 'message' => $_POST['message']))) {
+			if ($mail->sendMail(array('to' => $_POST['email'], 'subject' => $_POST['subject'], 'message' => $_POST['message']))) 
+			{
 				echo '<div class="alert alert-success">Сообщение отправлено</div>';
-			} else {
+			} 
+			else 
+			{
 				echo '<div class="alert alert-danger">Ошибка при отправке</div>';
 			}
 		}
 		raptor_print('PGZvcm0gbWV0aG9kPSJQT1NUIiBhY3Rpb249IiIgcm9sZT0iZm9ybSI+DQogICAgPGRpdiBjbGFzcz0iZm9ybS1ncm91cCBpbnB1dC1ncm91cCI+DQogICAgICAgIDxzcGFuIGNsYXNzPSJpbnB1dC1ncm91cC1hZGRvbiI+QDwvc3Bhbj4NCiAgICAgICAgPGlucHV0IGNsYXNzPSJmb3JtLWNvbnRyb2wiIG5hbWU9ImVtYWlsIiBwbGFjZWhvbGRlcj0iRS1NQUlMIiB0eXBlPSJlbWFpbCI+DQogICAgPC9kaXY+DQogICAgPGRpdiBjbGFzcz0iZm9ybS1ncm91cCI+DQogICAgICAgIDxsYWJlbD7QotC10LzQsCDQv9C40YHRjNC80LA8L2xhYmVsPg0KICAgICAgICA8aW5wdXQgY2xhc3M9ImZvcm0tY29udHJvbCIgbmFtZT0ic3ViamVjdCIgcGxhY2Vob2xkZXI9ItCi0LXQvNCwINC/0LjRgdGM0LzQsCI+DQogICAgPC9kaXY+DQogICAgPGRpdiBjbGFzcz0iZm9ybS1ncm91cCI+DQogICAgICAgIDxsYWJlbD7QodC+0L7QsdGJ0LXQvdC40LU8L2xhYmVsPg0KICAgICAgICA8dGV4dGFyZWEgY2xhc3M9ImZvcm0tY29udHJvbCIgbmFtZT0ibWVzc2FnZSIgcm93cz0iMyI+PC90ZXh0YXJlYT4NCiAgICA8L2Rpdj4NCiAgICA8YnV0dG9uIHR5cGU9InN1Ym1pdCIgY2xhc3M9ImJ0biBidG4tZGVmYXVsdCI+0J7RgtC/0YDQsNCy0LjRgtGMINGB0L7QvtCx0YnQtdC90LjQtTwvYnV0dG9uPg0KPC9mb3JtPg==');
 		break;
 	case "massive":
-		if (isset($_POST['subject'])) {
+		if (isset($_POST['subject'])) 
+		{
 			$mail = new Mail();
 			$players = Database::GetAll('players');
-			foreach($players as $a) {
-				if ($mail->sendMail(array('to' => $a['email'], 'subject' => $_POST['subject'], 'message' => $_POST['message']))) {
+			foreach($players as $a) 
+			{
+				if ($mail->sendMail(array('to' => $a['email'], 'subject' => $_POST['subject'], 'message' => $_POST['message']))) 
+				{
 					$count += 1;
-				} else {
+				} 
+				else 
+				{
 					echo '<div class="alert alert-danger">Ошибка при отправке на <b>'. $a['email'] .'</b> ('. $a['login'] .')</div>';
 				}
 			}
@@ -41,15 +54,24 @@ switch(@$_GET['a']) {
 		</form>';
 		break;
 	case "masscript":
-		if (isset($_POST['eval'])) {
+		if (isset($_POST['eval'])) 
+		{
 			$mail = new Mail();
 			$players = Database::GetAll('players');
-			foreach($players as $a) {
+			foreach($players as $a) 
+			{
 				$player = new Player(__toString($a['_id']));
-				if(!eval($_POST['eval'])) { unset($player); continue; }
-				if ($mail->sendMail(array('to' => $a['email'], 'subject' => $_POST['subject'], 'message' => $_POST['message']))) {
+				if(!eval($_POST['eval'])) 
+				{ 
+					unset($player); 
+					continue; 
+				}
+				if ($mail->sendMail(array('to' => $a['email'], 'subject' => $_POST['subject'], 'message' => $_POST['message']))) 
+				{
 					$count += 1;
-				} else {
+				} 
+				else 
+				{
 					echo '<div class="alert alert-danger">Ошибка при отправке на <b>'. $a['email'] .'</b> ('. $a['login'] .')</div>';
 				}
 				unset($player);

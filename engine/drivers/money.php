@@ -1,6 +1,13 @@
 ﻿<?php
 
-class moneyDriver {
+/*
+	@last_edit 22.08.2015
+	@last_autor Mike
+	@comment Интерфейс денежной системы.
+*/
+
+class moneyDriver 
+{
 
     function actionIndex()
     {
@@ -15,8 +22,10 @@ class moneyDriver {
         $main->setvar("%GAME_TITLE%", $GLOBALS['name']);
         $main->setvar("%STORAGE_STATIC_URL%", "/storage/static");
         $result = '';
-        foreach ($params as $key => $value) {
-            if (!is_array($value)) {
+        foreach ($params as $key => $value) 
+		{
+            if (!is_array($value)) 
+			{
                 continue;
             }
             $result .= templater("boxes/money_list.tpl", array("%NAME%" => $value['name'], "%IMG%" => $value['img'], "%COUNT%" => $char->$key));

@@ -1,12 +1,13 @@
-﻿
-
-<?php
-if (isset($_POST['new'])) {
+﻿<?php
+if (isset($_POST['new'])) 
+{
     Database::Edit("config", array("mod" => "inv_params"), array("mod" => "inv_params", $_POST['name'] => array()));
     echo '<div class="alert alert-success">Параметр <b>' . $_POST['name'] . '</b> успешно создан</div>';
 }
-if (isset($_GET['edit'])) {
-    if (isset($_POST['name'])) {
+if (isset($_GET['edit'])) 
+{
+    if (isset($_POST['name'])) 
+	{
         Database::Edit("config", array("mod" => "inv_params"), array($_GET['edit'] => $_POST));
         echo '<div class="alert alert-success">Параметр <b>' . $_GET['edit'] . '</b> успешно отредактирован</div>';
     }
@@ -19,23 +20,26 @@ if (isset($_GET['edit'])) {
 		<div class="form-group" style="display: ' . ($param['type'] == 'script' ? 'block' : 'none') . ';" id="script_text"><label>Формула</label><input name="script" value="' . $param['script'] . '" class="form-control"><p class="help-block">PHP-код. Переменная $char - объект с персонажем, $inv - с инвентарём. Пример использования: <b>return $char->name;</b></p></div>
 		<button type="submit" class="btn btn-default">Сохранить</button>
 		</form>';
-} else {
+} 
+else 
+{
     echo '<div class="container-fluid">﻿<h2>Параметры предметов</h2>
-<h5>Различные характеристики предметов</h5>
-<br>
-<form method="POST">
-<p><input name="name" value="p_" type="text"></p>
-<p><button name="new" type="submit" value="1" class="btn btn-xs btn-default">Создать параметр</button></p>
-</form>
-<hr><div class="table-responsive">
-<table class="table table-hover table-striped"><tbody>';
-    foreach (Database::GetOne("config", array("mod" => "inv_params")) as $key => $value) {
-        if (!strstr($key, "p_")) {
+	<h5>Различные характеристики предметов</h5>
+	<br>
+	<form method="POST">
+	<p><input name="name" value="p_" type="text"></p>
+	<p><button name="new" type="submit" value="1" class="btn btn-xs btn-default">Создать параметр</button></p>
+	</form>
+	<hr><div class="table-responsive">
+	<table class="table table-hover table-striped"><tbody>';
+    foreach (Database::GetOne("config", array("mod" => "inv_params")) as $key => $value) 
+	{
+        if (!strstr($key, "p_")) 
+		{
             continue;
         }
         echo "<tr><td> <b><font size=3>" . $value['name'] . "</font></b> </td> <td> <b><font size=3>" . $key . "</font></b> </td> <td> <a href='?edit=" . $key . "'>Редактировать</a> </td></tr>";
     }
     echo '</tbody></table>';
-    ;
 }
 ?>

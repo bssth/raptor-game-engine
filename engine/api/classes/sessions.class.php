@@ -1,48 +1,64 @@
 ﻿<?php
 
-class Sessions {
+/*
+	** @last_edit 22.08.2015
+	** @last_autor Mike
+	** @comment Система сессий (by Mike)
+*/
 
+class Sessions 
+{
     protected $savePath;
     protected $sessionName;
 
-    public function __construct() {
+    public function __construct() 
+	{
         session_set_save_handler(
                 array($this, 'open'), array($this, 'close'), array($this, 'read'), array($this, 'write'), array($this, 'destroy'), array($this, 'gc')
         );
     }
 
-    public function open($savePath, $sessionName) {
+    public function open($savePath, $sessionName) 
+	{
         $this->savePath = $savePath;
         $this->sessionName = $sessionName;
         return true;
     }
 
-    public function close() {
+    public function close() 
+	{
         return true;
     }
 
-    public function read($id) {
+    public function read($id) 
+	{
         $data = Database::GetOne("sessions", array("sess_id" => $id));
-        if (is_array($data)) {
+        if (is_array($data)) 
+		{
             Database::Edit("sessions", array("sess_id" => $id), array("sess_id" => $id, "time" => time()));
             return $data['data'];
-        } else {
+        }
+		else 
+		{
             Database::Insert("sessions", array("sess_id" => $id, "time" => time()));
             return "";
         }
     }
 
-    public function write($id, $data) {
+    public function write($id, $data) 
+	{
         Database::Edit("sessions", array("sess_id" => $id), array("sess_id" => $id, "array" => $_SESSION, "data" => $data, "time" => time()));
         return true;
     }
 
-    public function destroy($id) {
+    public function destroy($id)
+	{
         Database::Remove("sessions", array("sess_id" => $id));
         return true;
     }
 
-    public function gc($maxlifetime) {
+    public function gc($maxlifetime)
+	{
         Database::Remove("sessions", array("time" => array('$lt' => time() - 3600)));
         return true;
     }

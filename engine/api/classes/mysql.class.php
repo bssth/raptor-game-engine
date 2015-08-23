@@ -1,14 +1,15 @@
 <?php
 
-class MySQL {
+class MySQL 
+{
 
     private $dbh;
 
     public function __construct()
     {
         /**
-         * Создание постоянного соединения с базой данных
-         */
+			** Создание постоянного соединения с базой данных
+        */
         $this->dbh = new PDO('mysql:host=' . $GLOBALS['mysql_data']['host'] . ';dbname=' . $GLOBALS['mysql_data']['db'], $GLOBALS['mysql_data']['user'], $GLOBALS['mysql_data']['password'], array(
             PDO::ATTR_PERSISTENT => true,
             PDO::MYSQL_ATTR_INIT_COMMAND => "SET NAMES `utf8`"
@@ -28,9 +29,12 @@ class MySQL {
     public function query($query, $param = array(), $fetchType = 'basic')
     {
         $prep = $this->dbh->prepare($query);
-        if (!empty($param)) {
+        if (!empty($param)) 
+		{
             $prep->execute($param);
-        } else {
+        } 
+		else 
+		{
             $prep->execute();
         }
 

@@ -1,5 +1,12 @@
 ﻿<?php
 
+/*
+	@last_edit 22.08.2015
+	@last_autor Mike
+	@comment Драйвер настроек игрока
+	@todo API
+*/
+
 class settingsDriver {
 
     function actionIndex()

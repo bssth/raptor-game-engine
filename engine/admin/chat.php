@@ -1,5 +1,6 @@
 ﻿<?php
-	if(isset($_GET['delete'])) {
+	if(isset($_GET['delete'])) 
+	{
 		Database::Remove("chat", array("_id" => toId($_GET['delete'])));
 		ob_flush();
 		echo "Chat message deleted";

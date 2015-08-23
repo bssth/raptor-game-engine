@@ -1,22 +1,27 @@
 <?php
-if (empty($_GET['id'])) {
+if (empty($_GET['id'])) 
+{
     $_GET['id'] = $_SESSION['id'];
 }
 
-if (isset($_POST['change'])) {
+if (isset($_POST['change'])) 
+{
     unset($_POST['change']);
     Database::Edit("players", array("_id" => toId($_GET['id'])), $_POST);
 }
-if (isset($_POST['make'])) {
+if (isset($_POST['make'])) 
+{
     Database::Edit("players", array("_id" => toId($_GET['id'])), array($_POST['name'] => 0));
 }
-if (isset($_POST['notes'])) {
+if (isset($_POST['notes'])) 
+{
     Database::Edit("players", array("_id" => toId($_GET['id'])), array("notes" => $_POST['notes']));
 }
 
 $char = Database::GetOne("players", array("_id" => toId($_GET['id'])));
 
-if (empty($char['_id'])) {
+if (empty($char['_id'])) 
+{
     echo '<div class="alert alert-danger">Игрок не найден</div>';
     die();
 }
@@ -31,7 +36,8 @@ if (empty($char['_id'])) {
             </div>
             <div class="panel-body">
 <?php
-foreach ($char as $key => $value) {
+foreach ($char as $key => $value) 
+{
     echo "<p>" . $key . " = " . $value . "</p>";
 }
 ?>
@@ -43,8 +49,10 @@ foreach ($char as $key => $value) {
             </div>
             <div class="panel-body">
 <?php
-foreach ($char as $key => $value) {
-    if ($key == '_id') {
+foreach ($char as $key => $value) 
+{
+    if ($key == '_id') 
+	{
         continue;
     }
     echo "<form method='POST'>"
@@ -67,16 +75,18 @@ foreach ($char as $key => $value) {
                     <?php
                     $a1 = Database::Get("characters", array("player" => $_GET['id']));
                     $a2 = Database::Get("characters", array("player" => toId($_GET['id'])));
-                    foreach ($a1 as $array) {
+                    foreach ($a1 as $array) 
+					{
                         echo '<li><a href="/admin/char?id=' . $array['_id'] . '">' . $array['name'] . '</a></li>';
                     }
-                    foreach ($a2 as $array) {
+                    foreach ($a2 as $array) 
+					{
                         echo '<li><a href="/admin/char?id=' . $array['_id'] . '">' . $array['name'] . '</a></li>';
                     }
                     ?>
                 </ul>
             </div>
-        </div>
+			</div>
         <div class="panel panel-info">
             <div class="panel-heading">
                 <h3 class="panel-title">Добавить поле БД</h3>

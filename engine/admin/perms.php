@@ -2,17 +2,22 @@
 <h4>Здесь можно настроить права доступа для любого игрока. Обратите внимания, что наименования прав доступа - это разделы админ-панели, к которым имеет доступ игрок</h4>
 
 <?php
-if (isset($_POST['submit'])) {
+if (isset($_POST['submit'])) 
+{
     unset($_POST['submit']);
     $astack = array("perms" => array_keys($_POST));
     Database::Edit("characters", array("name" => $_GET['name']), $astack);
     echo '<div class="alert alert-success">Права доступа изменены успешно</div>';
 }
-if (isset($_GET['name'])) {
+if (isset($_GET['name'])) 
+{
     $chara = Database::GetOne("characters", array("name" => $_GET['name']));
-    if (!isset($chara['_id'])) {
+    if (!isset($chara['_id'])) 
+	{
         echo '<div class="alert alert-danger">Персонаж не найден</div>';
-    } else {
+    } 
+	else 
+	{
         $skip = array('.', '..', '.htaccess', '.conf', 'header.inc.php', 'footer.inc.php');
         $files = scandir(ADMIN_ROOT);
         $stack = $chara['perms'];
@@ -25,8 +30,10 @@ if (isset($_GET['name'])) {
                       </tr>
                       </thead>
                       <tbody>';
-        foreach ($files as $file) {
-            if (!in_array($file, $skip)) {
+        foreach ($files as $file) 
+		{
+            if (!in_array($file, $skip)) 
+			{
                 $file = str_replace(".php", "", $file);
                 $value = (in_array($file, $stack)) ? 'checked' : '';
                 echo "<tr><td><b><font size=3>" . $file . "</font></b></td><td><input form='perms' name='" . $file . "' " . $value . " value='1' type='checkbox'></td></tr>";

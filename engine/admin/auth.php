@@ -1,5 +1,6 @@
 <?php
-if (isset($_POST['mod'])) {
+if (isset($_POST['mod'])) 
+{
     Database::Edit("config", array("mod" => "auth"), $_POST);
     echo "<div class='alert alert-success'>Настройки применены</div>";
 }
@@ -28,8 +29,12 @@ $data = Database::GetOne("config", array("mod" => "auth"));
 	<div class="form-group"><label>Стартовая локация</label>
 		<select name="start" class="form-control">'; 
 		<?php
-			foreach(Database::GetOne("config", array("mod" => "locations")) as $key => $value) {
-				if(!is_array($value)) { continue; }
+			foreach(Database::GetOne("config", array("mod" => "locations")) as $key => $value) 
+			{
+				if(!is_array($value)) 
+				{ 
+					continue; 
+				}
 				echo '<option '. ($data['start']==$key?'selected':'') .' value="'. $key .'">'. $value['name'] .'</option>';
 			}
 		?>

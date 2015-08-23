@@ -1,13 +1,20 @@
 ﻿<?php
 	/*
-		Данная функция очень тестовая, ну очень. Делали для альфа-теста, пока поддержка этой функции не предоставляется.
+		** @last_edit 22.08.2015
+		** @last_autor Mike
+		** @todo Более защищённая и адекватная система
+		** @comment Данная функция очень тестовая, ну очень. Делали для альфа-теста, пока поддержка этой функции не предоставляется (by Mike)
 	*/
 	
-	if (isset($_POST['email'])) {
+	if (isset($_POST['email'])) 
+	{
 			$mail = new Mail();
-			if ($mail->sendMail(array('to' => $_POST['email'], 'subject' => $_POST['subject'], 'message' => $_POST['message']))) {
+			if ($mail->sendMail(array('to' => $_POST['email'], 'subject' => $_POST['subject'], 'message' => $_POST['message']))) 
+			{
 				echo '<div class="alert alert-success">Сообщение отправлено</div>';
-			} else {
+			} 
+			else 
+			{
 				echo '<div class="alert alert-danger">Ошибка при отправке. Нажмите F5 для повторной попытки</div>';
 			}
 	}

@@ -4,17 +4,20 @@
 <hr>
 
 <?php
-if (isset($_POST['title'])) {
+if (isset($_POST['title'])) 
+{
 	$_POST['_id'] = toId($_GET['edit']);
     Database::Edit("news", array("_id" => toId($_GET['edit'])), $_POST);
     echo '<div class="alert alert-success">Новость успешно отредактирована</div>';
 }
-if(isset($_POST['new'])) {
+if(isset($_POST['new'])) 
+{
 	$id = new MongoId();
 	Database::Insert("news", array("_id"=>$id,"short"=>'',"title"=>'',"full"=>'',"date"=>raptor_date(),"public"=>'1'));
 	die("<script>location.href = '/admin/news?edit=". $id ."';</script>");
 }
-if (isset($_GET['edit'])) {
+if (isset($_GET['edit'])) 
+{
     $array = Database::GetOne("news", array("_id" => toId($_GET['edit'])));
     echo "<form action='' method='POST'>
 		<input class='form-control' name='title' value='" . $array['title'] . "' placeholder='Заголовок'>
@@ -38,7 +41,8 @@ if (isset($_GET['edit'])) {
 
             <?php
             $arrays = Database::Get("news", array());
-            foreach ($arrays as $array) {
+            foreach ($arrays as $array) 
+			{
                 echo "<tr><td> <b><font size=3>" . $array['title'] . "</font></b> </td><td> <a href='?edit=" . $array['_id'] . "'>Редактировать</a> </td></tr>";
             }
             ?>

@@ -7,12 +7,14 @@
 <hr>
 
 <?php
-    if(isset($_POST['file'])) {
+    if(isset($_POST['file'])) 
+	{
 		Database::Edit('scripts', array('name' => $_POST['file']), array('code' => base64_encode($_POST['edit'])));
 		Cache::set("script_". $_POST['file'], base64_encode($_POST['edit']), 86400);
 		echo '<div class="alert alert-success">Скрипт успешно отредактирован. Кэш обновлен.</div>';
     }
-    if(isset($_GET['edit'])) {
+    if(isset($_GET['edit'])) 
+	{
         $content = isset($_POST['edit']) ? $_POST['edit'] : base64_decode(Database::GetOne('scripts', array('name' => $_GET['edit']))['code']);
         echo "<form action='' method='POST'>
         <input type='hidden' name='file' value='". $_GET['edit'] ."'>
@@ -34,7 +36,8 @@
 
 <?php
 	$files = Database::GetAll('scripts');
-	foreach($files as $file) {
+	foreach($files as $file) 
+	{
 		echo "<tr><td> <b><font size=3>". $file['name'] ."</font></b> </td><td> <a href='?edit=". $file['name'] ."'>Редактировать</a> </td></tr>";
 	}
 

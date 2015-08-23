@@ -1,17 +1,26 @@
 ﻿<?php
+/*
+	@last_edit 22.08.2015
+	@last_autor Mike
+	@comment Кабинет пользователя с выбором персонажа
+	@todo API, нормальный logout
+*/
 
 class cabinetDriver {
 
     function __construct()
     {
-        if (isset($_GET['logout'])) {
+        if (isset($_GET['logout'])) 
+		{
             Player::logout();
         }
-        if (empty($_SESSION['id'])) {
+        if (empty($_SESSION['id'])) 
+		{
             header("Location: /index");
             die();
         }
-        if (isset($_SESSION['cid'])) {
+        if (isset($_SESSION['cid'])) 
+		{
             header("Location: /p");
             die();
         }
@@ -19,12 +28,14 @@ class cabinetDriver {
 
     function actionIndex()
     {
-		if(is_object($_SESSION['id'])) {
+		if(is_object($_SESSION['id'])) 
+		{
 			$_SESSION['id'] = $_SESSION['id']->__toString();
 		}
         $chars = Database::Get("characters", array("player" => $_SESSION['id']));
         $cabinet_list = '';
-        foreach ($chars as $array) {
+        foreach ($chars as $array) 
+		{
             $cabinet_list = $cabinet_list . templater("interface/cabinet_lst.tpl", array(
                         "%ID%" => $array['_id'],
                         "%NAME%" => $array['name'],
@@ -57,19 +68,25 @@ class cabinetDriver {
 
     function actionSelect()
     {
-        if (empty($_GET['id'])) {
+        if (empty($_GET['id'])) 
+		{
             raptor_error("Trying to select character in cabinet with no id");
         }
         $check = Database::GetOne("characters", array("_id" => Database::toId($_GET['id'])));
-        if ($check['player'] == $_SESSION['id']) {
-			if($check['ban'] >= time()) {
+        if ($check['player'] == $_SESSION['id']) 
+		{
+			if($check['ban'] >= time()) 
+			{
 				die('<script>alert("Вы были заблокированы \n\n Причина: '. $check['ban_reason'] .'"); location.href = "/";</script>');
 			}
-			else {
+			else 
+			{
 				$_SESSION['cid'] = $_GET['id'];
 				die('<script>location.href = "/p";</script>');
 			}
-        } else {
+        } 
+		else
+		{
             raptor_error("Bad character id");
 			echo '<script>alert("Ошибка при выборе персонажа");</script>';
         }
@@ -79,13 +96,17 @@ class cabinetDriver {
     {
 
         $error = '';
-        if (isset($_POST['name'])) {
+        if (isset($_POST['name'])) 
+		{
 
             $maxchars = Database::GetOne("config", array("mod" => "auth"))['maxchars'];
             $chars = Database::Get("characters", array("player" => $_SESSION['id']))->count();
-            if ($chars >= $maxchars) {
+            if ($chars >= $maxchars) 
+			{
                 echo "Исчерпан лимит персонажей на одного игрока (" . $maxchars . ")";
-            } else {
+            } 
+			else
+			{
 
                 $id = Char::create(array(
                             "name" => $_POST['name'],
@@ -93,9 +114,12 @@ class cabinetDriver {
                             "about" => $_POST['about']
                 ));
 
-                if ($id != false) {
+                if ($id != false) 
+				{
                     header("Location: /");
-                } else {
+                } 
+				else
+				{
                     $error = "Персонаж уже существует";
                 }
             }

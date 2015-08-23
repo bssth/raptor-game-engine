@@ -1,6 +1,14 @@
 <?php
 
-class Templater {
+/*
+	** @last_edit 22.08.2015 
+	** @last_autor Mike
+	** @comment Шаблонизатор из нашего набора RAPTOR Tools. Простой и не замысловатый, использует функции template и templater как аналог
+	** @todo Разметку - [%foreach%] и пр.
+*/
+
+class Templater 
+{
 
     public $code;
     public $vars = array();
@@ -18,7 +26,8 @@ class Templater {
 
     function import($root)
     {
-		if(is_string(Cache::get(sha1($root)))) {
+		if(is_string(Cache::get(sha1($root)))) 
+		{
 			$this->code = Cache::get(sha1($root));
 			return;
 		}
@@ -60,7 +69,8 @@ class Templater {
 
     function render()
     {
-        foreach ($this->vars as $var => $val) {
+        foreach ($this->vars as $var => $val) 
+		{
             $this->code = str_replace($var, $val, $this->code);
         }
         return $this->code;

@@ -1,14 +1,24 @@
 <?php
 
-class indexDriver {
+/*
+	@last_edit 22.08.2015
+	@last_autor Mike
+	@comment Драйвер титульной страницы, также переадресация на игру в случае, если игрок авторизован
+*/
 
-    function actionIndex() {
-        if (isset($_SESSION['id'])) {
+class indexDriver 
+{
+
+    function actionIndex() 
+	{
+        if (isset($_SESSION['id'])) 
+		{
             header("Location: /cabinet");
         }
-        switch (@$_GET['result']) {
+        switch (@$_GET['result']) 
+		{
             case 'regerror':
-                echo "<script>alert('Введены неверные данные или аккаунт уже существует');</script>";
+			echo "<script>alert('Введены неверные данные или аккаунт уже существует');</script>";
                 break;
             case 'loginerror':
                 echo "<script>alert('Неверный логин или пароль');</script>";
@@ -38,29 +48,38 @@ class indexDriver {
         $main->renderEcho();
     }
 
-    function actionRegister() {
-        if ((Database::GetOne("config", array("mod" => "auth"))['allowRegister'] == 0) and $_SESSION['invited']!==true) {
+    function actionRegister() 
+	{
+        if ((Database::GetOne("config", array("mod" => "auth"))['allowRegister'] == 0) and $_SESSION['invited']!==true) 
+		{
             echo "<script>alert('Регистрация закрыта'); window.location = '/';</script>";
             die();
         }
-        if ($res = Player::register($_POST['login'], $_POST['password'], $_POST['email'])) {
+        if ($res = Player::register($_POST['login'], $_POST['password'], $_POST['email'])) 
+		{
             $_SESSION['id'] = $res;
 			if($_SESSION['invited'] === true) { $_SESSION['invited'] = false; }
 			call_user_func("onPlayerRegister", $_POST['login'], $_POST['password'], $_POST['email']);
 			@header("Location: /cabinet");
 			die("<script>location.href = '/cabinet';</script>");
-        } else {
+        } 
+		else
+		{
             @header("Location: /index?result=regerror");
 			die("<script>location.href = '/index?result=regerror';</script>");
         }
     }
 
-    function actionLogin() {
-        if (Player::login($_POST['name'], $_POST['password'], true)) {
+    function actionLogin() 
+	{
+        if (Player::login($_POST['name'], $_POST['password'], true)) 
+		{
 			call_user_func("onPlayerLogin", $_POST['name'], $_POST['password'], true);
             @header("Location: /cabinet");
 			die("<script>location.href = '/cabinet';</script>");
-        } else {
+        } 
+		else
+		{
 			call_user_func("onPlayerLogin", $_POST['name'], $_POST['password'], false);
             @header("Location: /index?result=loginerror");
 			die("<script>location.href = '/index?result=loginerror';</script>");

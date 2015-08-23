@@ -1,40 +1,49 @@
 <?php
-if (empty($_GET['id'])) {
+if (empty($_GET['id'])) 
+{
     $_GET['id'] = $_SESSION['cid'];
 }
 
-if (isset($_POST['change'])) {
+if (isset($_POST['change'])) 
+{
     unset($_POST['change']);
     Database::Edit("characters", array("_id" => toId($_GET['id'])), $_POST);
 }
-if (isset($_POST['make'])) {
+if (isset($_POST['make'])) 
+{
     Database::Edit("characters", array("_id" => toId($_GET['id'])), array($_POST['name'] => 0));
 }
-if (isset($_POST['notes'])) {
+if (isset($_POST['notes'])) 
+{
     Database::Edit("characters", array("_id" => toId($_GET['id'])), array("notes" => $_POST['notes']));
 }
 
 $obj = new Char($_GET['id']);
 $schar = Database::GetOne("characters", array("_id" => toId($_GET['id'])));
 
-if(isset($_GET['give'])) {
+if(isset($_GET['give'])) 
+{
 	$obj->inv->giveItem($_GET['give'], $_GET['cnt']);
 }
-if(isset($_GET['take'])) {
+if(isset($_GET['take'])) 
+{
 	$obj->inv->takeItem($_GET['take'], $_GET['cnt']);
 }
 
-if (empty($schar['_id'])) {
+if (empty($schar['_id'])) 
+{
     echo '<div class="alert alert-danger">Персонаж не найден</div>';
     die();
 }
 ?>
 
 <script>
-	function giveItem(id, count) {
+	function giveItem(id, count) 
+	{
 		$.get("/admin/char?id=<?=$_GET['id'];?>&give=" + id + "&cnt=" + count, {}, function(data) { window.location = window.location; }, "text");
 	}
-	function takeItem(id, count) {
+	function takeItem(id, count) 
+	{
 		$.get("/admin/char?id=<?=$_GET['id'];?>&take=" + id + "&cnt=" + count, {}, function(data) { window.location = window.location; }, "text");
 	}
 </script>
@@ -46,8 +55,10 @@ if (empty($schar['_id'])) {
             </div>
             <div class="panel-body">
 				<?php
-				foreach ($schar as $key => $value) {
-					if (is_array($key) or is_array($value)) {
+				foreach ($schar as $key => $value) 
+				{
+					if (is_array($key) or is_array($value)) 
+					{
 						continue;
 					}
 					echo "<p>" . $key . " = " . $value . "</p>";
@@ -61,8 +72,10 @@ if (empty($schar['_id'])) {
             </div>
             <div class="panel-body">
                 <?php
-                foreach ($schar as $key => $value) {
-                    if ($key == '_id' or is_object($value) or is_array($value)) {
+                foreach ($schar as $key => $value) 
+				{
+                    if ($key == '_id' or is_object($value) or is_array($value)) 
+					{
                         continue;
                     }
                     echo "<form method='POST'>"
@@ -121,11 +134,13 @@ if (empty($schar['_id'])) {
                 <div class="form-group">
                     <?php
 						$inv_params = Database::GetOne("config", array("mod" => "inv_params"));
-						foreach($obj->inv->getItems() as $key => $value) {
+						foreach($obj->inv->getItems() as $key => $value) 
+						{
 							if(!is_array($value)) { continue; }
 							echo "<p id='". $key ."'><h4><img src='". $value['image'] ."' width=50 height=50>". $value['name'] ." (". $value['count'] ." шт.)</h4><b><button onclick='giveItem(\"". $key ."\", 1);'>[+1]</button><button onclick='giveItem(\"". $key ."\", ". $value['count'] .");'>[+". $value['count'] ."]</button><button onclick='takeItem(\"". $key ."\", 1);'>[-1]</button><button onclick='takeItem(\"". $key ."\", ". $value['count'] .");'>[-". $value['count'] ."]</button></b><br>";
 							$id = $key;
-							foreach ($inv_params as $skey => $svalue) {
+							foreach ($inv_params as $skey => $svalue) 
+							{
 								if(!strstr($skey, "p_")) { continue; }
 								echo "<i>". $svalue['name'] ."</i>: ". $obj->inv->getParam($skey, $key) ."<br>";
 							}
@@ -137,8 +152,10 @@ if (empty($schar['_id'])) {
 					<form method="GET">
 						<select name="give" class="form-control">
 							<?php
-							foreach (Database::GetOne("config", array('mod' => 'inventory')) as $key => $value) {
-								if (!is_array($value)) {
+							foreach (Database::GetOne("config", array('mod' => 'inventory')) as $key => $value) 
+							{
+								if (!is_array($value)) 
+								{
 									continue;
 								}
 								echo '<option value="'. $key .'">'. $value['name'] .'</option>';

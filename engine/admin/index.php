@@ -16,12 +16,14 @@
 <div class="row">
     <div class="col-lg-12">
         <?php
-        if ($GLOBALS['debug'] == true) {
+        if ($GLOBALS['debug'] == true) 
+		{
             echo '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
             echo '<i class="fa fa-info-circle"></i> Внимание! Игра находится в режиме отладки (debug)';
             echo '</div>';
         }
-		if (!file_exists(CACHE_ROOT . SEPARATOR . "installed.cache")) {
+		if (!file_exists(CACHE_ROOT . SEPARATOR . "installed.cache")) 
+		{
             echo '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
             echo '<i class="fa fa-info-circle"></i> Игра не установлена. Пожалуйста, проведите данную процедуру';
             echo '</div>';
@@ -106,7 +108,8 @@
                 <div class="list-group">
                     <?php
                     $u = Database::GetAll("players")->limit(10)->sort(array("last_date" => -1));
-                    foreach ($u as $array) {
+                    foreach ($u as $array) 
+					{
                         echo '<a href="/admin/find?name='. $array['login'] .'" class="list-group-item"><span class="badge">' . $array['last_ip'] . '</span><i class="fa fa-fw fa-user"></i> ' . $array['login'] . '</a>';
                     }
                     ?>
@@ -133,7 +136,8 @@
                         <tbody>
                             <?php
                             $u = Database::GetAll("payments")->limit(5)->sort(array("dateCreate" => -1));
-                            foreach ($u as $array) {
+                            foreach ($u as $array) 
+							{
                                 echo '<tr><td>' . $array['unitpayId'] . '</td><td>' . $array['account'] . '</td><td>' . $array['dateCreate'] . '</td><td>' . $array['sum'] . '</td>';
                             }
                             ?>

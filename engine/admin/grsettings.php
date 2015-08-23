@@ -1,5 +1,6 @@
 ﻿<?php
-if (isset($_POST['mod'])) { 
+if (isset($_POST['mod'])) 
+{ 
     Database::Edit("config", array("mod" => "locations"), $_POST);
     echo "<div class='alert alert-success'>Настройки применены</div>";
 }

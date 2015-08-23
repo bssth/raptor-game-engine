@@ -1,10 +1,13 @@
 ﻿<?php
-if (isset($_POST['new'])) {
+if (isset($_POST['new'])) 
+{
     Database::Edit("config", array("mod" => "currency"), array("mod" => "currency", $_POST['name'] => array()));
     echo '<div class="alert alert-success">Валюта <b>' . $_POST['name'] . '</b> успешно создана</div>';
 }
-if (isset($_GET['edit'])) {
-    if (isset($_POST['name'])) {
+if (isset($_GET['edit'])) 
+{
+    if (isset($_POST['name'])) 
+	{
         Database::Edit("config", array("mod" => "currency"), array($_GET['edit'] => $_POST));
         echo '<div class="alert alert-success">Валюта <b>' . $_GET['edit'] . '</b> успешно отредактирована</div>';
     }
@@ -17,7 +20,9 @@ if (isset($_GET['edit'])) {
 		<div class="form-group"></div>
 		<button type="submit" class="btn btn-default">Сохранить</button>
 		</form>';
-} else {
+} 
+else 
+{
     echo '<h2>Валюты</h2>
 		<h5>Различные игровые валюты</h5>
 		<br>
@@ -36,8 +41,10 @@ if (isset($_GET['edit'])) {
 		</tr>
 		</thead>
 		<tbody>';
-    foreach (Database::GetOne("config", array("mod" => "currency")) as $key => $value) {
-        if (!strstr($key, "money_")) {
+    foreach (Database::GetOne("config", array("mod" => "currency")) as $key => $value) 
+	{
+        if (!strstr($key, "money_")) 
+		{
             continue;
         }
         echo "<tr><td> <b><font size=3>" . $value['name'] . "</font></b> </td> <td> <b><font size=3>" . $key . "</font></b> </td> <td> <a href='?edit=" . $key . "'>Редактировать</a> </td></tr>";

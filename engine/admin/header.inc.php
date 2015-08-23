@@ -38,22 +38,23 @@
                         <ul class="dropdown-menu message-dropdown">
                             <?php
                             $reports = Database::Get("reports", array())->limit(10);
-                            foreach ($reports as $r) {
+                            foreach ($reports as $r) 
+							{
                                 echo '<li class="message-preview">
-								<a href="#">
-									<div class="media">
-										<span class="pull-left">
-											<img class="media-object" src="http://placehold.it/50x50" alt="">
-										</span>
-										<div class="media-body">
-											<h5 class="media-heading"><strong>' . $r['author'] . '</strong>
-											</h5>
-											<p class="small text-muted"><i class="fa fa-clock-o"></i> ' . $r['date'] . '</p>
-											<p>' . strip_tags($r['message']) . '</p>
+									<a href="#">
+										<div class="media">
+											<span class="pull-left">
+												<img class="media-object" src="http://placehold.it/50x50" alt="">
+											</span>
+											<div class="media-body">
+												<h5 class="media-heading"><strong>' . $r['author'] . '</strong>
+												</h5>
+												<p class="small text-muted"><i class="fa fa-clock-o"></i> ' . $r['date'] . '</p>
+												<p>' . strip_tags($r['message']) . '</p>
+											</div>
 										</div>
-									</div>
-								</a>
-							</li>';
+									</a>
+								</li>';
                             }
                             ?>
                             <li class="message-footer">
@@ -178,11 +179,12 @@
                             <ul id="modules" class="collapse">
                                 <li><a href="/admin/mods">- Менеджер модулей -</a></li>
                                 <?php
-                                $mclass = new Modules();
-                                $mods = $mclass->getModules();
-                                foreach ($mods as $mod) {
-                                    echo '<li><a href="/admin/ext_' . $mod . '">' . $mod . '</a></li>';
-                                }
+									$mclass = new Modules();
+									$mods = $mclass->getModules();
+									foreach ($mods as $mod) 
+									{
+										echo '<li><a href="/admin/ext_' . $mod . '">' . $mod . '</a></li>';
+									}
                                 ?>
                             </ul>
                         </li>

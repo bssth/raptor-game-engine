@@ -1,10 +1,11 @@
 <?php
 
 /*
-	**	Вебсокет-сервер, который пришёл на замену AJAX
-	**	Обрабатывает запросы нормально, тестировалось на Debian 7
-	**	@todo Кроссплатформенность (+ Windows, Mac)
-	**	@last_change 20.07.2015, Mike
+	** @comment Вебсокет-сервер, который пришёл на замену AJAX
+	** @comment Обрабатывает запросы нормально, тестировалось на Debian 7
+	** @todo Кроссплатформенность (+ Windows, Mac), эстетичный вид
+	** @last_edit 20.07.2015, 
+	** @last_autor Mike
 */
 
 define("MODE", "dev");
@@ -41,7 +42,8 @@ $starttime = time();
 consolemsg("Starting socket server at " . $GLOBALS['socket_ip'] . ":" . $GLOBALS['socket_port']);
 $socket = stream_socket_server("tcp://". $GLOBALS['socket_ip'] .":". $GLOBALS['socket_port'], $errno, $errstr);
 
-if (!$socket) {
+if (!$socket) 
+{
 	consolemsg("ERROR socket unavailable " .$errstr. "(" .$errno. ")");
 	consoleend();
     die($errstr. "(" .$errno. ")\n");
@@ -49,17 +51,21 @@ if (!$socket) {
 
 $connects = array();
 
-while (true) {
+while (true) 
+{
     $read = $connects;
     $read[] = $socket;
     $write = $except = null;
 
-    if (!stream_select($read, $write, $except, null)) {
+    if (!stream_select($read, $write, $except, null)) 
+	{
         break;
     }
 
-    if (in_array($socket, $read)) {
-        if (($connect = stream_socket_accept($socket, -1)) && $info = handshake($connect)) {
+    if (in_array($socket, $read)) 
+	{
+        if (($connect = stream_socket_accept($socket, -1)) && $info = handshake($connect)) 
+		{
 			consolemsg("New connection; connect=".$connect.", info=".$info."; OK");            
 
 			$connects[] = $connect;
@@ -68,10 +74,12 @@ while (true) {
         unset($read[ array_search($socket, $read) ]);
     }
 
-    foreach($read as $connect) {
+    foreach($read as $connect) 
+	{
         $data = fread($connect, 100000);
 
-        if (!$data) {
+        if (!$data) 
+		{
 			consolemsg("Connection closed. ");    
 			fclose($connect);
             unset($connects[ array_search($connect, $connects) ]);
@@ -86,8 +94,10 @@ while (true) {
 		
 	}
 
-	if(time() - $starttime > 75) {
-		foreach($GLOBALS['sess_data'] as $save) {
+	if(time() - $starttime > 75) 
+	{
+		foreach($GLOBALS['sess_data'] as $save) 
+		{
 			Database::Edit("characters", array('_id' => toId($save['cid'])), array('x' => $save['x'], 'y' => $save['y'], 'dir' => $save['dir']));
 		}
 		$starttime = time();
@@ -100,7 +110,8 @@ consoleend();
 
 //------------------------------------------------------------------------------------------------------------------------------------------------
 
-function handshake($connect) { //Функция рукопожатия
+function handshake($connect) //Функция рукопожатия
+{ 
     $info = array();
 
     $line = fgets($connect);
@@ -108,10 +119,14 @@ function handshake($connect) { //Функция рукопожатия
     $info['method'] = $header[0];
     $info['uri'] = $header[1];
 
-    while ($line = rtrim(fgets($connect))) {
-        if (preg_match('/\A(\S+): (.*)\z/', $line, $matches)) {
+    while ($line = rtrim(fgets($connect))) 
+	{
+        if (preg_match('/\A(\S+): (.*)\z/', $line, $matches)) 
+		{
             $info[$matches[1]] = $matches[2];
-        } else {
+        } 
+		else
+		{
             break;
         }
     }
@@ -120,7 +135,8 @@ function handshake($connect) { //Функция рукопожатия
     $info['ip'] = $address[0];
     $info['port'] = $address[1];
 
-    if (empty($info['Sec-WebSocket-Key'])) {
+    if (empty($info['Sec-WebSocket-Key'])) 
+	{
         return false;
     }
 
@@ -134,11 +150,13 @@ function handshake($connect) { //Функция рукопожатия
     return $info;
 }
 
-function encode($payload, $type = 'text', $masked = false) {
+function encode($payload, $type = 'text', $masked = false) 
+{
     $frameHead = array();
     $payloadLength = strlen($payload);
 
-    switch ($type) {
+    switch ($type) 
+	{
         case 'text':
             // first byte indicates FIN, Text-Frame (10000001):
             $frameHead[0] = 129;
@@ -161,33 +179,43 @@ function encode($payload, $type = 'text', $masked = false) {
     }
 
     // set mask and payload length (using 1, 3 or 9 bytes)
-    if ($payloadLength > 65535) {
+    if ($payloadLength > 65535) 
+	{
         $payloadLengthBin = str_split(sprintf('%064b', $payloadLength), 8);
         $frameHead[1] = ($masked === true) ? 255 : 127;
-        for ($i = 0; $i < 8; $i++) {
+        for ($i = 0; $i < 8; $i++) 
+		{
             $frameHead[$i + 2] = bindec($payloadLengthBin[$i]);
         }
         // most significant bit MUST be 0
-        if ($frameHead[2] > 127) {
+        if ($frameHead[2] > 127) 
+		{
             return array('type' => '', 'payload' => '', 'error' => 'frame too large (1004)');
         }
-    } elseif ($payloadLength > 125) {
+    } 
+	elseif ($payloadLength > 125) 
+	{
         $payloadLengthBin = str_split(sprintf('%016b', $payloadLength), 8);
         $frameHead[1] = ($masked === true) ? 254 : 126;
         $frameHead[2] = bindec($payloadLengthBin[0]);
         $frameHead[3] = bindec($payloadLengthBin[1]);
-    } else {
+    } 
+	else 
+	{
         $frameHead[1] = ($masked === true) ? $payloadLength + 128 : $payloadLength;
     }
 
     // convert frame-head to string:
-    foreach (array_keys($frameHead) as $i) {
+    foreach (array_keys($frameHead) as $i) 
+	{
         $frameHead[$i] = chr($frameHead[$i]);
     }
-    if ($masked === true) {
+    if ($masked === true) 
+	{
         // generate a random mask:
         $mask = array();
-        for ($i = 0; $i < 4; $i++) {
+        for ($i = 0; $i < 4; $i++) 
+		{
             $mask[$i] = chr(rand(0, 255));
         }
 
@@ -196,14 +224,16 @@ function encode($payload, $type = 'text', $masked = false) {
     $frame = implode('', $frameHead);
 
     // append payload to frame:
-    for ($i = 0; $i < $payloadLength; $i++) {
+    for ($i = 0; $i < $payloadLength; $i++) 
+	{
         $frame .= ($masked === true) ? $payload[$i] ^ $mask[$i % 4] : $payload[$i];
     }
 
     return $frame;
 }
 
-function decode($data){
+function decode($data)
+{
     $unmaskedPayload = '';
     $decodedData = array();
 
@@ -215,11 +245,13 @@ function decode($data){
     $payloadLength = ord($data[1]) & 127;
 
     // unmasked frame is received:
-    if (!$isMasked) {
+    if (!$isMasked) 
+	{
         return array('type' => '', 'payload' => '', 'error' => 'protocol error (1002)');
     }
 
-    switch ($opcode) {
+    switch ($opcode) 
+	{
         // text frame:
         case 1:
             $decodedData['type'] = 'text';
@@ -248,20 +280,26 @@ function decode($data){
             return array('type' => '', 'payload' => '', 'error' => 'unknown opcode (1003)');
     }
 
-    if ($payloadLength === 126) {
+    if ($payloadLength === 126) 
+	{
         $mask = substr($data, 4, 4);
         $payloadOffset = 8;
         $dataLength = bindec(sprintf('%08b', ord($data[2])) . sprintf('%08b', ord($data[3]))) + $payloadOffset;
-    } elseif ($payloadLength === 127) {
+    }
+	elseif ($payloadLength === 127)
+	{
         $mask = substr($data, 10, 4);
         $payloadOffset = 14;
         $tmp = '';
-        for ($i = 0; $i < 8; $i++) {
+        for ($i = 0; $i < 8; $i++) 
+		{
             $tmp .= sprintf('%08b', ord($data[$i + 2]));
         }
         $dataLength = bindec($tmp) + $payloadOffset;
         unset($tmp);
-    } else {
+    } 
+	else 
+	{
         $mask = substr($data, 2, 4);
         $payloadOffset = 6;
         $dataLength = $payloadLength + $payloadOffset;
@@ -272,19 +310,25 @@ function decode($data){
      * so if websocket-frame is > 1024 bytes we have to wait until whole
      * data is transferd.
      */
-    if (strlen($data) < $dataLength) {
+    if (strlen($data) < $dataLength)
+	{
         return false;
     }
 
-    if ($isMasked) {
-        for ($i = $payloadOffset; $i < $dataLength; $i++) {
+    if ($isMasked) 
+	{
+        for ($i = $payloadOffset; $i < $dataLength; $i++) 
+		{
             $j = $i - $payloadOffset;
-            if (isset($data[$i])) {
+            if (isset($data[$i])) 
+			{
                 $unmaskedPayload .= $data[$i] ^ $mask[$j % 4];
             }
         }
         $decodedData['payload'] = $unmaskedPayload;
-    } else {
+    } 
+	else 
+	{
         $payloadOffset = $payloadOffset - 4;
         $decodedData['payload'] = substr($data, $payloadOffset);
     }
@@ -294,25 +338,33 @@ function decode($data){
 
 //пользовательские сценарии:
 
-function onOpen($connect, $info) {
-	consolemsg("open OK"); 
+function onOpen($connect, $info) 
+{
+	consolemsg("Connection opened successful"); 
 }
 
-function onClose($connect) {
+function onClose($connect) 
+{
 	$save = $GLOBALS['sess_data'][array_search($connect, $GLOBALS['connects'])];
-	if(is_array($save)) {
+	if(is_array($save)) 
+	{
 		Database::Edit("characters", array('_id' => toId($save['cid'])), array('x' => $save['x'], 'y' => $save['y'], 'dir' => $save['dir']));
 	}
-    consolemsg("close OK");
+    consolemsg("Connection closed successful");
 }
 
-function onMessage($connect, $data) {
+function onMessage($connect, $data) 
+{
     $f = explode(";", decode($data)['payload']);
-	if(!is_array($f)) { $f = array($f); }
+	if(!is_array($f)) 
+	{ 
+		$f = array($f);
+	}
 	
 	$answer = array();
 
-	if($f[0] == "sid" and isset($f[1])) { 
+	if($f[0] == "sid" and isset($f[1])) 
+	{ 
 		$GLOBALS['connects'][$f[1]] = $connect; 
 		$sid = $f[1]; 
 		$GLOBALS['sess_data'][$f[1]] = Database::GetOne('sessions', array('sess_id' => $sid))['array'];
@@ -327,21 +379,27 @@ function onMessage($connect, $data) {
 		$GLOBALS['sess_data'][$f[1]]['skin'] = $char_array['skin'];
 		$GLOBALS['sess_data'][$f[1]]['_id'] = $GLOBALS['sess_data'][$f[1]]['cid'];
 	}
-	elseif($sid = array_search($connect, $GLOBALS['connects'])) { }
+	elseif($sid = array_search($connect, $GLOBALS['connects'])) 
+	{ 
+	}
 	$answer = apply_ws_query($connect, $sid, $f);
 
     fwrite($connect, encode(trim(json_encode($answer, JSON_UNESCAPED_UNICODE), "\x0")));
 }
 
-function consolestart() {
+function consolestart() 
+{
 	consolemsg("console - start");
 }
 
-function consolemsg($msg) {
+function consolemsg($msg) 
+{
 	$file = null;
-	if(!file_exists($GLOBALS['file'])) {
+	if(!file_exists($GLOBALS['file'])) 
+	{
 	    $file = fopen($GLOBALS['file'],"w");
-	}else
+	}
+	else
 	    $file = fopen($GLOBALS['file'],"a");
 	
 	echo $msg."\r\n";
@@ -349,22 +407,30 @@ function consolemsg($msg) {
 	fclose($file); 
 }
 
-function consoleend() {
+function consoleend() 
+{
 	consolemsg("--- console - end ---");
 }
 
-function sendAll($data, $exclude = false) {
+function sendAll($data, $exclude = false) 
+{
 	$data = is_array($data) ? trim(json_encode($data, JSON_UNESCAPED_UNICODE), "\x0") : $data;
 	
-	foreach($GLOBALS['connects'] as $key => $value) {
+	foreach($GLOBALS['connects'] as $key => $value) 
+	{
 		if($exclude != false and $value == $exclude) { continue; }
 		fwrite($value, encode(trim(json_encode($data, JSON_UNESCAPED_UNICODE), "\x0")));
 	}
 }
 
-function apply_ws_query($connect, $sess_id, $q) {
-	if($sess_id != '0' and $GLOBALS['sess_data'][$sess_id]['online'] < time()) { $GLOBALS['sess_data'][$sess_id]['online'] = time()+120; }
-	switch($q[0]) {
+function apply_ws_query($connect, $sess_id, $q) 
+{
+	if($sess_id != '0' and $GLOBALS['sess_data'][$sess_id]['online'] < time()) 
+	{ 
+		$GLOBALS['sess_data'][$sess_id]['online'] = time()+120; 
+	}
+	switch($q[0]) 
+	{
 		case 'sid':
 			return array('type' => 'sid', 'answer' => $sess_id);
 			break;
@@ -384,7 +450,8 @@ function apply_ws_query($connect, $sess_id, $q) {
 			return array('type' => 'clientjs', 'answer' => rpgjs_getcmd($q[1]));
 			break;
 		case 'getposition':
-			if(!isset($GLOBALS['sess_data'][$sess_id]['x']) or !isset($GLOBALS['sess_data'][$sess_id]['y']) or !isset($GLOBALS['sess_data'][$sess_id]['dir'])) {
+			if(!isset($GLOBALS['sess_data'][$sess_id]['x']) or !isset($GLOBALS['sess_data'][$sess_id]['y']) or !isset($GLOBALS['sess_data'][$sess_id]['dir'])) 
+			{
 				$GLOBALS['sess_data'][$sess_id]['x'] = char($GLOBALS['sess_data'][$sess_id]['cid'])->pos_x;
 				$GLOBALS['sess_data'][$sess_id]['y'] = char($GLOBALS['sess_data'][$sess_id]['cid'])->pos_y;
 				$GLOBALS['sess_data'][$sess_id]['dir'] = char($GLOBALS['sess_data'][$sess_id]['cid'])->dir;
@@ -394,7 +461,8 @@ function apply_ws_query($connect, $sess_id, $q) {
 			break;
 		case 'online':
 			$array = array('type' => 'online');
-			foreach($GLOBALS['sess_data'] as $key => $value) {
+			foreach($GLOBALS['sess_data'] as $key => $value) 
+			{
 				if($value['online'] < time()) { continue; }
 				$array[$value['_id']]['id'] = $value['_id'];
 				$array[$value['_id']]['x'] = $value['x'];
@@ -412,7 +480,8 @@ function apply_ws_query($connect, $sess_id, $q) {
 			break;
 		case 'mapchars':
 			$array = array('type' => 'mapchars');
-			foreach($GLOBALS['sess_data'] as $key => $value) {
+			foreach($GLOBALS['sess_data'] as $key => $value) 
+			{
 				if($value['map'] != $q[1] or $GLOBALS['sess_data'][$sess_id]['cid'] == $value['_id']) { continue; }
 				$array[$value['_id']]['id'] = $value['_id'];
 				$array[$value['_id']]['x'] = $value['x'];

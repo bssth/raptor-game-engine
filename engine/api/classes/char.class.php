@@ -1,13 +1,22 @@
 ﻿<?php
 
-class Char {
+/*
+	** @last_edit 22.08.2015
+	** @last_autor Mike
+	** @comment Класс для работы с персонажами. Нужно создавать экземпляр
+	** @todo Работа с веб-сокетами, если используются
+*/
+
+class Char 
+{
 
     public $id;
     public $inv;
 
     function __construct($id = false)
     {
-        if ($id === false) {
+        if ($id === false) 
+		{
             $id = $_SESSION['cid'];
         }
         $this->id = $id;
@@ -16,13 +25,11 @@ class Char {
 
     function get($name)
     {
-
         return $this->__get($name);
     }
 
     function set($name)
     {
-
         return $this->__set($name);
     }
 
@@ -38,12 +45,16 @@ class Char {
 
     function __get($name)
     {
-        if (strstr($name, "p_")) {
+        if (strstr($name, "p_")) 
+		{
             return $this->getParam($name);
         }
-        if (!is_object($this->id)) {
+        if (!is_object($this->id)) 
+		{
             $array = Database::GetOne("characters", array("_id" => toId($this->id)));
-        } else {
+        } 
+		else
+		{
             $array = Database::GetOne("characters", array("_id" => $this->id));
         }
         return isset($array[$name]) ? $array[$name] : false;
@@ -52,9 +63,12 @@ class Char {
     function isOnline()
     {
         $online = $this->__get("online");
-        if ($online > time()) {
+        if ($online > time()) 
+		{
             return true;
-        } else {
+        } 
+		else
+		{
             return false;
         }
     }
@@ -62,9 +76,12 @@ class Char {
     function setOnline()
     {
         $online = $this->__get("online");
-        if ($online > time()) {
+        if ($online > time()) 
+		{
             return false;
-        } else {
+        } 
+		else 
+		{
             $this->__set("online", time() + 600);
             return true;
         }
@@ -72,9 +89,12 @@ class Char {
 
     function all()
     {
-        if (!is_object($this->id)) {
+        if (!is_object($this->id)) 
+		{
             $array = Database::GetOne("characters", array("_id" => toId($this->id)));
-        } else {
+        } 
+		else
+		{
             $array = Database::GetOne("characters", array("_id" => $this->id));
         }
         return $array;
@@ -83,11 +103,13 @@ class Char {
     function getParam($pname)
     {
         $param = Database::GetOne("config", array("mod" => "params"))[$pname];
-        if (!is_array($param)) {
+        if (!is_array($param)) 
+		{
             raptor_warning("Bad parameter for getParam ($pname)");
             return false;
         }
-        if (!isset($param['type'])) {
+        if (!isset($param['type'])) 
+		{
             raptor_warning("Cannot get param type for $pname");
             $c_base = Database::GetOne("characters", array("_id" => toId($this->id)))[$pname];
             $value = isset($c_base[$pname]) ? $c_base[$pname] : $param['def'];
@@ -130,7 +152,8 @@ class Char {
 
     function giveMoney($count, $currency)
     {
-        if (!strstr($currency, "money_")) {
+        if (!strstr($currency, "money_")) 
+		{
             $currency = "money_" . $currency;
         }
         $new = (int) $this->__get($currency) + $count;
@@ -139,10 +162,12 @@ class Char {
 
     function makeEvent($event)
     {
-		if(!is_string(Cache::get('events_' . $this->id)) or Cache::get('events_' . $this->id) == '0') {
+		if(!is_string(Cache::get('events_' . $this->id)) or Cache::get('events_' . $this->id) == '0') 
+		{
 			Cache::set('events_' . $this->id, array($event), 0);
 		}
-		else {
+		else 
+		{
 			$orig = Cache::get('events_' . $this->id);
 			$orig[] = $event;
 			Cache::set('events_' . $this->id, $orig);
@@ -168,16 +193,22 @@ class Char {
 
     function check()
     {
-        if (!is_object($this->id)) {
+        if (!is_object($this->id)) 
+		{
             $array = Database::GetOne("characters", array("_id" => new MongoId($this->id)));
-        } else {
+        } 
+		else 
+		{
             $array = Database::GetOne("characters", array("_id" => $this->id));
         }
-        if (!empty($array['_id'])) {
+        if (!empty($array['_id'])) 
+		{
             return true;
-        } else {
+        } 
+		else
+		{
             return false;
-        }
+		}
     }
 
     public static function create($data = array())
@@ -187,12 +218,16 @@ class Char {
         $player = is_object($player) ? $player->__toString() : $player;
         $cnf = Database::GetOne("config", array("mod" => "auth"));
         $admin = isset($data['admin']) ? $data['admin'] : '0';
-        if (empty($data['about'])) {
+        if (empty($data['about'])) 
+		{
             $data['about'] = "Этот персонаж предпочел о себе ничего не рассказывать!";
         }
-        if (isset($array['name'])) {
+        if (isset($array['name'])) 
+		{
             return false;
-        } else {
+        } 
+		else
+		{
             return Database::Insert("characters", array(
                         "name" => $data['name'],
                         "player" => $player,
@@ -214,14 +249,20 @@ class Char {
 
     public static function delete($name, $check = true)
     {
-        if ($check === true) {
+        if ($check === true) 
+		{
             array("name" => $name, "player" => $_SESSION['id']);
-        } else {
+        } 
+		else
+		{
             array("name" => $name);
         }
-        if (Database::Remove("characters", $array)) {
+        if (Database::Remove("characters", $array)) 
+		{
             return true;
-        } else {
+        } 
+		else 
+		{
             return 0;
         }
     }

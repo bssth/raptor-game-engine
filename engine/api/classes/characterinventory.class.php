@@ -1,6 +1,7 @@
 ﻿<?php
 
-class CharacterInventory {
+class CharacterInventory 
+{
 
     var $id;
     var $inv;
@@ -9,15 +10,18 @@ class CharacterInventory {
 
     function __construct($id = false, $inv = false, $conf = false)
     {
-        if ($id === false) {
+        if ($id === false) 
+		{
             $id = $_SESSION['cid'];
         }
         $this->id = $id;
-        if ($inv === false) {
+        if ($inv === false) 
+		{
             $temp = Database::GetOne('characters', array('_id' => toId($id)));
             $this->inv = isset($temp['inv']) ? (array)$temp['inv'] : array();
         }
-        if ($conf === false) {
+        if ($conf === false) 
+		{
             $this->conf = Database::GetOne('config', array('mod' => 'inventory'));
         }
     }
@@ -29,12 +33,13 @@ class CharacterInventory {
 
     function __destruct()
     {
-        if ($this->tosave === true) {
+        if ($this->tosave === true) 
+		{
             $this->save();
         }
     }
 
-    function refresh()
+	function refresh()
     {
         $this->inv = Database::GetOne('characters', array('_id' => toId($this->id)))['inv'];
     }
@@ -42,10 +47,13 @@ class CharacterInventory {
     function giveItem($id, $count)
     {
 		$this->tosave = true;
-        if ($this->inv[$id]) {
+        if ($this->inv[$id]) 
+		{
             $this->inv[$id] += $count;
 			return true;
-        } else {
+        } 
+		else 
+		{
             $this->inv[$id] = $count;
 			return false;
         }
@@ -54,10 +62,13 @@ class CharacterInventory {
     function takeItem($id, $count)
     {
         $this->tosave = true;
-        if ($this->inv[$id]) {
+        if ($this->inv[$id]) 
+		{
             $this->inv[$id] -= $count;
             return true;
-        } else {
+        } 
+		else 
+		{
             $this->inv[$id] = $count;
             return false;
         }
@@ -65,9 +76,12 @@ class CharacterInventory {
 
     function itemsCount($id)
     {
-        if ($this->inv[$id]) {
+        if ($this->inv[$id]) 
+		{
             return $this->inv[$id];
-        } else {
+        } 
+		else
+		{
             return 0;
         }
     }
@@ -75,7 +89,8 @@ class CharacterInventory {
     function getItems()
     {
         $array = array();
-        foreach ($this->inv as $key => $count) {
+        foreach ($this->inv as $key => $count) 
+		{
             $array[$key] = $this->conf[$key];
             $array[$key]['count'] = $count;
         }
@@ -85,14 +100,18 @@ class CharacterInventory {
     function rpgjs_items($json = false)
     {
         $array = array();
-        foreach ($this->inv as $key => $count) {
+        foreach ($this->inv as $key => $count) 
+		{
             $array[$key]['name'] = $this->conf[$key]['name'];
             $array[$key]['image'] = $this->conf[$key]['image'];
             $array[$key]['equip_image'] = $this->conf[$key]['equip_image'];
         }
-        if ($json === true) {
+        if ($json === true) 
+		{
             return json_encode($array);
-        } else {
+        } 
+		else
+		{
             return $array;
         }
     }
@@ -105,11 +124,13 @@ class CharacterInventory {
     function getParam($pname, $id)
     {
         $param = Database::GetOne("config", array("mod" => "inv_params"))[$pname];
-        if (!is_array($param)) {
+        if (!is_array($param)) 
+		{
             raptor_warning("Object as array (" . __METHOD__ . "->" . $pname . ")");
             return false;
         }
-        if (empty($param['type'])) {
+        if (empty($param['type'])) 
+		{
             return $this->conf[$id][$pname];
         }
         switch ($param['type'])

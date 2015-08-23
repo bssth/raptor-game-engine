@@ -1,15 +1,19 @@
 <?php
-if (isset($_POST['name'])) {
+if (isset($_POST['name'])) 
+{
     Database::Edit("config", array("active" => "1"), $_POST);
 	Cache::set("config_main", $_POST, 3600);
     echo "<div class='alert alert-success'>Настройки сохранены. Кэш конфигурации обновлен. <a href=?>Обновить страницу</a></div>";
 }
 ?>
 <script>
-    function generateNewID() {
-        $.get('/api?a=uniqid', function (data) {
-            document.getElementById('id').value = data;
-        });
+    function generateNewID() 
+	{
+        $.get('/api?a=uniqid', 
+			function (data) {
+				document.getElementById('id').value = data;
+			}
+		);
     }
 </script>
 

@@ -1,10 +1,13 @@
 ﻿<?php
-	if(isset($_POST['new'])) {
+	if(isset($_POST['new'])) 
+	{
 		Database::Edit("config", array("mod" => "locations"), array(uniqid() =>  array('name' => $_POST['name']) ) );
 		echo '<div class="alert alert-success">Локация <b>'. $_POST['name'] .'</b> успешно создана</div>';
 	}
-	if(isset($_GET['edit'])) {
-		if(isset($_POST['name'])) {
+	if(isset($_GET['edit'])) 
+	{
+		if(isset($_POST['name'])) 
+		{
 			Database::Edit("config", array("mod" => "locations"), array($_GET['edit'] =>  $_POST ) );
 			echo '<div class="alert alert-success">Локация <b>'. $_GET['edit'] .'</b> успешно отредактирована</div>';
 		}
@@ -16,7 +19,8 @@
 		<div class="form-group"><label>Тип локации</label>
 		<select name="type" class="form-control">
 		<option '. (!$param['type'] or $param['type']=='default'?'selected':'') .' value="default">По умолчанию (RPG.JS)</option>'; 
-		foreach(Database::GetOne("config", array("mod" => "location_types")) as $key => $value) {
+		foreach(Database::GetOne("config", array("mod" => "location_types")) as $key => $value) 
+		{
 			if(!is_array($value)) { continue; }
 			echo '<option '. ($param['type']==$key?'selected':'') .' value="'. $key .'">'. $value['name'] .'</option>';
 		}
@@ -25,7 +29,8 @@
 		<button type="submit" class="btn btn-default">Сохранить</button>
 		</form>';
 	}
-	else {
+	else 
+	{
 		echo '<div class="container-fluid">﻿<h2>Локации</h2>
 			<h5>Игровые локации. Не путайте их с картами. Локация - это игровая структура, которая включает в себя карту, объекты, игроков на ней и различные спецфункции (магазины и т.п.). Карта - это описание внешнего вида локации: где размещены какие объекты, тайлы и т.д.</h5>
 			<br>
@@ -35,8 +40,12 @@
 			</form>
 			<hr><div class="table-responsive">
 			<table class="table table-hover table-striped"><tbody>';
-		foreach(Database::GetOne("config", array("mod" => "locations")) as $key => $value) {
-			if(!is_array($value)) { continue; }
+		foreach(Database::GetOne("config", array("mod" => "locations")) as $key => $value) 
+		{
+			if(!is_array($value)) 
+			{ 
+				continue; 
+			}
 			echo "<tr><td> <b><font size=3>". $value['name'] ."</font></b> </td> <td> <b><font size=3>". $key ."</font></b> </td> <td> <a href='?edit=". $key ."'>Редактировать</a> </td></tr>";
 		}
 		echo '</tbody></table>';;

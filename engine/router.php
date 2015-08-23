@@ -1,75 +1,110 @@
 <?php
 
-class Router {
+/*
+	@last_edit 22.08.2015
+	@last_autor Mike
+	@comment Роутер, который определяет драйвер и действие
+*/
 
-    public static function Start() {
-	// $GLOBALS['disable_user_routing']
-		if(isset($_SERVER["REDIRECT_URL"])) {
+class Router 
+{
+
+    public static function Start() 
+	{
+		if(isset($_SERVER["REDIRECT_URL"])) 
+		{
 			$srv = $_SERVER["REDIRECT_URL"];
 		}
-		elseif(isset($_SERVER['REQUEST_URI'])) {
-			if($srv = strstr($_SERVER['REQUEST_URI'], "?", true)) {
+		elseif(isset($_SERVER['REQUEST_URI'])) 
+		{
+			if($srv = strstr($_SERVER['REQUEST_URI'], "?", true)) 
+			{
 				$srv = strstr($_SERVER['REQUEST_URI'], "?", true);
 			}
-			else {
+			else 
+			{
 				$srv = $_SERVER['REQUEST_URI'];
 			}
 		}
-		elseif($GLOBALS['disable_user_routing'] != true and isset($_GET['driver'])) {
+		elseif($GLOBALS['disable_user_routing'] != true and isset($_GET['driver'])) 
+		{
 			$srv = "/". $_GET['driver'] ."/". @$_GET['action'];
 		}
-		else {
+		else 
+		{
 			$srv = "/";
 		}
 		
         $urlArray = explode("/", $srv);
-        if (!empty($urlArray[1])) {
+        if (!empty($urlArray[1])) 
+		{
             $dDriver = $urlArray[1];
-        } else {
+        } 
+		else
+		{
             $dDriver = "index";
         }
 		
-        if (!empty($urlArray[2])) {
+        if (!empty($urlArray[2])) 
+		{
             $dAction = $urlArray[2];
-        } else {
+        } 
+		else
+		{
             $dAction = "index";
         }
 		
 		$GLOBALS['driver'] = $dDriver;
 		$GLOBALS['action'] = $dAction;
 		
-		if (!empty($urlArray)) {
+		if (!empty($urlArray)) 
+		{
             $GLOBALS['link'] = $urlArray;
-        } else {
+        } 
+		else
+		{
             $GLOBALS['link'] = array(false, $dDriver, $dAction);
         }
-        @include_once(ENGINE_ROOT . "/drivers/" . $dDriver . ".php");
+        
+		@include_once(ENGINE_ROOT . "/drivers/" . $dDriver . ".php");
         $controllerClassName = $dDriver . "Driver";
         #$dAction = ucfirst($dAction);
         $actionMethod = "action" . $dAction;
 		
-		if(call_user_func("onRouted", $dDriver, $dAction, $urlArray) === false) {
+		if(call_user_func("onRouted", $dDriver, $dAction, $urlArray) === false) 
+		{
 			return false;
 		}
 
-		if(!class_exists($controllerClassName)) { loadclass($controllerClassName); }
+		if(!class_exists($controllerClassName)) 
+		{ 
+			loadclass($controllerClassName); 
+		}
 		
-        if (!class_exists($controllerClassName)) {
+        if (!class_exists($controllerClassName)) 
+		{
             header('HTTP/1.1 404 Not Found');
 
-if (MODE == 'dev') {
+			if (MODE == 'dev') 
+			{
                 die("<center style='margin-top:20%;'><h1>Error:</h1> Class: <b>" . $controllerClassName . "</b> not found! Please check your URI <sup>mode: <b>" . MODE . "</b></sup></center>");
-            } elseif (MODE == 'production') {
+            } 
+			elseif (MODE == 'production') 
+			{
                 die("<center style='margin-top:20%;'><h1>404</h1>Page not found</center>");
             }
         }
         $controllerClass = new $controllerClassName;
 
-        if (!method_exists($controllerClass, $actionMethod) and !method_exists($controllerClass, "__call")) {
+        if (!method_exists($controllerClass, $actionMethod) and !method_exists($controllerClass, "__call")) 
+		{
             header('HTTP/1.1 404 Not Found');
-            if (MODE == 'dev') {
+            if (MODE == 'dev') 
+			{
                 die("<center style='margin-top:20%;'> <h1>Error:</h1> Class: <b>" . $controllerClassName . "</b> exists, but method <b>" . $actionMethod . "</b> does not exist! Please check your URI <sup>mode: <b>" . MODE . "</b></sup></center>");
-            } elseif (MODE == 'production') {
+            } 
+			else
+			{
                 die("<center style='margin-top:20%;'><h1>404</h1>Page not found</center>");
             }
         }

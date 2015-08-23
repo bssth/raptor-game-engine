@@ -1,7 +1,9 @@
 ﻿<?php
-if (isset($_POST['mod'])) {
+if (isset($_POST['mod'])) 
+{
     Database::Edit("config", array("mod" => "locations"), $_POST);
-	foreach($_POST as $key => $value) {
+	foreach($_POST as $key => $value) 
+	{
 		Cache::set("rpgjs_cmd" . $key, $value, 3600);
 	}
     echo "<div class='alert alert-success'>Настройки применены. Кэш обновлен.</div>";

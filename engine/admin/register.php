@@ -4,14 +4,17 @@
 <p>Проверяем наличие в базе RAPTOR (запрос: <?=RAPTOR_URL . "/api?a=check&url=". $GLOBALS['url'];?>)</p>
 <?php 
 	$ans = file_get_contents(RAPTOR_URL . "/api?a=check&url=". $GLOBALS['url']);
-	if(isset($_GET['a'])) {
+	if(isset($_GET['a'])) 
+	{
 		$answer = file_get_contents(RAPTOR_URL . '/api?' . $_SERVER['QUERY_STRING']);
 		echo "<p>Запрос: ". RAPTOR_URL . '/api?' . $_SERVER['QUERY_STRING'] .", ответ: " . $answer . "<br>" . (strstr($answer, '"id"') ? "<b>Игра зарегистрирована</b>" : "<b>Игра не зарегистрирована</b>") . "</p><hr>";
 	}
-	if(strstr($ans, '"id"')) { 
+	if(strstr($ans, '"id"')) 
+	{ 
 		echo '<p>Игра зарегистрирована в каталоге RAPTOR. Подробные данные: <p><samp>'. $ans .'</samp></p> Для отключения от аккаунта в системе RAPTOR требуется сделать это в личном кабинете на сайте '. RAPTOR_URL . '</p>';
 	}
-	else {
+	else 
+	{
 		echo '<p>Игра не зарегистрирована в каталоге RAPTOR. Для регистрации заполните форму:
 		<form action="" method="GET">
 			<p>

@@ -1,16 +1,22 @@
 ﻿<?php
-if (isset($_POST['mod'])) {
-    Database::Edit("config", array("mod" => "_payments"), $_POST);
-    echo "<div class='alert alert-success'>Настройки сохранены. <a href=?>Обновить страницу</a></div>";
-}
+	if (isset($_POST['mod'])) 
+	{
+		Database::Edit("config", array("mod" => "_payments"), $_POST);
+		echo "<div class='alert alert-success'>Настройки сохранены. <a href=?>Обновить страницу</a></div>";
+	}
+	
 	$psconfig = Database::GetOne("config", array("mod" => "_payments"));
 ?>
 
 <script>
-    function generateNewID() {
-        $.get('/api?a=uniqid', function (data) {
-            document.getElementById('id').value = data;
-        });
+    function generateNewID() 
+	{
+        $.get('/api?a=uniqid', 
+			function (data) 
+			{
+				document.getElementById('id').value = data;
+			}
+		);
     }
 </script>
 
@@ -20,7 +26,8 @@ if (isset($_POST['mod'])) {
 	<div class="form-group"><label>Модуль платёжной системы</label>
 		<select name="pay_mod" class="form-control">'; 
 		<?php
-			foreach($GLOBALS['modules'] as $mod) {
+			foreach($GLOBALS['modules'] as $mod) 
+			{
 				echo '<option '. ($psconfig['pay_mod']==$mod?'selected':'') .' value="'. $mod .'">'. $mod .'</option>';
 			}
 		?>

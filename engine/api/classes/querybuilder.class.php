@@ -1,12 +1,14 @@
 <?php
 
-/**
- * Description of Core
- *
- * @author 0paquity
- * @last-edit 13:55 04.06.15
- */
-class QueryBuilder {
+/*
+	** Description of Core
+	** 
+	** @author 0paquity
+	** @last_edit 22.08.2015
+	** @last_autor Mike
+*/
+class QueryBuilder 
+{
 
     public $mode;
 
@@ -70,7 +72,7 @@ class QueryBuilder {
         return $this;
     }
 
-    /**
+	/**
      * 
      * @param type $where
      * @return \Initialiser

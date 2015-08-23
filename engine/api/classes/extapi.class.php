@@ -1,6 +1,7 @@
 <?php
 
-class ExtAPI {
+class ExtAPI 
+{
 
     public static function __callStatic($func, $args)
     {
@@ -19,13 +20,19 @@ class ExtAPI {
 
     public static function test($array)
     {
-        if (isset($array['public_key']) or isset($array['private_key'])) {
-            if ($array['public_key'] == $GLOBALS['public_key'] and $array['private_key'] == $GLOBALS['private_key']) {
+        if (isset($array['public_key']) or isset($array['private_key'])) 
+		{
+            if ($array['public_key'] == $GLOBALS['public_key'] and $array['private_key'] == $GLOBALS['private_key']) 
+			{
                 $answer = json_encode(array('answer' => '1'));
-            } else {
+            } 
+			else
+			{
                 $answer = json_encode(array('answer' => '0'));
             }
-        } else {
+        } 
+		else 
+		{
             $answer = json_encode(array('answer' => '1'));
         }
         return $answer;
@@ -35,7 +42,8 @@ class ExtAPI {
     {
         $xchar = Database::GetOne("characters", array("name" => $array['name']));
         $answer = json_encode(array('answer' => '0'));
-        if (!empty($xchar['_id'])) {
+        if (!empty($xchar['_id'])) 
+		{
             $answer = json_encode(array('answer' => '1'));
         }
         return $answer;
@@ -45,7 +53,8 @@ class ExtAPI {
     {
         $pcc = Database::GetOne("players", array("login" => $array['name'], "password" => md5($array['password'])));
         $answer = json_encode(array('answer' => '0'));
-        if (!empty($pcc['_id'])) {
+        if (!empty($pcc['_id'])) 
+		{
             $answer = json_encode(array('answer' => '1'));
         }
         return $answer;
@@ -63,7 +72,8 @@ class ExtAPI {
     {
         $answer = array();
         $chars = Database::Get("characters", array("map" => (string) $array['map'], 'online' => array('$gt' => time())));
-        foreach ($chars as $c) {
+        foreach ($chars as $c) 
+		{
             $c['_id'] = __toString($c['_id']);
             $answer[$c['_id']]['id'] = $c['_id'];
             $answer[$c['_id']]['name'] = $c['name'];
@@ -81,8 +91,10 @@ class ExtAPI {
     {
         $ccchar = Database::Get("characters", array("map" => (string) $array['map'], 'online' => array('$gt' => time())));
         $answer = array();
-        foreach ($ccchar as $c) {
-            if (__toString($c['_id']) == $_SESSION['cid']) {
+        foreach ($ccchar as $c) 
+		{
+            if (__toString($c['_id']) == $_SESSION['cid']) 
+			{
                 continue;
             }
             $c['_id'] = __toString($c['_id']);
@@ -110,12 +122,16 @@ class ExtAPI {
 	
     public static function teleport($array)
     {
-        if (!isset($_SESSION['cid'])) {
+        if (!isset($_SESSION['cid'])) 
+		{
             $answer = json_encode(array('answer' => '0'));
         }
-        if (Database::Edit("characters", array('_id' => toId($_SESSION['cid'])), array('pos_x' => $array['x'], 'dir' => $array['dir'], 'pos_y' => $array['y']))) {
+        if (Database::Edit("characters", array('_id' => toId($_SESSION['cid'])), array('pos_x' => $array['x'], 'dir' => $array['dir'], 'pos_y' => $array['y']))) 
+		{
             $answer = json_encode(array('answer' => '1', 'new_x' => $array['x'], 'new_y' => $array['y']));
-        } else {
+        } 
+		else
+		{
             $answer = json_encode(array('answer' => '0'));
         }
         return $answer;
@@ -138,13 +154,16 @@ class ExtAPI {
 
     public static function makereport($array)
     {
-        if (!isset($_POST['text'])) {
+        if (!isset($_POST['text'])) 
+		{
             $answer = json_encode(array('error' => 'Cant read text'));
         }
-        if (!isset($_SESSION['cid'])) {
+        if (!isset($_SESSION['cid'])) 
+		{
             $answer = json_encode(array('error' => 'Not logged in'));
         }
-        if (!isset($char)) {
+        if (!isset($char)) 
+		{
             $char = new Char();
         }
         $text = trim($_POST['text']);
@@ -157,7 +176,8 @@ class ExtAPI {
 
     public static function changeemail($array)
     {
-        if (!isset($_SESSION['id'])) {
+        if (!isset($_SESSION['id'])) 
+		{
             $answer = json_encode(array('error' => 'Not logged in'));
         }
         Database::Edit("players", array("_id" => toId($_SESSION['id'])), array("email" => $array['new']));
@@ -167,7 +187,8 @@ class ExtAPI {
 
     public static function changepass($array)
     {
-        if (!isset($_SESSION['id'])) {
+        if (!isset($_SESSION['id'])) 
+		{
             $answer = json_encode(array('error' => 'Not logged in'));
         }
         Database::Edit("players", array("_id" => toId($_SESSION['id'])), array("password" => md5($array['new'])));

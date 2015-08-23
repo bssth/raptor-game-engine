@@ -1,5 +1,12 @@
 <?php
 
+/*
+	@last_edit 22.08.2015
+	@last_autor Mike
+	@comment API для чата
+	@todo Переместить в обычный ExtAPI & WebSockets
+*/
+
 class messagerDriver {
 
     public function actionIndex()
@@ -28,12 +35,15 @@ class messagerDriver {
 
         $result = array();
 
-        if (!empty($_POST['text'])) {
+        if (!empty($_POST['text'])) 
+		{
             $sth = Database::Insert("chat", array('user' => char()->name, 'text' => $_POST['text'], 'date' => time()));
         }
 
         $sth = Database::Get("chat", array('date' => array('$gt' => $last_id)))->sort(array('date' => 1));
-        foreach ($sth as $o) {
+		
+        foreach ($sth as $o) 
+		{
             $result[] = $o;
         }
 
