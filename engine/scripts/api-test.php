@@ -12,4 +12,4 @@ define("WEBSITE", true);
 include(__DIR__ . "/../config.php");
 include(__DIR__ . "/../api.php");
 
-var_dump($GLOBALS);
+echo 'Если вы не увидели никаких ошибок, а лишь эту строчку, значит API работает нормально';
