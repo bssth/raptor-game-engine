@@ -28,7 +28,7 @@ fclose(STDERR);
 
 $STDIN = fopen('/dev/null', 'r');
 $STDOUT = fopen($baseDir.'/websocket_action_log.txt', 'ab');
-$STDERR = fopen($baseDir.'/websocket_error_log', 'ab');
+$STDERR = fopen($baseDir.'/websocket_error_log.txt', 'ab');
 
 $GLOBALS['file'] = $baseDir.'/websocket_action_log.txt';
 $GLOBALS['connects'] = array();
@@ -36,7 +36,6 @@ $GLOBALS['sess_data'] = array();
 consolestart();
 consolemsg("Trying to start script... "); 
 
-//$timelimit = 0;
 $starttime = time();
 
 consolemsg("Starting socket server at " . $GLOBALS['socket_ip'] . ":" . $GLOBALS['socket_port']);
@@ -44,7 +43,7 @@ $socket = stream_socket_server("tcp://". $GLOBALS['socket_ip'] .":". $GLOBALS['s
 
 if (!$socket) 
 {
-	consolemsg("ERROR socket unavailable " .$errstr. "(" .$errno. ")");
+	consolemsg("Error! Cant run socket server: " .$errstr. "(" .$errno. ")");
 	consoleend();
     die($errstr. "(" .$errno. ")\n");
 }
@@ -80,7 +79,7 @@ while (true)
 
         if (!$data) 
 		{
-			consolemsg("Connection closed. ");    
+			consolemsg("Connection closed: " . $connect);    
 			fclose($connect);
             unset($connects[ array_search($connect, $connects) ]);
             onClose($connect);
@@ -105,7 +104,7 @@ while (true)
 }
 
 fclose($socket);
-consolemsg("socket - closed");	
+consolemsg("Socket server closed");	
 consoleend();
 
 //------------------------------------------------------------------------------------------------------------------------------------------------

@@ -162,14 +162,10 @@ class ExtAPI
 		{
             $answer = json_encode(array('error' => 'Not logged in'));
         }
-        if (!isset($char)) 
-		{
-            $char = new Char();
-        }
         $text = trim($_POST['text']);
         $text = htmlspecialchars($_POST['text']);
         $text = strip_tags($_POST['text']);
-        Database::Insert("reports", array("author" => $char->name, "message" => $text, "date" => raptor_date()));
+        Database::Insert("reports", array("author" => char()->name, "message" => $text, "date" => raptor_date()));
         $answer = json_encode(array('message' => 'Report sent'));
         return $answer;
     }

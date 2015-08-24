@@ -15,7 +15,11 @@ define("MODE", "production");
  * production - работающий прототип или конечный продукт
  */
 
-if(file_exists(SITE_ROOT . "/engine/cache/installed.cache") or file_exists(SITE_ROOT . "/engine/config.php")) 
+if(MODE == 'cloud')
+{
+	require_once(SITE_ROOT . "/engine/cloudmgr.php");
+}
+elseif(file_exists(SITE_ROOT . "/engine/cache/installed.cache") or file_exists(SITE_ROOT . "/engine/config.php")) 
 { 
 	require_once(SITE_ROOT . "/engine/config.php");
 }
