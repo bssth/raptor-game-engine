@@ -33,6 +33,7 @@ if (!defined('ENGINE_ROOT'))
     define("STATIC_ROOT", STORAGE_ROOT . SEPARATOR . "static"); # Root of 'engine' directory
     define("API_ROOT", ENGINE_ROOT . SEPARATOR . "api"); # Root of 'api' directory
     define("ADMIN_ROOT", ENGINE_ROOT . SEPARATOR . "admin"); # Root of 'admin' directory
+	define("LANG_ROOT", ENGINE_ROOT . SEPARATOR . "lang"); # Root of 'lang' directory
     define("MODS_ROOT", ENGINE_ROOT . SEPARATOR . "mods"); # Root of 'api' directory
     define("SITE_URL", @$_SERVER['SERVER_NAME']);
     define("TEMPLATE_ROOT", ENGINE_ROOT . SEPARATOR . "templates");

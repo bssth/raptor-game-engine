@@ -85,7 +85,7 @@ switch ($_GET['step']) {
         } 
 		else 
 		{
-            echo '<div class="alert alert-danger">Класс MemCache недоступен (не критично)</div>';
+            echo '<div class="alert alert-danger">Класс MemCache недоступен (будут использоваться файлы)</div>';
         }
         if (function_exists("mysqli_connect")) 
 		{
