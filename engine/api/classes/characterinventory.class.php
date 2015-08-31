@@ -1,5 +1,11 @@
 ﻿<?php
 
+/*
+	** @comment Класс для работы с инвентарём персонажа. Экземпляр хранится в переменной inv класса Char
+	** @last_edit 24.08.2015
+	** @last_autor Mike
+*/
+
 class CharacterInventory 
 {
 
