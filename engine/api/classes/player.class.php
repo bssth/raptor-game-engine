@@ -99,7 +99,7 @@ class Player
             Database::Edit("players", array("_id" => $check['_id']), array("last_ip" => $_SERVER['REMOTE_ADDR'], "last_date" => raptor_date()));
             return $check['_id'];
         }
-		call_user_func("onPlayerLogin", $_POST['name'])
+		call_user_func("onPlayerLogin", $_POST['name']);
     }
 
 }
