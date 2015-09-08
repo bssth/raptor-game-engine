@@ -15,17 +15,21 @@ class indexDriver
 		{
             header("Location: /cabinet");
         }
-        switch (@$_GET['result']) 
+		
+		if(isset($_GET['result']))
 		{
-            case 'regerror':
-			echo "<script>alert('Введены неверные данные или аккаунт уже существует');</script>";
-                break;
-            case 'loginerror':
-                echo "<script>alert('Неверный логин или пароль');</script>";
-                break;
-            default:
-                break;
-        }
+			switch (@$_GET['result']) 
+			{
+				case 'regerror':
+				echo "<script>alert('Введены неверные данные или аккаунт уже существует');</script>";
+					break;
+				case 'loginerror':
+					echo "<script>alert('Неверный логин или пароль');</script>";
+					break;
+				default:
+					break;
+			}
+		}
         $main = new Templater;
         $main->import("interface/index.tpl");
         $main->setvar("%URL%", "http://" . $GLOBALS['url']);

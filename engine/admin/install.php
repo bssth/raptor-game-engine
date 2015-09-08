@@ -147,7 +147,8 @@ switch ($_GET['step']) {
     case 3:
 		if (isset($_POST['name'])) 
 		{
-			$in = array_merge( array('modules'=>array(),'active'=>'1','id'=>uniqid()), $_POST );
+			$in = array('modules'=>array(),'active'=>'1','id'=>uniqid()) + $_POST;
+			Database::Insert("config", $in);
 
 			foreach($config as $as) 
 			{

@@ -17,10 +17,19 @@ define("MODE", "production");
 
 if(MODE == 'cloud')
 {
+	error_reporting(0);
+	define("HIDE_ERRORS", true);
+	$GLOBALS['debug'] = false;
 	require_once(SITE_ROOT . "/engine/cloudmgr.php");
 }
-elseif(file_exists(SITE_ROOT . "/engine/cache/installed.cache") and file_exists(SITE_ROOT . "/engine/config.php")) 
+elseif(file_exists(SITE_ROOT . "/engine/cache/installed.cache") or file_exists(SITE_ROOT . "/engine/config.php")) 
 { 
+	if(MODE !== 'dev')
+	{
+		error_reporting(0);
+		define("HIDE_ERRORS", true);
+		$GLOBALS['debug'] = false;
+	}
 	require_once(SITE_ROOT . "/engine/config.php");
 }
 else 
