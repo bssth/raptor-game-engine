@@ -1,13 +1,12 @@
 ﻿<?php
 
 /*
-	@last_edit 22.08.2015
-	@last_autor Mike
+	@last_edit 22.08.2015 by Mike
 	@comment RCON-консоль. На данный момент на стадии тестирования
 	@todo Безопасность
 */
 
-@session_start();
+	@session_start(); // костыль
 
 	class rconDriver 
 	{

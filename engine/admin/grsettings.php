@@ -1,11 +1,11 @@
 ﻿<?php
 if (isset($_POST['mod'])) 
 { 
-    Database::Edit("config", array("mod" => "locations"), $_POST);
+	Raptor::SetModConfig('locations', $_POST);
     echo "<div class='alert alert-success'>Настройки применены</div>";
 }
 
-$data = Database::GetOne("config", array("mod" => "locations"));
+$data = Raptor::ModConfig('locations');
 ?>
 
 <div class="well">Здесь можно управлять графикой, которая доступна в игре. Каждая настройка - массив в формате JSON. Ключи массива - целые числа, идентификаторы элемента, а значения - имена файлов. Каждый массив работает с отдельной папкой графики, которая указана в подсказке (по отношению директории <b>/storage/static/Graphics</b>)</div>

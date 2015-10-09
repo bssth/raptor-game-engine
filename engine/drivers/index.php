@@ -1,8 +1,7 @@
 <?php
 
 /*
-	@last_edit 22.08.2015
-	@last_autor Mike
+	@last_edit 10.10.2015 by Mike
 	@comment Драйвер титульной страницы, также переадресация на игру в случае, если игрок авторизован
 */
 
@@ -13,7 +12,7 @@ class indexDriver
 	{
         if (isset($_SESSION['id'])) 
 		{
-            header("Location: /cabinet");
+			Raptor::Redirect('/cabinet');
         }
 		
 		if(isset($_GET['result']))
@@ -38,7 +37,7 @@ class indexDriver
         $main->setvar("%YEAR%", date("Y"));
         $main->setvar("%CSS%", "<style>" . templater("css/main.css", array("%ROOT%" => "/storage/tpl")) . "</style>");
         $main->setvar("%REGISTER%", template("interface/register.tpl"));
-		$cursor = Database::Get("news", array('public' => 1))->sort(array('date' => -1))->limit(1)->getNext();
+		$cursor = News::get()->sort(array('date' => -1))->limit(1)->getNext();
 		$newss = templater("interface/news.tpl", array(
 			"%SUBJECT%" => $cursor['title'],
 			"%DATE%" => $cursor['date'],
@@ -54,7 +53,7 @@ class indexDriver
 
     function actionRegister() 
 	{
-        if ((Database::GetOne("config", array("mod" => "auth"))['allowRegister'] == 0) and $_SESSION['invited']!==true) 
+        if ((Raptor::ModConfig('auth')['allowRegister'] == 0) and $_SESSION['invited']!==true) 
 		{
             echo "<script>alert('Регистрация закрыта'); window.location = '/';</script>";
             die();
@@ -64,13 +63,11 @@ class indexDriver
             $_SESSION['id'] = $res;
 			if($_SESSION['invited'] === true) { $_SESSION['invited'] = false; }
 			call_user_func("onPlayerRegister", $_POST['login'], $_POST['password'], $_POST['email']);
-			@header("Location: /cabinet");
-			die("<script>location.href = '/cabinet';</script>");
+			Raptor::Redirect("/cabinet");
         } 
 		else
 		{
-            @header("Location: /index?result=regerror");
-			die("<script>location.href = '/index?result=regerror';</script>");
+            Raptor::Redirect('/index?result=regerror');
         }
     }
 
@@ -79,14 +76,12 @@ class indexDriver
         if (Player::login($_POST['name'], $_POST['password'], true)) 
 		{
 			call_user_func("onPlayerLogin", $_POST['name'], $_POST['password'], true);
-            @header("Location: /cabinet");
-			die("<script>location.href = '/cabinet';</script>");
+            Raptor::Redirect('/cabinet');
         } 
 		else
 		{
 			call_user_func("onPlayerLogin", $_POST['name'], $_POST['password'], false);
-            @header("Location: /index?result=loginerror");
-			die("<script>location.href = '/index?result=loginerror';</script>");
+            Raptor::Redirect('/index?result=loginerror');
         }
     }
 

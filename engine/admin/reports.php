@@ -8,7 +8,7 @@ else
     $c = 10;
 }
 
-$reports = Database::Get("reports", array())->limit($c);
+$reports = Reports::get()->limit($c);
 
 echo 'показывать на страницу: <form action="" method="GET"><input type="text" value="' . $c . '" name="count"><input type="submit" value="Показать"></form><hr>';
 

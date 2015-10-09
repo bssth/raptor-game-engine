@@ -1,11 +1,11 @@
 ﻿<?php
 	if (isset($_POST['mod'])) 
 	{
-		Database::Edit("config", array("mod" => "_payments"), $_POST);
+		Raptor::SetModConfig("_payments", $_POST);
 		echo "<div class='alert alert-success'>Настройки сохранены. <a href=?>Обновить страницу</a></div>";
 	}
 	
-	$psconfig = Database::GetOne("config", array("mod" => "_payments"));
+	$psconfig = Raptor::ModConfig('_payments');
 ?>
 
 <script>

@@ -1,4 +1,5 @@
 <?php
+/*
 if (isset($_POST['edit'])) 
 {
     Database::Edit('wiki_articles', array(
@@ -84,3 +85,6 @@ else
             </tbody>
         </table>
     </div>
+*/
+?>
+<h1>Временно недоступно</h1>

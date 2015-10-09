@@ -1,7 +1,7 @@
 ﻿<?php
 if (isset($_POST['mod'])) 
 {
-    Database::Edit("config", array("mod" => "locations"), $_POST);
+    Raptor::SetModConfig($_POST);
 	foreach($_POST as $key => $value) 
 	{
 		Cache::set("rpgjs_cmd" . $key, $value, 3600);
@@ -9,7 +9,7 @@ if (isset($_POST['mod']))
     echo "<div class='alert alert-success'>Настройки применены. Кэш обновлен.</div>";
 }
 
-$data = Database::GetOne("config", array("mod" => "locations"));
+$data = Raptor::ModConfig('locations');
 ?>
 
 <div class="well">Под <b>командами</b> здесь подразумеваются команды скриптового движка из RPG.JS в формате JSON<br> <a target="_blank" href='/ahelp/cmdlist'>Подробный список команд</a></div>

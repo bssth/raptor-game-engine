@@ -1,23 +1,23 @@
 ﻿<?php
 	if(isset($_POST['new'])) 
 	{
-		Database::Edit("config", array("mod" => "mod_paidservice"), array("mod" => "mod_paidservice", uniqid() =>  array('name' => $_POST['name']) ) );
+		Raptor::SetModConfig('mod_paidservice', array("mod" => "mod_paidservice", uniqid() =>  array('name' => $_POST['name']) ));
 		echo '<div class="alert alert-success">Платная услуга <b>'. $_POST['name'] .'</b> успешно создана</div>';
 	}
 	if(isset($_GET['edit'])) 
 	{
 		if(isset($_POST['name'])) 
 		{
-			Database::Edit("config", array("mod" => "mod_paidservice"), array($_GET['edit'] =>  $_POST ) );
+			Raptor::SetModConfig('mod_paidservice', array($_GET['edit'] =>  $_POST ));
 			echo '<div class="alert alert-success">Платная услуга <b>'. $_GET['edit'] .'</b> успешно отредактирована</div>';
 		}
-		$param = Database::GetOne("config", array("mod" => "mod_paidservice"))[$_GET['edit']];
+		$param = Raptor::ModConfig('mod_paidservice')[$_GET['edit']];
 		echo '<form action="" method="POST">
 		<div class="form-group"><label for="disabledSelect">Код услуги</label><input class="form-control" id="disabledInput" placeholder="'. $_GET['edit'] .'" disabled="" type="text"></div>
 		<div class="form-group"><label>Название услуги</label><input name="name" value="'. $param['name'] .'" class="form-control"><p class="help-block">Название, отображаемое игрокам</p></div>
 		<div class="form-group"><label>Название услуги на английском</label><input name="name_en" value="'. $param['name_en'] .'" class="form-control"></div>
 		<div class="form-group"><label>Стоимость услуги</label><input name="cost" value="'. $param['cost'] .'" class="form-control"> <select name="currency" class="form-control">'; 
-		foreach(Database::GetOne("config", array("mod" => "currency")) as $key => $value) 
+		foreach(Raptor::ModConfig('currency') as $key => $value) 
 		{
 			if(!strstr($key, "money_")) 
 			{ 
@@ -53,7 +53,7 @@
 			</form>
 			<hr><div class="table-responsive">
 			<table class="table table-hover table-striped"><tbody>';
-			foreach(Database::GetOne("config", array("mod" => "mod_paidservice")) as $key => $value) 
+			foreach(Raptor::ModConfig('mod_paidservice') as $key => $value) 
 			{
 				if(!is_array($value)) 
 				{ 

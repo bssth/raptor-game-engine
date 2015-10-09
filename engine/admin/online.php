@@ -1,5 +1,5 @@
 ﻿<?php
-	$chars = Database::Get("characters", array('online' => array( '$gt' => time() )) )->limit(100);
+	$chars = Char::findAll(array('online' => array( '$gt' => time() )))->limit(100); 
 	echo '<h3>В данный момент онлайн '. $chars->count() .' персонажей</h3>';
 	foreach($chars as $a) 
 	{

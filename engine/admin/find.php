@@ -1,7 +1,7 @@
 <?php
 if (isset($_GET['name'])) 
 {
-    $char = Database::GetOne("characters", array("name" => $_GET['name']));
+    $char = Char::find(array("name" => $_GET['name']));
     if (isset($char['_id'])) 
 	{
         echo '<div class="alert alert-success"><strong>Персонаж найден</strong><br>';
@@ -17,7 +17,7 @@ if (isset($_GET['name']))
         echo '<div class="alert alert-danger">Персонаж не найден</div>';
     }
 
-    $player = Database::GetOne("players", array("login" => $_GET['name']));
+	$player = Player::find(array("login" => $_GET['name']));
     if (isset($player['_id'])) 
 	{
         echo '<div class="alert alert-success"><strong>Игрок найден</strong><br>';

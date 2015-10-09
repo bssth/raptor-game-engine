@@ -1,17 +1,17 @@
 ﻿<?php
 	if(isset($_POST['new'])) 
 	{
-		Database::Edit("config", array("mod" => "location_types"), array("mod" => "location_types", uniqid() =>  array('name' => $_POST['name']) ) );
+		Raptor::SetModConfig('location_types', array("mod" => "location_types", uniqid() =>  array('name' => $_POST['name']) ));
 		echo '<div class="alert alert-success">Тип локаций <b>'. $_POST['name'] .'</b> успешно создан</div>';
 	}
 	if(isset($_GET['edit'])) 
 	{
 		if(isset($_POST['name'])) 
 		{
-			Database::Edit("config", array("mod" => "location_types"), array($_GET['edit'] =>  $_POST ) );
+			Raptor::SetModConfig('location_types', array($_GET['edit'] =>  $_POST ));
 			echo '<div class="alert alert-success">Тип локаций <b>'. $_GET['edit'] .'</b> успешно отредактирован</div>';
 		}
-		$param = Database::GetOne("config", array("mod" => "location_types"))[$_GET['edit']];
+		$param = Raptor::ModConfig('location_types')[$_GET['edit']];
 		echo '<form action="" method="POST">
 		<div class="form-group"><label for="disabledSelect">ID типа</label><input class="form-control" id="disabledInput" placeholder="'. $_GET['edit'] .'" disabled="" type="text"></div>
 		<div class="form-group"><label>Название типа</label><input name="name" value="'. $param['name'] .'" class="form-control"><p class="help-block">Название, отображаемое игрокам</p></div>
@@ -37,7 +37,7 @@
 			</form>
 			<hr><div class="table-responsive">
 			<table class="table table-hover table-striped"><tbody>';
-		foreach(Database::GetOne("config", array("mod" => "location_types")) as $key => $value) 
+		foreach(Raptor::ModConfig('location_types') as $key => $value) 
 		{
 			if(!is_array($value)) 
 			{ 

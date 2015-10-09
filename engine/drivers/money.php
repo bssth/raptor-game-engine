@@ -11,8 +11,7 @@ class moneyDriver
 
     function actionIndex()
     {
-        $char = new Char();
-        $params = Database::GetOne("config", array("mod" => "currency"));
+        $params = Raptor::ModConfig('currency');
         $main = new Templater;
         $main->import("boxes/money_page.tpl");
         $main->setvar("%URL%", "http://" . $GLOBALS['url']);
@@ -28,7 +27,7 @@ class moneyDriver
 			{
                 continue;
             }
-            $result .= templater("boxes/money_list.tpl", array("%NAME%" => $value['name'], "%IMG%" => $value['img'], "%COUNT%" => $char->$key));
+            $result .= templater("boxes/money_list.tpl", array("%NAME%" => $value['name'], "%IMG%" => $value['img'], "%COUNT%" => char()->$key));
         }
         $main->setvar("%CONTENT%", $result);
         $main->renderEcho();

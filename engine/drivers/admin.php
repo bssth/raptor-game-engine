@@ -14,12 +14,13 @@ class adminDriver {
 		$func = strtolower(str_replace("action", "", $func));
 		if(!file_exists(CACHE_ROOT . SEPARATOR . "installed.cache") and $func != 'install') 
 		{ 
-			header("Location: /admin/install"); die(); 
+			Raptor::Redirect('/admin/install');
 		}
-        if (char()->admin<1 and !in_array($func, char()->perms) and file_exists(CACHE_ROOT . SEPARATOR . "installed.cache")) 
+        if (!char()->canUseAdmin($func)) 
 		{
             die("403 Forbidden");
         }
+		// запасной костыль
         if(!isset($_SESSION['cid']) and file_exists(CACHE_ROOT . SEPARATOR . "installed.cache")) 
 		{ 
 			die("403 Forbidden"); 

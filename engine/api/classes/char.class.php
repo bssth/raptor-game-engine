@@ -190,7 +190,19 @@ class Char
     {
         return $this->makeEvent(array('js' => 'showDialog(' . $id . ', "' . $type . '", "' . $title . '", "' . $text . '", "' . $params . '");'));
     }
-
+	
+	function canUseAdmin($driver = '')
+	{
+		if( $this->admin < 1 and !in_array($driver, $this->perms) and file_exists(CACHE_ROOT . SEPARATOR . "installed.cache") )
+		{
+			return false;
+		}
+		else
+		{
+			return true;
+		}
+	}
+	
     function check()
     {
         if (!is_object($this->id)) 
@@ -251,12 +263,13 @@ class Char
     {
         if ($check === true) 
 		{
-            array("name" => $name, "player" => $_SESSION['id']);
+            $array = array("name" => $name, "player" => $_SESSION['id']);
         } 
 		else
 		{
-            array("name" => $name);
+            $array = array("name" => $name);
         }
+		
         if (Database::Remove("characters", $array)) 
 		{
             return true;
@@ -266,5 +279,41 @@ class Char
             return 0;
         }
     }
+	
+	public static function find($crit, $val = '')
+	{
+		if(is_array($crit))
+		{
+			return Database::GetOne("characters", $crit);
+		}
+		else
+		{
+			return Database::GetOne("characters", array($crit => $val));
+		}
+	}
+	
+	public static function findAll($crit, $val = '')
+	{
+		if(is_array($crit))
+		{
+			return Database::Get("characters", $crit);
+		}
+		else
+		{
+			return Database::Get("characters", array($crit => $val));
+		}
+	}
+	
+	public static function merge($crit, $val = '', $val2 = '')
+	{
+		if(is_array($crit))
+		{
+			return Database::Edit("characters", $crit, $val);
+		}
+		else
+		{
+			return Database::Edit("characters", array($crit => $val), $val2);
+		}
+	}
 
 }

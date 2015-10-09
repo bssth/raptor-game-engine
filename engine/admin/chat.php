@@ -1,4 +1,6 @@
 ﻿<?php
+	// костыль на костыле, надо будет это потом перевести на нормальные сокеты. считайте, что это был @todo
+	
 	if(isset($_GET['delete'])) 
 	{
 		Database::Remove("chat", array("_id" => toId($_GET['delete'])));

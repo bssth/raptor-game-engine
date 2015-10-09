@@ -7,9 +7,16 @@
 */
 
 class apiDriver {
+	
 	function __call($a1, $a2) 
 	{
 		header('Content-Type: application/json; charset=utf-8');
+		
+		if(!class_exists("ExtAPI"))
+		{
+			throw new Exception("Cannot find external API class. What happened?");
+		}
+		
 		if(method_exists("ExtAPI", $_GET['a'])) 
 		{
 			echo ExtAPI::$_GET['a']($_GET);

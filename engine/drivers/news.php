@@ -18,7 +18,7 @@ class newsDriver {
         $main->setvar("%GAME_TITLE%", $GLOBALS['name']);
         $main->setvar("%STORAGE_STATIC_URL%", "/storage/static");
 
-        $news = Database::Get("news", array('public' => 1))->sort(array('date' => -1));
+        $news = News::get()->sort(array('date' => -1));
         $html = '';
         foreach ($news as $array) 
 		{
@@ -46,7 +46,7 @@ class newsDriver {
         $main->setvar("%GAME_TITLE%", $GLOBALS['name']);
         $main->setvar("%STORAGE_STATIC_URL%", "/storage/static");
 
-        $array = Database::GetOne("news", array('_id' => toId($_GET['id'])));
+        $array = News::get($_GET['id']);
         $html = templater("interface/news_full.tpl", array(
             "%SUBJECT%" => $array['title'],
             "%DATE%" => $array['date'],

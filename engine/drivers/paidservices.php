@@ -12,8 +12,7 @@ class paidservicesDriver
 
     function actionIndex() 
 	{
-		$char = new Char();
-		$params = Database::GetOne("config", array("mod" => "mod_paidservice"));
+		$params = Raptor::ModConfig('mod_paidservice');
         $main = new Templater;
         $main->import("boxes/ps_page.tpl");
         $main->setvar("%URL%", "http://" . $GLOBALS['url']);
@@ -26,8 +25,8 @@ class paidservicesDriver
 		if(isset($_GET['buy'])) 
 		{
 			if(!isset($params[$_GET['buy']]['time'])) { $main->setvar("%CONTENT%", "<h2>Услуга не найдена</h2>"); $main->renderEcho(); return 1; }
-			if($char->$params[$_GET['buy']]['currency'] < $params[$_GET['buy']]['cost']) { $main->setvar("%CONTENT%", "<h2>Недостаточно денег</h2>"); $main->renderEcho(); return 1; }
-			$char->giveMoney(-$params[$_GET['buy']]['cost'], $params[$_GET['buy']]['currency']);
+			if(char()->$params[$_GET['buy']]['currency'] < $params[$_GET['buy']]['cost']) { $main->setvar("%CONTENT%", "<h2>Недостаточно денег</h2>"); $main->renderEcho(); return 1; }
+			char()->giveMoney(-$params[$_GET['buy']]['cost'], $params[$_GET['buy']]['currency']);
 			eval($params[$_GET['buy']]['eval_bought']);
 			createTimer($_GET['buy'], $params[$_GET['buy']]['time'], $params[$_GET['buy']]['eval_expired']);
 		}

@@ -7,19 +7,19 @@ if (empty($_GET['id']))
 if (isset($_POST['change'])) 
 {
     unset($_POST['change']);
-    Database::Edit("characters", array("_id" => toId($_GET['id'])), $_POST);
+    Char::merge(array("_id" => toId($_GET['id'])), $_POST);
 }
 if (isset($_POST['make'])) 
 {
-    Database::Edit("characters", array("_id" => toId($_GET['id'])), array($_POST['name'] => 0));
+	Char::merge(array("_id" => toId($_GET['id'])), array($_POST['name'] => '0'));
 }
 if (isset($_POST['notes'])) 
 {
-    Database::Edit("characters", array("_id" => toId($_GET['id'])), array("notes" => $_POST['notes']));
+	Char::merge(array("_id" => toId($_GET['id'])), array("notes" => $_POST['notes']));
 }
 
 $obj = new Char($_GET['id']);
-$schar = Database::GetOne("characters", array("_id" => toId($_GET['id'])));
+$schar = Char::find('_id', toId($_GET['id']));
 
 if(isset($_GET['give'])) 
 {
@@ -122,7 +122,7 @@ if (empty($schar['_id']))
                         <textarea name="notes" class="form-control" rows="3"><?= $schar['notes']; ?></textarea> <br>
                         <button type="submit" class="btn btn-xs btn-default">Сохранить</button>
                     </form>
-                </div>
+					</div>
             </div>
         </div>
 		<div class="panel panel-warning">
@@ -133,7 +133,7 @@ if (empty($schar['_id']))
                 Здесь можно управлять имуществом персонажа
                 <div class="form-group">
                     <?php
-						$inv_params = Database::GetOne("config", array("mod" => "inv_params"));
+						$inv_params = Raptor::ModConfig('inv_params');
 						foreach($obj->inv->getItems() as $key => $value) 
 						{
 							if(!is_array($value)) { continue; }
@@ -152,7 +152,7 @@ if (empty($schar['_id']))
 					<form method="GET">
 						<select name="give" class="form-control">
 							<?php
-							foreach (Database::GetOne("config", array('mod' => 'inventory')) as $key => $value) 
+							foreach (Raptor::ModConfig('inventory') as $key => $value) 
 							{
 								if (!is_array($value)) 
 								{

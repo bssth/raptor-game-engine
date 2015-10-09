@@ -1,17 +1,17 @@
 ﻿<?php
 	if(isset($_POST['new'])) 
 	{
-		Database::Edit("config", array("mod" => "locations"), array(uniqid() =>  array('name' => $_POST['name']) ) );
+		Raptor::SetModConfig('locations', array(uniqid() =>  array('name' => $_POST['name']) ));
 		echo '<div class="alert alert-success">Локация <b>'. $_POST['name'] .'</b> успешно создана</div>';
 	}
 	if(isset($_GET['edit'])) 
 	{
 		if(isset($_POST['name'])) 
 		{
-			Database::Edit("config", array("mod" => "locations"), array($_GET['edit'] =>  $_POST ) );
+			Raptor::SetModConfig('locations', array($_GET['edit'] =>  $_POST ));
 			echo '<div class="alert alert-success">Локация <b>'. $_GET['edit'] .'</b> успешно отредактирована</div>';
 		}
-		$param = Database::GetOne("config", array("mod" => "locations"))[$_GET['edit']];
+		$param = Raptor::ModConfig('locations')[$_GET['edit']];
 		echo '<form action="" method="POST">
 		<div class="form-group"><label for="disabledSelect">Код локации</label><input class="form-control" id="disabledInput" placeholder="'. $_GET['edit'] .'" disabled="" type="text"></div>
 		<div class="form-group"><label>Название локации</label><input name="name" value="'. $param['name'] .'" class="form-control"><p class="help-block">Название, отображаемое игрокам</p></div>
@@ -19,7 +19,7 @@
 		<div class="form-group"><label>Тип локации</label>
 		<select name="type" class="form-control">
 		<option '. (!$param['type'] or $param['type']=='default'?'selected':'') .' value="default">По умолчанию (RPG.JS)</option>'; 
-		foreach(Database::GetOne("config", array("mod" => "location_types")) as $key => $value) 
+		foreach(Raptor::ModConfig('location_types') as $key => $value) 
 		{
 			if(!is_array($value)) { continue; }
 			echo '<option '. ($param['type']==$key?'selected':'') .' value="'. $key .'">'. $value['name'] .'</option>';
@@ -40,7 +40,7 @@
 			</form>
 			<hr><div class="table-responsive">
 			<table class="table table-hover table-striped"><tbody>';
-		foreach(Database::GetOne("config", array("mod" => "locations")) as $key => $value) 
+		foreach(Raptor::ModConfig('locations') as $key => $value) 
 		{
 			if(!is_array($value)) 
 			{ 

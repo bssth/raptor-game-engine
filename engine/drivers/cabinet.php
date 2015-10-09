@@ -1,9 +1,7 @@
 ﻿<?php
 /*
-	@last_edit 22.08.2015
-	@last_autor Mike
+	@last_edit 10.10.2015 by Mike
 	@comment Кабинет пользователя с выбором персонажа
-	@todo API, нормальный logout
 */
 
 class cabinetDriver {
@@ -16,13 +14,11 @@ class cabinetDriver {
         }
         if (empty($_SESSION['id'])) 
 		{
-            header("Location: /index");
-            die();
+            Raptor::Redirect('/index');
         }
         if (isset($_SESSION['cid'])) 
 		{
-            header("Location: /p");
-            die();
+            Raptor::Redirect('/p');
         }
     }
 
@@ -32,7 +28,7 @@ class cabinetDriver {
 		{
 			$_SESSION['id'] = $_SESSION['id']->__toString();
 		}
-        $chars = Database::Get("characters", array("player" => $_SESSION['id']));
+        $chars = Player::getChars($_SESSION['id']);
         $cabinet_list = '';
         foreach ($chars as $array) 
 		{
@@ -63,7 +59,7 @@ class cabinetDriver {
         session_destroy();
         unset($_SESSION['id']);
         unset($_SESSION['cid']);
-        header('Location: /');
+        Raptor::Redirect('/');
     }
 
     function actionSelect()
@@ -72,7 +68,7 @@ class cabinetDriver {
 		{
             raptor_error("Trying to select character in cabinet with no id");
         }
-        $check = Database::GetOne("characters", array("_id" => Database::toId($_GET['id'])));
+        $check = Char::find($_GET['id']);
         if ($check['player'] == $_SESSION['id']) 
 		{
 			if($check['ban'] >= time()) 
@@ -99,11 +95,11 @@ class cabinetDriver {
         if (isset($_POST['name'])) 
 		{
 
-            $maxchars = Database::GetOne("config", array("mod" => "auth"))['maxchars'];
-            $chars = Database::Get("characters", array("player" => $_SESSION['id']))->count();
+            $maxchars = Raptor::ModConfig('auth')['maxchars'];
+            $chars = Player::getChars($_SESSION['id'])->count();
             if ($chars >= $maxchars) 
 			{
-                echo "Исчерпан лимит персонажей на одного игрока (" . $maxchars . ")";
+                echo "<h1>Исчерпан лимит персонажей на одного игрока (" . $maxchars . ")</h1>";
             } 
 			else
 			{
@@ -116,7 +112,7 @@ class cabinetDriver {
 
                 if ($id != false) 
 				{
-                    header("Location: /");
+                    Raptor::Redirect('/');
                 } 
 				else
 				{
@@ -129,7 +125,7 @@ class cabinetDriver {
     public function actionRemove()
     {
         Char::delete($_GET['name'], true);
-        header('Location: /');
+        Raptor::Redirect('/');
     }
 
 }

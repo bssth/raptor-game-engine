@@ -1,17 +1,17 @@
 <?php
 if (isset($_POST['new'])) 
 {
-    Database::Edit("config", array("mod" => "params"), array("mod" => "params", $_POST['name'] => array()));
+	Raptor::SetModConfig('params', array("mod" => "params", $_POST['name'] => array()));
     echo '<div class="alert alert-success">Параметр <b>' . $_POST['name'] . '</b> успешно создан</div>';
 }
 if (isset($_GET['edit'])) 
 {
     if (isset($_POST['name'])) 
 	{
-        Database::Edit("config", array("mod" => "params"), array($_GET['edit'] => $_POST));
+		Raptor::SetModConfig('params', array("mod" => "params", $_GET['edit'] => $_POST));
         echo '<div class="alert alert-success">Параметр <b>' . $_GET['edit'] . '</b> успешно отредактирован</div>';
     }
-    $param = Database::GetOne("config", array("mod" => "params"))[$_GET['edit']];
+    $param = Raptor::ModConfig('params')[$_GET['edit']];
     echo '<form action="" method="POST">
 		<div class="form-group"><label for="disabledSelect">Код параметра</label><input class="form-control" id="disabledInput" placeholder="' . $_GET['edit'] . '" disabled="" type="text"></div>
 		<div class="form-group"><label>Название параметра</label><input name="name" value="' . $param['name'] . '" class="form-control"><p class="help-block">Название, отображаемое игрокам</p></div>
@@ -41,7 +41,7 @@ else
 		IDx0ZD4mIzEwNTM7JiMxMDcyOyYjMTA3OTsmIzEwNzQ7JiMxMDcyOyYjMTA4NTsmIzEwODA7JiMx
 		MDc3OzwvdGQ+DQoJPHRkPiYjMTA1MDsmIzEwODY7JiMxMDc2OzwvdGQ+DQogICAgPHRkPjwvdGQ+
 		DQo8L3RyPg0KPC90aGVhZD4NCjx0Ym9keT4=');
-    foreach (Database::GetOne("config", array("mod" => "params")) as $key => $value) 
+    foreach (Raptor::ModConfig('params') as $key => $value) 
 	{
         if (!strstr($key, "p_")) 
 		{

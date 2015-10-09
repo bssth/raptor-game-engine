@@ -1,17 +1,17 @@
 ﻿<?php
 if (isset($_POST['new'])) 
 {
-    Database::Edit("config", array("mod" => "currency"), array("mod" => "currency", $_POST['name'] => array()));
+	Raptor::SetModConfig('currency', array($_POST['name'] => array()));
     echo '<div class="alert alert-success">Валюта <b>' . $_POST['name'] . '</b> успешно создана</div>';
 }
 if (isset($_GET['edit'])) 
 {
     if (isset($_POST['name'])) 
 	{
-        Database::Edit("config", array("mod" => "currency"), array($_GET['edit'] => $_POST));
+		Raptor::SetModConfig('currency', array($_GET['edit'] => $_POST));
         echo '<div class="alert alert-success">Валюта <b>' . $_GET['edit'] . '</b> успешно отредактирована</div>';
     }
-    $param = Database::GetOne("config", array("mod" => "currency"))[$_GET['edit']];
+    $param = Raptor::ModConfig('currency')[$_GET['edit']];
     echo '<form action="" method="POST">
 		<div class="form-group"><label for="disabledSelect">Код валюты</label><input class="form-control" id="disabledInput" placeholder="' . $_GET['edit'] . '" disabled="" type="text"></div>
 		<div class="form-group"><label>Название валюты</label><input name="name" value="' . $param['name'] . '" class="form-control"><p class="help-block">Название, отображаемое игрокам</p></div>
@@ -41,7 +41,7 @@ else
 		</tr>
 		</thead>
 		<tbody>';
-    foreach (Database::GetOne("config", array("mod" => "currency")) as $key => $value) 
+    foreach (Raptor::ModConfig('currency') as $key => $value) 
 	{
         if (!strstr($key, "money_")) 
 		{

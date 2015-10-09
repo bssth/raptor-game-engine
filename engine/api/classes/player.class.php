@@ -24,6 +24,11 @@ class Player
         $array = Database::GetOne("players", array("_id" => toId($this->id)));
         return $array[$name];
     }
+	
+	public static function get($id)
+	{
+		return Database::GetOne("players", array("_id" => toId($id)));
+	}
 
     public static function register($login, $password, $email)
     {
@@ -74,7 +79,17 @@ class Player
             return false;
         }
     }
-
+	
+	function __set($key, $val)
+	{
+		return $this::set($this->id, array($key => $val));
+	}
+	
+	public static function set($id, $data)
+	{
+		return Database::Edit("players", array("_id" => toId($id)), $data);
+	}
+	
     public static function login($login, $password, $session = true)
     {
         if (empty($login)) 
@@ -101,5 +116,33 @@ class Player
         }
 		call_user_func("onPlayerLogin", $_POST['name']);
     }
-
+	
+	public static function getChars($id)
+	{
+		return Database::Get("players", array("player" => $id));
+	}
+	
+	public static function find($crit, $val = '')
+	{
+		if(is_array($crit))
+		{
+			return Database::GetOne("players", $crit);
+		}
+		else
+		{
+			return Database::GetOne("players", array($crit => $val));
+		}
+	}
+	
+	public static function findAll($crit, $val = '')
+	{
+		if(is_array($crit))
+		{
+			return Database::Get("players", $crit);
+		}
+		else
+		{
+			return Database::Get("players", array($crit => $val));
+		}
+	}
 }

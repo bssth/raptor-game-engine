@@ -1,8 +1,7 @@
 ﻿<?php
 
 /*
-	@last_edit 22.08.2015
-	@last_autor Mike
+	@last_edit 09.10.2015 by Mike
 	@comment Инвентарь персонажа. Очень хрупкая система, поскольку требует тщательной настройки
 	@todo Дополнительные проверки, дабы система не давала сбои
 */
@@ -12,13 +11,10 @@ class invDriver
 
     function actionIndex() 
 	{
-		if(!isset($char)) 
-		{
-			$char = new Char();
-		}
-		$currency = Database::GetOne("config", array("mod" => "currency"));
-		$inv_params = Database::GetOne("config", array("mod" => "inv_params"));
-		$inv_actions = Database::GetOne("config", array("mod" => "inv_actions"));
+		$currency = Raptor::ModConfig('currency');
+		$inv_params = Raptor::ModConfig('inv_params');
+		$inv_actions = Raptor::ModConfig('inv_actions');
+		
         $main = new Templater;
         $main->import("boxes/inv_page.tpl");
         $main->setvar("%URL%", "http://" . $GLOBALS['url']);
@@ -28,7 +24,7 @@ class invDriver
         $main->setvar("%GAME_TITLE%", $GLOBALS['name']);
         $main->setvar("%STORAGE_STATIC_URL%", "/storage/static");
 		$result = '';
-        foreach($char->inv->getItems() as $key => $value) 
+        foreach(char()->inv->getItems() as $key => $value) 
 		{
 			if(!is_array($value)) 
 			{ 
@@ -42,8 +38,8 @@ class invDriver
 				{ 
 					continue; 
 				}
-				$addparams["%" . $skey . "%"] = $char->inv->getParam($skey, $key);
-				$addparams['%_PARAMS_%'] .= "<tr><td>". $inv_params[$skey]['name'] ."</td><td>". $char->inv->getParam($skey, $key) ."</td></tr>";
+				$addparams["%" . $skey . "%"] = char()->inv->getParam($skey, $key);
+				$addparams['%_PARAMS_%'] .= "<tr><td>". $inv_params[$skey]['name'] ."</td><td>". char()->inv->getParam($skey, $key) ."</td></tr>";
 			}
 			foreach ($inv_actions as $skey => $svalue) 
 			{

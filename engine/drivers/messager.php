@@ -1,10 +1,9 @@
 <?php
 
 /*
-	@last_edit 22.08.2015
-	@last_autor Mike
+	@last_edit 22.08.2015 by Mike
 	@comment API для чата
-	@todo Переместить в обычный ExtAPI & WebSockets
+	@todo Переместить в обычный ExtAPI & WebSockets уже с модель-ориентированной системой
 */
 
 class messagerDriver {

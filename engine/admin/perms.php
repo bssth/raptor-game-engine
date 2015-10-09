@@ -1,17 +1,16 @@
 <h2>Права доступа</h2>
-<h4>Здесь можно настроить права доступа для любого игрока. Обратите внимания, что наименования прав доступа - это разделы админ-панели, к которым имеет доступ игрок</h4>
+<h4>Здесь можно настроить права доступа для любого игрока. Обратите вниманиe, что наименования прав доступа - это разделы админ-панели, к которым имеет доступ игрок</h4>
 
 <?php
 if (isset($_POST['submit'])) 
 {
     unset($_POST['submit']);
-    $astack = array("perms" => array_keys($_POST));
-    Database::Edit("characters", array("name" => $_GET['name']), $astack);
+    Char::find(array("name" => $_GET['name']))->perms = array_keys($_POST);
     echo '<div class="alert alert-success">Права доступа изменены успешно</div>';
 }
 if (isset($_GET['name'])) 
 {
-    $chara = Database::GetOne("characters", array("name" => $_GET['name']));
+    $chara = Char::find(array("name" => $_GET['name']));
     if (!isset($chara['_id'])) 
 	{
         echo '<div class="alert alert-danger">Персонаж не найден</div>';

@@ -1,10 +1,9 @@
 <?php
 
 /*
-	@last_edit 22.08.2015
-	@last_autor Mike
+	@last_edit 22.08.2015 by Mike
 	@comment Страницы с игроками
-	@todo Качественный код
+	@todo Качественный, или хотя бы нормальный код
 */
 
 class playerDriver 
@@ -12,21 +11,22 @@ class playerDriver
 
     function __call($func, $args)
     {
-        $func = str_replace("action", "", $func);
+        $func = strstr($func, 'action') ? str_replace("action", "", $func) : 'index';
+		
         if ($func != 'index') 
 		{
-            $array = Database::GetOne("characters", array("name" => $func));
+            $array = Char::find(array("name" => $func));
         } 
 		else
 		{
-            $array = Database::GetOne("characters", array("_id" => toId($_SESSION['cid'])));
+            $array = Char::find(array("_id" => toId($_SESSION['cid'])));
             $func = $array['name'];
         }
         if (!isset($array['name'])) 
 		{
             die("<h1>Персонаж " . $func . " не найден</h1>");
         }
-        $params = Database::GetOne("config", array("mod" => "params"));
+        $params = Raptor::ModConfig($params);
         $main = new Templater;
         $main->import("interface/playerinfo.tpl");
         $main->setvar("%URL%", "http://" . $GLOBALS['url']);

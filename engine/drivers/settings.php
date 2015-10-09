@@ -7,7 +7,8 @@
 	@todo API
 */
 
-class settingsDriver {
+class settingsDriver 
+{
 
     function actionIndex()
     {
