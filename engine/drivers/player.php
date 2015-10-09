@@ -26,7 +26,7 @@ class playerDriver
 		{
             die("<h1>Персонаж " . $func . " не найден</h1>");
         }
-        $params = Raptor::ModConfig($params);
+        $params = Raptor::ModConfig('params');
         $main = new Templater;
         $main->import("interface/playerinfo.tpl");
         $main->setvar("%URL%", "http://" . $GLOBALS['url']);

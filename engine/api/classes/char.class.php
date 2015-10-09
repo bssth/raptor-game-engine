@@ -171,7 +171,7 @@ class Char
 		{
 			$orig = Cache::get('events_' . $this->id);
 			$orig[] = $event;
-			Cache::set('events_' . $this->id, $orig);
+			Cache::set('events_' . $this->id, $orig, 0);
 		}
         return true;
     }
