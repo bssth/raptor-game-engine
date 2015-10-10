@@ -26,7 +26,7 @@ class cabinetDriver {
     {
 		if(is_object($_SESSION['id'])) 
 		{
-			$_SESSION['id'] = $_SESSION['id']->__toString();
+			$_SESSION['id'] = __toString($_SESSION['id']);
 		}
         $chars = Player::getChars($_SESSION['id']);
         $cabinet_list = '';
@@ -68,12 +68,12 @@ class cabinetDriver {
 		{
             raptor_error("Trying to select character in cabinet with no id");
         }
-        $check = Char::find($_GET['id']);
-        if ($check['player'] == $_SESSION['id']) 
+        $check = char($_GET['id']);
+        if ($check->player == __toString($_SESSION['id'])) 
 		{
-			if($check['ban'] >= time()) 
+			if($check->ban >= time()) 
 			{
-				die('<script>alert("Вы были заблокированы \n\n Причина: '. $check['ban_reason'] .'"); location.href = "/";</script>');
+				die('<script>alert("Вы были заблокированы \n\n Причина: '. $check->ban_reason .'"); location.href = "/";</script>');
 			}
 			else 
 			{

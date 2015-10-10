@@ -22,7 +22,7 @@
 		
 		public static function Redirect($url)
 		{
-			header("Location: " . urlencode($url));
+			header("Location: " . $url);
 			die();
 		}
 		
@@ -51,7 +51,7 @@
 		
 		public static function Config($die = false, $merge = true)
 		{
-			if(is_scalar(Cache::get("config_main"))) 
+			if(is_array(Cache::get("config_main")) or is_string(Cache::get("config_main"))) 
 			{
 				if($merge === true)
 				{
