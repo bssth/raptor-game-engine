@@ -119,7 +119,7 @@ class Player
 	
 	public static function getChars($id)
 	{
-		return Database::Get("players", array("player" => $id));
+		return Database::Get("characters", array("player" => __toString($id)));
 	}
 	
 	public static function find($crit, $val = '')
