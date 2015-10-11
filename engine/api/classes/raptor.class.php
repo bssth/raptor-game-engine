@@ -37,6 +37,17 @@
 			return $arr;
 		}
 		
+		public static function Globals($key)
+		{
+			return @$GLOBALS[$key];
+		}
+		
+		public static function Header($data)
+		{
+			header($data);
+			return true;
+		}
+		
 		public static function SetModConfig($mod, $config)
 		{
 			Cache::set("config_" . $mod, $config, 3600);

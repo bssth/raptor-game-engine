@@ -2,8 +2,7 @@
 
 /*
 	** @comment Класс для работы с инвентарём персонажа. Экземпляр хранится в переменной inv класса Char
-	** @last_edit 24.08.2015
-	** @last_autor Mike
+	** @last_edit 11.10.2015 by Mike
 */
 
 class CharacterInventory 
@@ -68,14 +67,14 @@ class CharacterInventory
     function takeItem($id, $count)
     {
         $this->tosave = true;
-        if ($this->inv[$id]) 
+        if ($this->inv[$id] and ($this->inv[$id]-$count)>=0) 
 		{
             $this->inv[$id] -= $count;
             return true;
         } 
 		else 
 		{
-            $this->inv[$id] = $count;
+            $this->inv[$id] = 0;
             return false;
         }
     }

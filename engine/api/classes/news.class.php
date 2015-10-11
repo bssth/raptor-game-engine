@@ -7,11 +7,11 @@
 	
 	class News
 	{
-		public static function get($id = null)
+		public static function get($id = null, $limit = 10)
 		{
 			if(is_null($id))
 			{
-				return Database::Get("news", array('public' => '1'));
+				return Database::Get("news", array('public' => '1'))->limit($limit);
 			}
 			else
 			{
@@ -24,12 +24,12 @@
 			return Database::Edit("news", array("_id" => toId($id)), $news);
 		}
 		
-		public static function create($id = null, $date = null)
+		public static function create($id = null, $title = '-', $short = '', $full = '', $date = null)
 		{
 			if($id === null) { $id = new MongoId(); }
 			if($date === null) { $date = raptor_date(); }
 			
-			return Database::Insert("news", array("_id"=>$id,"short"=>'',"title"=>'',"full"=>'',"date"=>raptor_date(),"public"=>'1'));
+			return Database::Insert("news", array("_id"=>$id,"short"=>$short,"title"=>$title,"full"=>$full,"date"=>raptor_date(),"public"=>'1'));
 		}
 	}
 	

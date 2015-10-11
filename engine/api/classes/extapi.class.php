@@ -2,15 +2,16 @@
 
 class ExtAPI 
 {
+	
 
     public static function __callStatic($func, $args)
     {
         return $self::_undefined_method();
     }
 
-    public static function _undefined_method()
+    public static function _undefined_method($query)
     {
-        return json_encode(array('answer' => 'Undefined method'));
+        return json_encode(array('answer' => 'Undefined method', 'query' => $query));
     }
 
     public static function uniqid($array)
@@ -20,9 +21,9 @@ class ExtAPI
 
     public static function test($array)
     {
-        if (isset($array['public_key']) or isset($array['private_key'])) 
+        if (isset($array['public_key']) or isset($array['token'])) 
 		{
-            if ($array['public_key'] == $GLOBALS['public_key'] and $array['private_key'] == $GLOBALS['private_key']) 
+            if ($array['public_key'] == Raptor::Globals('public_key') and $array['token'] == Raptor::Globals('private_key')) 
 			{
                 $answer = json_encode(array('answer' => '1'));
             } 
@@ -37,27 +38,165 @@ class ExtAPI
         }
         return $answer;
     }
-
+	
+	public static function inventory_getitems($array)
+	{
+		if ($array['token'] != Raptor::Globals('private_key')) 
+		{
+			return json_encode(array('error' => 'Invalid token'));
+        } 
+		if(!isset($array['char'])) { return json_encode(array('error' => 'Character not specified')); }
+		
+		return json_encode( char($array['char'])->inv->getItems(), JSON_UNESCAPED_UNICODE );
+	}
+	
+	public static function inventory_giveitem($array)
+	{
+		if ($array['token'] != Raptor::Globals('private_key')) 
+		{
+			return json_encode(array('error' => 'Invalid token'));
+        } 
+		if(!isset($array['char']) or !isset($array['cnt']) or !isset($array['item'])) { return json_encode(array('error' => 'Data not specified')); }
+		
+		$res = char($array['char'])->inv->giveItem($array['item'], $array['cnt']);
+		return json_encode(array('answer' => '1', 'existed_earlier' => $res));
+	}
+	
+	public static function basepic($array)
+	{
+		return constant("BasePics::".str_replace('.png', '', $_SERVER['QUERY_STRING']));
+	}
+	
+	public static function parse_string($array)
+	{
+		BBParser::loadLibrary();
+		return BBParser::parseAll($_REQUEST['str']);
+	}
+	
+	public static function debug_call($array)
+	{
+		if ($array['token'] != Raptor::Globals('private_key') or MODE != 'dev') 
+		{
+			return json_encode(array('error' => 'Invalid token or not in debug mode'));
+        } 
+		
+		$clname = $array['class'];
+		$class = new $clname;
+		
+		$res = call_user_func_array(array($class, $array['method']), array_values(explode(',', $array['params'])));
+		return json_encode(array('answer' => $res));
+	}
+	
+	public static function char($array)
+	{
+		if ($array['token'] != Raptor::Globals('private_key')) 
+		{
+			return json_encode(array('error' => 'Invalid token'));
+        } 
+		
+		$act = $array['method'];
+		$ex = char($array['id']);
+		$res = call_user_func_array(array($ex, $array['method']), array_values(explode(',', $array['params'])));
+		return json_encode(array('answer' => $res));
+	}
+	
+	public static function inventory_takeitem($array)
+	{
+		if ($array['token'] != Raptor::Globals('private_key')) 
+		{
+			return json_encode(array('error' => 'Invalid token'));
+        } 
+		if(!isset($array['char']) or !isset($array['cnt']) or !isset($array['item'])) { return json_encode(array('error' => 'Data not specified')); }
+		
+		$res = char($array['char'])->inv->takeItem($array['item'], $array['cnt']);
+		return json_encode(array('answer' => $res));
+	}
+	
+	public static function mail_send($array)
+	{
+		/*if(Raptor::Globals('private_key') == $array['token'])
+		{
+			// some actions here
+		}
+		else
+		{
+			return json_encode(array('error' => 'Invalid token'));
+		}*/
+		return json_encode(array('error' => 'Function is disabled'));
+	}
+	
+	public static function dino_handle($array)
+	{
+		$dino = new Dino;
+		return $dino->handleCommand($_SERVER['QUERY_STRING']);
+	}
+	
+	public static function language_get($array)
+	{
+		$class = new Multilingual($array['lang']);
+		if($class->exists() != true)
+		{
+			return json_encode(array('error' => 'Language not found'));
+		}
+		else
+		{
+			return json_encode(array('answer' => $class->$array['str']));
+		}
+	}
+	
+	public static function news_get($array)
+	{
+		$answer = array();
+		foreach(News::get(null, $array['limit']) as $key => $value)
+		{
+			$value['_id'] = __toString($value['_id']);
+			$answer[] = $value;
+		}
+		return is_array($answer) ? json_encode($answer, JSON_UNESCAPED_UNICODE) : json_encode(array());
+	}
+	
+	public static function character_exists($array)
+	{
+		$data = Char::find('name', $array['name']);
+		return json_encode(array('answer' => isset($data['name'])));
+	}
+	
     public static function exists($array)
     {
-        $xchar = Database::GetOne("characters", array("name" => $array['name']));
-        $answer = json_encode(array('answer' => '0'));
-        if (!empty($xchar['_id'])) 
-		{
-            $answer = json_encode(array('answer' => '1'));
-        }
-        return $answer;
+        return self::character_exists($array);
     }
 
-    public static function login($array)
-    {
-        $pcc = Database::GetOne("players", array("login" => $array['name'], "password" => md5($array['password'])));
-        $answer = json_encode(array('answer' => '0'));
-        if (!empty($pcc['_id'])) 
+	public static function player_register($array)
+	{
+		return json_encode( array('result' => Player::register($array['login'], $array['password'], $array['email'])) );
+	}
+	
+	public static function player_logout($array)
+	{
+		Player::logout();
+		return json_encode(array());
+	}
+	
+	public static function player_getchars($array)
+	{
+		if(isset($_SESSION['id']) and !isset($array['id'])) { $array['id'] = $_SESSION['id']; }
+		if(Raptor::Globals('private_key') == $array['token'] or $_SESSION['id'] == $array['id'])
 		{
-            $answer = json_encode(array('answer' => '1'));
-        }
-        return $answer;
+			$answer = array();
+			foreach(Player::getChars($array['id']) as $key => $value)
+			{
+				$answer[] = array('id' => __toString($value['_id']), 'name' => $value['name']);
+			}
+			return is_array($answer) ? json_encode($answer) : json_encode(array());
+		}
+		return json_encode(array('error' => 'Invalid token'));
+	}
+	
+	public static function login($array) { self::player_login($array); }
+	
+    public static function player_login($array)
+    {
+        return json_encode(array('answer' => Player::login($array['login'], $array['password'], true)));
     }
 
     public static function getposition($array)
@@ -139,7 +278,7 @@ class ExtAPI
 
     public static function data($array)
     {
-        return json_encode(array('id' => $GLOBALS['id'], 'version' => $GLOBALS['version'], 'url' => $GLOBALS['url'], 'real_url' => $_SERVER['SERVER_NAME'], 'name' => $GLOBALS['name']));
+        return json_encode(array('id' => Raptor::Globals('id'), 'version' => Raptor::Globals('version'), 'url' => Raptor::Globals('url'), 'real_url' => $_SERVER['SERVER_NAME'], 'name' => Raptor::Globals('name')));
     }
 
     public static function clientjs($array)
@@ -152,6 +291,22 @@ class ExtAPI
         return implode(" ", check_player_events($_SESSION['cid'], true, true)['js']);
     }
 
+	public static function reports_add($array) { return self::makereport($array); }
+	
+	public static function reports_get($array)
+	{
+		if(Raptor::Globals('private_key') == $array['token'])
+		{
+			$answer = array();
+			foreach(Reports::Get() as $key => $value)
+			{
+				$answer[] = $value;
+			}
+			return is_array($answer) ? json_encode($answer) : json_encode(array());
+		}
+		return json_encode(array('error' => 'Invalid token'));
+	}
+	
     public static function makereport($array)
     {
         if (!isset($_POST['text'])) 
@@ -165,7 +320,7 @@ class ExtAPI
         $text = trim($_POST['text']);
         $text = htmlspecialchars($_POST['text']);
         $text = strip_tags($_POST['text']);
-        Database::Insert("reports", array("author" => char()->name, "message" => $text, "date" => raptor_date()));
+		Reports::add(char()->name, $text);
         $answer = json_encode(array('message' => 'Report sent'));
         return $answer;
     }
@@ -200,7 +355,7 @@ class ExtAPI
 
 	public static function contextmenu($array)
 	{
-		return call_user_func("onPlayerContextMenu", $array['item'], new Char($array['target']));
+		return call_user_func("onPlayerContextMenu", $array['item'], char($array['target']));
 	}
 }
 

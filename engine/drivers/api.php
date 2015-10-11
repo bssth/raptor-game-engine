@@ -6,26 +6,34 @@
 	@comment Главный драйвер, работающий с внешним API
 */
 
-class apiDriver {
+class apiDriver 
+{
 	
 	function __call($a1, $a2) 
 	{
-		header('Content-Type: application/json; charset=utf-8');
+		Raptor::Header('Content-Type: application/json; charset=utf-8');
 		
 		if(!class_exists("ExtAPI"))
 		{
 			throw new Exception("Cannot find external API class. What happened?");
 		}
 		
-		if(method_exists("ExtAPI", $_GET['a'])) 
+		if(!isset($_GET['a']) and isset($GLOBALS['action']))
+		{
+			$_GET['a'] = $GLOBALS['action'];
+		}
+		
+		if(strstr($_GET['a'], '.')) { $_GET['a'] = str_replace('.', '_', $_GET['a']); }
+		
+		if(isset($_GET['a']) and method_exists("ExtAPI", $_GET['a'])) 
 		{
 			echo ExtAPI::$_GET['a']($_GET);
 		}
 		else 
 		{
-			echo ExtAPI::_undefined_method();
+			echo ExtAPI::_undefined_method($_GET);
 		}
 	}
+	
 }
 
-?>

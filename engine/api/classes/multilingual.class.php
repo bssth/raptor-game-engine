@@ -24,6 +24,12 @@
 			$this->words = parse_ini_file(LANG_ROOT . SEPARATOR . $language . ".ini");
 		}
 		
+		function exists($lang = null)
+		{
+			if($lang === null) { $lang = $this->language; }
+			return file_exists(LANG_ROOT . SEPARATOR . $lang . ".ini");
+		}
+		
 		function reload()
 		{
 			$this->words = parse_ini_file(LANG_ROOT . SEPARATOR . $this->language . ".ini");

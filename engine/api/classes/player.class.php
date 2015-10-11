@@ -34,15 +34,15 @@ class Player
     {
         if (empty($login)) 
 		{
-            raptor_error("Trying to register player with no login");
+            return false;
         }
         if (empty($password)) 
 		{
-            raptor_error("Trying to register player with no password");
+            return false;
         }
         if (empty($email)) 
 		{
-            raptor_error("Trying to register player with no email");
+            return false;
         }
         $check = Database::GetOne("players", array("login" => $login));
         if (isset($check['login'])) 
@@ -59,7 +59,7 @@ class Player
             "last_date" => raptor_date(),
             "_id" => $playerid
         ));
-        return $playerid;
+        return __toString($playerid);
     }
 
     public static function logout()
@@ -112,7 +112,7 @@ class Player
                 $_SESSION['id'] = $check['_id']->__toString();
             }
             Database::Edit("players", array("_id" => $check['_id']), array("last_ip" => $_SERVER['REMOTE_ADDR'], "last_date" => raptor_date()));
-            return $check['_id'];
+            return __toString($check['_id']);
         }
 		call_user_func("onPlayerLogin", $_POST['name']);
     }

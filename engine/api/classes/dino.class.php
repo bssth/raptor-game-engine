@@ -23,7 +23,7 @@ class Dino {
      * 
      * @param type $string
      */
-    function handleCommand($string = null)
+    function handleCommand($string = null, $return = false)
     {
         /**
          * Проверяем, является ли первый знак строки обозначением команды
@@ -60,8 +60,15 @@ class Dino {
                 }
                 return $cursor;
             } else {
-                echo '<br>Несуществующая команда';
-                self::log('Trying to call undefined command');
+				self::log('Trying to call undefined command');
+                if($return == true)
+				{
+					return false;
+				}
+				else
+				{
+					echo '<br>Несуществующая команда';
+				}
             }
         } elseif (method_exists($this, explode(' ', $string)[0])) {
             $this->acwcl = false;
