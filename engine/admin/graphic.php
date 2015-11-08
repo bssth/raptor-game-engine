@@ -3,7 +3,7 @@
 	if (substr($_GET['sel'], 1, 1) == ".") 
 	{
         raptor_error("Trying to access '" . SEPARATOR . "Graphics" . SEPARATOR . $_GET['sel'] . "' directory");
-        die("Ошибка системы безопасности");
+        die(Raptor::get_string('error'));
     }
     if (isset($_GET['sel'])) 
 	{
@@ -15,7 +15,7 @@
 
             if ($imageinfo['mime'] != 'image/gif' && $imageinfo['mime'] != 'image/jpeg' && $imageinfo['mime'] != 'image/png') 
 			{
-                echo '<div class="alert alert-danger">Неверный MIME-тип</div>';
+                echo '<div class="alert alert-danger">Bad MIME-type</div>';
             } 
 			else 
 			{
@@ -23,11 +23,11 @@
 
                 if (move_uploaded_file($_FILES['userfile']['tmp_name'], $uploadfile)) 
 				{
-                    echo '<div class="alert alert-success">Файл загружен</div>';
+                    echo '<div class="alert alert-success">'. Raptor::get_string('loaded') .'</div>';
                 } 
 				else 
 				{
-                    echo '<div class="alert alert-danger">Ошибка загрузки. Проверьте права доступа.</div>';
+                    echo '<div class="alert alert-danger">'. Raptor::get_string('error') .'</div>';
                 }
             }
         }
@@ -72,4 +72,4 @@
     ?>
 
 </div>
-<div class="well"><div class="form-group"><form name="upload" action="" method="POST" ENCTYPE="multipart/form-data"><label>Загрузить файл</label><input type="file" name="userfile"><input type="submit" value="Загрузить"></form></div></div>
+<div class="well"><div class="form-group"><form name="upload" action="" method="POST" ENCTYPE="multipart/form-data"><label><?=Raptor::get_string('load')?></label><input type="file" name="userfile"><input type="submit" value="<?=Raptor::get_string('load')?>"></form></div></div>

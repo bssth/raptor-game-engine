@@ -2,8 +2,8 @@
 
 /*
 	@last_edit 22.08.2015 by Mike
-	@comment API для чата
-	@todo Переместить в обычный ExtAPI & WebSockets уже с модель-ориентированной системой
+	@comment Chat API
+	@todo Move to external api and websocket server
 */
 
 class messagerDriver {

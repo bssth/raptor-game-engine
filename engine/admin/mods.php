@@ -1,5 +1,4 @@
-<h2>Менеджер модулей</h2>
-<h5>Ниже доступен список активных и неактивных модулей</h5>
+<h2>Module Manager</h2>
 <br>
 <hr>
 
@@ -7,10 +6,10 @@
     <table class="table table-bordered table-hover table-striped">
         <thead>
             <tr>
-                <td>Модуль</td>
-                <td>Статус</td>
-                <td>Включить</td>
-                <td>Отключить</td>
+                <td><?=Raptor::get_string('module')?></td>
+                <td><?=Raptor::get_string('status')?></td>
+                <td><?=Raptor::get_string('enable')?></td>
+                <td><?=Raptor::get_string('disable')?></td>
             </tr>
         </thead>
         <tbody>
@@ -22,13 +21,13 @@
 			{
                 $class->enable($_GET['enable']);
                 $class->save();
-                echo "<div class='alert alert-success'>Модуль включён</div>";
+                echo "<div class='alert alert-success'>". Raptor::get_string('admin_saved') ."</div>";
             }
             if (isset($_GET['disable'])) 
 			{
                 $class->disable($_GET['disable']);
                 $class->save();
-                echo "<div class='alert alert-success'>Модуль отключён</div>";
+                echo "<div class='alert alert-success'>". Raptor::get_string('admin_saved') ."</div>";
             }
 
             $mods = $class->getModules();
@@ -39,8 +38,8 @@
 			{
                 if (!in_array($file, $skip)) 
 				{
-                    $status = in_array($file, $mods) ? "Включён" : "Отключён";
-                    echo "<tr><td> <b><font size=3>" . $file . "</font></b> </td><td> <b>" . $status . "</b> </td><td> [<a href='?enable=" . $file . "'>Включить</a>] </td><td> [<a href='?disable=" . $file . "'>Отключить</a>] </td></tr>";
+                    $status = in_array($file, $mods) ? "ON" : "OFF";
+                    echo "<tr><td> <b><font size=3>" . $file . "</font></b> </td><td> <b>" . $status . "</b> </td><td> [<a href='?enable=" . $file . "'>". Raptor::get_string('enable') ."</a>] </td><td> [<a href='?disable=" . $file . "'>". Raptor::get_string('disable') ."</a>] </td></tr>";
                 }
             }
             ?>

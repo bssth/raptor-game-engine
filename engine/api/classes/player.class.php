@@ -1,8 +1,7 @@
 <?php
 
 /* 
-	** @last_edit 22.08.2015
-	** @last_autor Mike
+	** @last_edit 22.08.2015 by Mike
 	** @comment Класс для работы с игроками (не путать с персонажами)
 	** @todo Более приличный вид
 */
@@ -13,16 +12,15 @@ class Player
 
     public $id;
 
-    function __construct()
+    function __construct($id = null)
     {
-//		if(empty($id)) { raptor_error("Trying to select player with no id"); return false; }
-        $this->id = toId($_SESSION['id']);
+        $this->id = !is_null($id) ? $id : toId($_SESSION['id']);
     }
 
     function __get($name)
     {
         $array = Database::GetOne("players", array("_id" => toId($this->id)));
-        return $array[$name];
+        return @$array[$name];
     }
 	
 	public static function get($id)

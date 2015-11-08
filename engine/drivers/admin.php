@@ -1,10 +1,8 @@
 <?php
 
 /*
-	@last_edit 22.08.2015
-	@last_autor Mike
-	@comment Драйвер админ-панели, который подгружает код из папки /engine/admin
-	@todo Меньше костылей, больше проверок
+	@last_edit 13.10.2015 by Mike
+	@comment Admin interface driver
 */
 
 class adminDriver {
@@ -20,7 +18,7 @@ class adminDriver {
 		{
             die("403 Forbidden");
         }
-		// запасной костыль
+		// additional checks; i wanna delete them in future
         if(!isset($_SESSION['cid']) and file_exists(CACHE_ROOT . SEPARATOR . "installed.cache")) 
 		{ 
 			die("403 Forbidden"); 

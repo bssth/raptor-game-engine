@@ -60,12 +60,12 @@ class Mail
             }
 
 // Соединяем сокет к серверу
-            echo 'Connect to \'' . $this->smtp['smtp_host'] . ':' . $this->smtp['smtp_port'] . '\' ... ';
+            //echo 'Connect to \'' . $this->smtp['smtp_host'] . ':' . $this->smtp['smtp_port'] . '\' ... ';
             $result = socket_connect($socket, $this->smtp['smtp_host'], $this->smtp['smtp_port']);
             if ($result === false) {
                 throw new Exception('socket_connect() failed: ' . socket_strerror(socket_last_error()) . "\n");
             } else {
-                echo "OK\n";
+                //echo "OK\n";
             }
 
 // Читаем информацию о сервере
@@ -75,7 +75,7 @@ class Mail
             $this->write_smtp_response($socket, 'EHLO ' . $this->smtp['smtp_username']);
             $this->read_smtp_answer($socket); // ответ сервера
 
-            echo 'Authentication ... ';
+            //echo 'Authentication ... ';
 
 // Делаем запрос авторизации
             $this->write_smtp_response($socket, 'AUTH LOGIN');
@@ -87,22 +87,22 @@ class Mail
             $this->write_smtp_response($socket, base64_encode($this->smtp['smtp_password']));
             $this->read_smtp_answer($socket); // ответ сервера
 
-            echo "OK\n";
-            echo "Check sender address ... ";
+            //echo "OK\n";
+            //echo "Check sender address ... ";
 
 // Задаем адрес отправителя
             $this->write_smtp_response($socket, 'MAIL FROM:<' . $this->smtp['smtp_from'] . '>');
             $this->read_smtp_answer($socket); // ответ сервера
 
-            echo "OK\n";
-            echo "Check recipient address ... ";
+            //echo "OK\n";
+            //echo "Check recipient address ... ";
 
 // Задаем адрес получателя
             $this->write_smtp_response($socket, 'RCPT TO:<' . $to . '>');
             $this->read_smtp_answer($socket); // ответ сервера
 
-            echo "OK\n";
-            echo "Send message text ... ";
+            //echo "OK\n";
+            //echo "Send message text ... ";
 
 // Готовим сервер к приему данных
             $this->write_smtp_response($socket, 'DATA');
@@ -113,16 +113,16 @@ class Mail
             $this->write_smtp_response($socket, $message . "\r\n.");
             $this->read_smtp_answer($socket); // ответ сервера
 
-            echo "OK\n";
-            echo 'Close connection ... ';
+            //echo "OK\n";
+            //echo 'Close connection ... ';
 
 // Отсоединяемся от сервера
             $this->write_smtp_response($socket, 'QUIT');
             $this->read_smtp_answer($socket); // ответ сервера
 
-            echo "OK\n";
+            //echo "OK\n";
         } catch (Exception $e) {
-            echo "\nError: " . $e->getMessage();
+            //echo "\nError: " . $e->getMessage();
         }
 
         if (isset($socket)) {

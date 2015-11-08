@@ -2,11 +2,11 @@
 <div class="row">
     <div class="col-lg-12">
         <h1 class="page-header">
-            Панель администратора
+            <?=Raptor::get_string('admin')?>
         </h1>
         <ol class="breadcrumb">
             <li class="active">
-                <i class="fa fa-dashboard"></i> Главная
+                <i class="fa fa-dashboard"></i> <?=Raptor::get_string('index')?>
             </li>
         </ol>
     </div>
@@ -19,13 +19,13 @@
         if ($GLOBALS['debug'] == true) 
 		{
             echo '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
-            echo '<i class="fa fa-info-circle"></i> Внимание! Игра находится в режиме отладки (debug)';
+            echo '<i class="fa fa-info-circle"></i> Warning! Game is in debug mode';
             echo '</div>';
         }
 		if (!file_exists(CACHE_ROOT . SEPARATOR . "installed.cache")) 
 		{
             echo '<div class="alert alert-info alert-dismissable"><button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>';
-            echo '<i class="fa fa-info-circle"></i> Игра не установлена. Пожалуйста, проведите данную процедуру';
+            echo '<i class="fa fa-info-circle"></i> Game isn\'t installed';
             echo '</div>';
         }
         ?>
@@ -44,7 +44,7 @@
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= Database::GetAll("chat")->count(); ?></div>
-                        <div>Сообщений в чате</div>
+                        <div><?=Raptor::get_string('chat')?></div>
                     </div>
                 </div>
             </div>
@@ -59,7 +59,7 @@
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= count($GLOBALS['modules']); ?></div>
-                        <div>Модулей загружено</div>
+                        <div><?=Raptor::get_string('modules')?></div>
                     </div>
                 </div>
             </div>
@@ -74,7 +74,7 @@
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= Database::GetAll("payments")->count(); ?></div>
-                        <div>Платежей</div>
+                        <div><?=Raptor::get_string('payments')?></div>
                     </div>
                 </div>
             </div>
@@ -89,7 +89,7 @@
                     </div>
                     <div class="col-xs-9 text-right">
                         <div class="huge"><?= filesize(LOGS_ROOT . SEPARATOR . "errors.log"); ?></div>
-                        <div>вес лога ошибок</div>
+                        <div><?=Raptor::get_string('payments')?></div>
                     </div>
                 </div>
             </div>
@@ -102,7 +102,7 @@
     <div class="col-lg-4">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title"><i class="fa fa-clock-o fa-fw"></i> Последние авторизованные</h3>
+                <h3 class="panel-title"><i class="fa fa-clock-o fa-fw"></i> <?=Raptor::get_string('last_auth')?></h3>
             </div>
             <div class="panel-body">
                 <div class="list-group">
@@ -120,7 +120,7 @@
     <div class="col-lg-4">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title"><i class="fa fa-money fa-fw"></i> Последние платежи</h3>
+                <h3 class="panel-title"><i class="fa fa-money fa-fw"></i> <?=Raptor::get_string('last_pays')?></h3>
             </div>
             <div class="panel-body">
                 <div class="table-responsive">
@@ -128,9 +128,9 @@
                         <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Аккаунт</th>
-                                <th>Дата платежа</th>
-                                <th>Оплачено</th>
+                                <th>Account</th>
+                                <th>Date</th>
+                                <th>Paid</th>
                             </tr>
                         </thead>
                         <tbody>

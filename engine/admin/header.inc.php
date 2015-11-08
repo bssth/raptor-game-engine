@@ -8,7 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
 
-        <title>Административный интерфейс</title>
+        <title><?=Raptor::get_string('admin')?></title>
 
         <link href="/storage/admin/bootstrap.min.css" rel="stylesheet">
         <link href="/storage/admin/sb-admin.css" rel="stylesheet">
@@ -29,7 +29,7 @@
                         <span class="icon-bar"></span>
                         <span class="icon-bar"></span>
                     </button>
-                    <a class="navbar-brand" href="index">Админ-панель <?= @$GLOBALS['name']; ?></a>
+                    <a class="navbar-brand" href="index"><?=Raptor::get_string('admin')?> <?= @$GLOBALS['name']; ?></a>
                 </div>
 
                 <ul class="nav navbar-right top-nav">
@@ -58,7 +58,7 @@
                             }
                             ?>
                             <li class="message-footer">
-                                <a href="/admin/reports">Прочитать все...</a>
+                                <a href="/admin/reports">All...</a>
                             </li>
                         </ul>
                     </li>
@@ -66,7 +66,7 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-bell"></i> <b class="caret"></b></a>
                         <ul class="dropdown-menu alert-dropdown">
                             <li>
-                                <a href="/admin/errors">Показать все ошибки</a>
+                                <a href="/admin/errors">more</a>
                             </li>
                         </ul>
                     </li>
@@ -74,17 +74,17 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-user"></i> <?= char()->name ?> <b class="caret"></b></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="/player/<?= char()->name ?>"><i class="fa fa-fw fa-user"></i>Мой профиль</a>
+                                <a href="/player/<?= char()->name ?>"><i class="fa fa-fw fa-user"></i>Profile</a>
                             </li>
                             <li>
-                                <a href="/admin/reports"><i class="fa fa-fw fa-envelope"></i> Репорты</a>
+                                <a href="/admin/reports"><i class="fa fa-fw fa-envelope"></i> Reports</a>
                             </li>
                             <li>
-                                <a href="/admin/config"><i class="fa fa-fw fa-gear"></i> Настройки</a>
+                                <a href="/admin/config"><i class="fa fa-fw fa-gear"></i> Settings</a>
                             </li>
                             <li class="divider"></li>
                             <li>
-                                <a href="/cabinet?logout=1"><i class="fa fa-fw fa-power-off"></i>Выход</a>
+                                <a href="/cabinet?logout=1"><i class="fa fa-fw fa-power-off"></i>Exit</a>
                             </li>
                         </ul>
                     </li>
@@ -93,79 +93,79 @@
                 <div class="collapse navbar-collapse navbar-ex1-collapse">
                     <ul class="nav navbar-nav side-nav">
                         <li>
-                            <a href="/admin/index"><i class="fa fa-fw fa-dashboard"></i> Главная</a>
+                            <a href="/admin/index"><i class="fa fa-fw fa-dashboard"></i> <?=Raptor::get_string('index')?></a>
                         </li>
+						<?=($GLOBALS['debug']==true)?'<li><a href="/admin/debug"><i class="fa fa-fw fa-lock"></i> '.Raptor::get_string('debug').'</a></li>':''?>
                         <li>   
-                            <a href="javascript:;" data-toggle="collapse" data-target="#char"><i class="fa fa-fw fa-user"></i> Персонажи <i class="fa fa-fw fa-caret-down"></i></a>
+                            <a href="javascript:;" data-toggle="collapse" data-target="#char"><i class="fa fa-fw fa-user"></i> <?=Raptor::get_string('chars')?> <i class="fa fa-fw fa-caret-down"></i></a>
                             <ul id="char" class="collapse">
-                                <li><a href="/admin/find">Поиск персонажа</a></li>
-								<li><a href="/admin/online">Персонажи онлайн</a></li>
-                                <li><a href="/admin/params">Параметры персонажа</a></li>
-								<li><a href="/admin/charact">Действия над персонажами</a></li>
-                                <li><a href="/admin/perms">Редактор прав доступа</a></li>
-                                <li><a href="/admin/auth">Общие настройки</a></li>
+                                <li><a href="/admin/find"><?=Raptor::get_string('find')?></a></li>
+								<li><a href="/admin/online"><?=Raptor::get_string('online')?></a></li>
+                                <li><a href="/admin/params"><?=Raptor::get_string('params')?></a></li>
+								<li><a href="/admin/charact"><?=Raptor::get_string('char_acts')?></a></li>
+                                <li><a href="/admin/perms"><?=Raptor::get_string('perms')?></a></li>
+                                <li><a href="/admin/auth"><?=Raptor::get_string('settings')?></a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="/admin/design"><i class="fa fa-fw fa-desktop"></i> Шаблоны</a>
+                            <a href="/admin/design"><i class="fa fa-fw fa-desktop"></i> <?=Raptor::get_string('templates')?></a>
                         </li>
 						<li>
-                            <a href="/admin/news"><i class="fa fa-fw fa-calendar"></i> Новости</a>
+                            <a href="/admin/news"><i class="fa fa-fw fa-calendar"></i> <?=Raptor::get_string('news')?></a>
                         </li>
                         <li>
-                            <a href="/admin/scripts"><i class="fa fa-fw fa-edit"></i> Скрипты</a>
+                            <a href="/admin/scripts"><i class="fa fa-fw fa-edit"></i> <?=Raptor::get_string('scripts')?></a>
                         </li>
                         <li>
-                            <a href="/admin/mail"><i class="fa fa-envelope"></i> Рассылки</a>
+                            <a href="/admin/mail"><i class="fa fa-envelope"></i> <?=Raptor::get_string('massives')?></a>
                         </li>
                         <li>
-                            <a href="javascript:;" data-toggle="collapse" data-target="#graphic"><i class="fa fa-fw fa-folder"></i> Графика <i class="fa fa-fw fa-caret-down"></i></a>
+                            <a href="javascript:;" data-toggle="collapse" data-target="#graphic"><i class="fa fa-fw fa-folder"></i> <?=Raptor::get_string('graphics')?> <i class="fa fa-fw fa-caret-down"></i></a>
                             <ul id="graphic" class="collapse">
-								<li><a href="/admin/grsettings">Настройки графики</a></li>
-                                <li><a href="/admin/graphic">Список папок с графикой</a></li>
-                                <li><a href="/admin/graphic?sel=Tilesets">Папка - Тайл-сеты</a></li>
-                                <li><a href="/admin/graphic?sel=Autotiles">Папка - Ауто-тайлы</a></li>
-                                <li><a href="/admin/graphic?sel=Characters">Папка - Персонажи</a></li>
-                                <li><a href="/admin/graphic?sel=Icons">Папка - Иконки</a></li>
-                                <li><a href="/admin/graphic?sel=Pictures">Папка - Картинки</a></li>
-                                <li><a href="/admin/graphic?sel=Fonts">Папка - Шрифты</a></li>
-                                <li><a href="/admin/graphic?sel=Items">Папка - Инвентарь</a></li>
+								<li><a href="/admin/grsettings"><?=Raptor::get_string('settings')?></a></li>
+								<li><a href="/admin/graphic"><?=Raptor::get_string('all')?></a></li>
+								<?php
+									foreach(scandir(STATIC_ROOT . SEPARATOR . "Graphics") as $sub)
+									{
+										echo '<li><a href="/admin/graphic?sel='. $sub .'">'. ucfirst($sub) .'</a></li>';
+									}
+								?>
                             </ul>
                         </li>
                         <li>
-                            <a href="javascript:;" data-toggle="collapse" data-target="#economic"><i class="fa fa-fw fa-money"></i> Экономика <i class="fa fa-fw fa-caret-down"></i></a>
+                            <a href="javascript:;" data-toggle="collapse" data-target="#economic"><i class="fa fa-fw fa-money"></i> <?=Raptor::get_string('economic')?> <i class="fa fa-fw fa-caret-down"></i></a>
                             <ul id="economic" class="collapse">
-                                <li><a href="/admin/currency">Валюты</a></li>
-                                <li><a href="/admin/paidservice">Платные услуги</a></li>
-								<li><a href="/admin/payments">Приём платежей</a></li>
+                                <li><a href="/admin/currency"><?=Raptor::get_string('currencies')?></a></li>
+                                <li><a href="/admin/paidservice"><?=Raptor::get_string('paidservices')?></a></li>
+								<li><a href="/admin/payments"><?=Raptor::get_string('payments')?></a></li>
                             </ul>
                         </li>
                         <li>
-                            <a href="javascript:;" data-toggle="collapse" data-target="#locations"><i class="fa fa-fw fa-globe"></i> Локации</a>
+                            <a href="javascript:;" data-toggle="collapse" data-target="#locations"><i class="fa fa-fw fa-globe"></i> <?=Raptor::get_string('locations')?></a>
                             <ul id="locations" class="collapse">
-                                <li><a href="/admin/locations">Локации</a></li>
-								<li><a href="/admin/grsettings">Настройки ресурсов</a></li>
-                                <li><a href="/admin/mapedit">Редактор карт</a></li>
-								<li><a href="/admin/loctypes">Типы локаций</a></li>
-                                <li><a href="/admin/scredit">Скрипты (javascript)</a></li>
-                                <li><a href="javascript:;" data-toggle="collapse" data-target="#graphic">Графика (тайлы, NPC и т.д.)</a></li>
+                                <li><a href="/admin/locations"><?=Raptor::get_string('locations')?></a></li>
+								<li><a href="/admin/grsettings"><?=Raptor::get_string('resources')?></a></li>
+                                <li><a href="/admin/mapedit"><?=Raptor::get_string('mapedit')?></a></li>
+								<li><a href="/admin/loctypes"><?=Raptor::get_string('types')?></a></li>
+                                <li><a href="/admin/scredit">JavaScript</a></li>
+                                <li><a href="javascript:;" data-toggle="collapse" data-target="#graphic"><?=Raptor::get_string('graphics')?></a></li>
                             </ul>
                         </li>
 						<li>
-                            <a href="/admin/chat"><i class="fa fa-fw fa-comments"></i> Чат</a>
+                            <a href="/admin/chat"><i class="fa fa-fw fa-comments"></i> <?=Raptor::get_string('chat')?></a>
                         </li>
                         <li>
-                            <a href="/admin/config"><i class="fa fa-fw fa-wrench"></i> Настройки игры</a>
+                            <a href="/admin/config"><i class="fa fa-fw fa-wrench"></i> <?=Raptor::get_string('settings')?></a>
                         </li>
 						<li>
-                            <a href="javascript:;" data-toggle="collapse" data-target="#inv"><i class="fa fa-fw fa-flag-o"></i> Инвентарь <i class="fa fa-fw fa-caret-down"></i></a>
+                            <a href="javascript:;" data-toggle="collapse" data-target="#inv"><i class="fa fa-fw fa-flag-o"></i> <?=Raptor::get_string('inventory')?> <i class="fa fa-fw fa-caret-down"></i></a>
                             <ul id="inv" class="collapse">
-                                <li><a href="/admin/inv">Управление предметами</a></li>
-								<li><a href="/admin/inv_params">Параметры предметов</a></li>
-								<li><a href="/admin/inv_scripts">Действия над предметами</a></li>
+                                <li><a href="/admin/inv"><?=Raptor::get_string('items')?></a></li>
+								<li><a href="/admin/inv_params"><?=Raptor::get_string('params')?></a></li>
+								<li><a href="/admin/inv_scripts"><?=Raptor::get_string('inv_acts')?></a></li>
                             </ul>
                         </li>
-                        <li>
+                        <!--<li>
                             <a href="javascript:;" data-toggle="collapse" data-target="#wiki"><i class="fa fa-fw fa-book"></i> Wiki <i class="fa fa-fw fa-caret-down"></i></a>
                             <ul id="wiki" class="collapse">
                                 <li><a href="/admin/wiki_menu">Управление меню</a></li>
@@ -173,11 +173,11 @@
                                 <li><a href="/admin/wiki_pages">Управление страницами</a></li>
                                 <li><a href="/admin/wiki_settings">Настройки</a></li>
                             </ul>
-                        </li>
+                        </li>-->
                         <li>
-                            <a href="javascript:;" data-toggle="collapse" data-target="#modules"><i class="fa fa-fw fa-magic"></i> Модули <i class="fa fa-fw fa-caret-down"></i></a>
+                            <a href="javascript:;" data-toggle="collapse" data-target="#modules"><i class="fa fa-fw fa-magic"></i> <?=Raptor::get_string('modules')?> <i class="fa fa-fw fa-caret-down"></i></a>
                             <ul id="modules" class="collapse">
-                                <li><a href="/admin/mods">- Менеджер модулей -</a></li>
+                                <li><a href="/admin/mods">- <?=Raptor::get_string('modules')?> -</a></li>
                                 <?php
 									$mclass = new Modules();
 									$mods = $mclass->getModules();
@@ -189,11 +189,11 @@
                             </ul>
                         </li>
                         <li>
-                            <a href="javascript:;" data-toggle="collapse" data-target="#raptor"><i class="fa fa-fw fa-plane"></i> Движок</a>
+                            <a href="javascript:;" data-toggle="collapse" data-target="#raptor"><i class="fa fa-fw fa-plane"></i> Engine</a>
                             <ul id="raptor" class="collapse">
-                                <li><a href="/admin/update">Новости</a></li>
-								<li><a href="/admin/register">Каталог</a></li>
-								<li><a href=#>Версия: <?=ENGINE_VERSION;?></a></li>
+                                <li><a href="/admin/update">News</a></li>
+								<li><a href="/admin/register">Catalogue</a></li>
+								<li><a href=#>Version: <?=ENGINE_VERSION;?></a></li>
                             </ul>
                         </li>
 

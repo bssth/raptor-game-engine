@@ -1,8 +1,7 @@
 ﻿<?php
 /*
-	@last_edit 22.08.2015
-	@last_autor Mike
-	@comment Архив новостей, просмотр оных
+	@last_edit 13.10.2015 by Mike
+	@comment News archive, views
 	@todo API
 */
 

@@ -1,9 +1,8 @@
 ﻿<?php
 
 /*
-	@last_edit 22.08.2015
-	@last_autor Mike
-	@comment Драйвер настроек игрока
+	@last_edit 13.10.2015
+	@comment User settings driver
 	@todo API
 */
 

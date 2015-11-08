@@ -1,9 +1,8 @@
 ﻿<?php
 
 /*
-	** @last_edit 22.08.2015
-	** @last_autor Mike
-	** @comment Система сессий (by Mike)
+	** @last_edit 22.08.2015 by Mike
+	** @comment Система сессий
 */
 
 class Sessions 
@@ -11,11 +10,14 @@ class Sessions
     protected $savePath;
     protected $sessionName;
 
-    public function __construct() 
+    public function __construct($handle = true) 
 	{
-        session_set_save_handler(
+        if($handle == true)
+		{
+			session_set_save_handler(
                 array($this, 'open'), array($this, 'close'), array($this, 'read'), array($this, 'write'), array($this, 'destroy'), array($this, 'gc')
-        );
+			);
+		}
     }
 
     public function open($savePath, $sessionName) 

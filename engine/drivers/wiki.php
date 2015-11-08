@@ -1,15 +1,14 @@
 <?php
 
 /*
-	@last_edit 22.08.2015
-	@last_autor Mike
-	@comment Недоделанная вики
-	@todo Доделать
+	@last_edit 13.10.2015 by Mike
+	@comment Wiki scratch
+	@todo Rewrite
 */
 
 class wikiDriver 
 {
-
+	/*
     public function actionIndex()
     {
         $article = Database::GetOne('wiki_pages', array('type' => 'main'));
@@ -19,8 +18,9 @@ class wikiDriver
         $tpl->setvar('%GAME_TITLE%', $GLOBALS['name']);
         $tpl->setvar("%YEAR%", date("Y"));
         $tpl->setvar("%CONTENT%", $article['content']);
-        $tpl->setvar("%SIDE_MENU%", 'Тут будет кастомное меню');
+        $tpl->setvar("%SIDE_MENU%", '');
         $tpl->renderEcho();
     }
+	*/
 
 }

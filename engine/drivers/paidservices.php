@@ -1,10 +1,9 @@
 ﻿<?php
 
 /*
-	@last_edit 22.08.2015
-	@last_autor Mike
-	@comment Платные услуги. Иногда система даёт сбои, но мы уже отстреливаем возможные ошибки.
-	@todo Бесперебойная работа
+	@last_edit 13.10.2015
+	@comment Paid services. Sometimes works bad
+	@todo Fix bugs
 */
 
 class paidservicesDriver 
@@ -24,7 +23,7 @@ class paidservicesDriver
 		$result = '';
 		if(isset($_GET['buy'])) 
 		{
-			if(!isset($params[$_GET['buy']]['time'])) { $main->setvar("%CONTENT%", "<h2>Услуга не найдена</h2>"); $main->renderEcho(); return 1; }
+			if(!isset($params[$_GET['buy']]['time'])) { $main->setvar("%CONTENT%", "<h2>404 Not Found</h2>"); $main->renderEcho(); return 1; }
 			if(char()->$params[$_GET['buy']]['currency'] < $params[$_GET['buy']]['cost']) { $main->setvar("%CONTENT%", "<h2>Недостаточно денег</h2>"); $main->renderEcho(); return 1; }
 			char()->giveMoney(-$params[$_GET['buy']]['cost'], $params[$_GET['buy']]['currency']);
 			eval($params[$_GET['buy']]['eval_bought']);

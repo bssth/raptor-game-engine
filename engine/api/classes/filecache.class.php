@@ -1,7 +1,6 @@
 <?php
 /*
-	** @last_edit 23.08.2015
-	** @last_autor Mike
+	** @last_edit 23.08.2015 by Mike
 	** @comment Файловый кэш на замену Memcache. Методы класса аналогичны
 */
 
@@ -14,7 +13,7 @@ class FileCache
 	
     function get($key)
     {
-		$this->memory = file_get_contents($this->dir . SEPARATOR . $this->prefix . $key . $this->sufix);
+		$this->memory = @file_get_contents($this->dir . SEPARATOR . $this->prefix . $key . $this->sufix);
 		if(is_string($this->memory))
 		{
 			$array = unserialize($this->memory);

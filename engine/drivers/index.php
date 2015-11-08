@@ -1,8 +1,8 @@
 <?php
 
 /*
-	@last_edit 10.10.2015 by Mike
-	@comment Драйвер титульной страницы, также переадресация на игру в случае, если игрок авторизован
+	@last_edit 13.10.2015 by Mike
+	@comment Index page driver
 */
 
 class indexDriver 
@@ -20,10 +20,10 @@ class indexDriver
 			switch (@$_GET['result']) 
 			{
 				case 'regerror':
-				echo "<script>alert('Введены неверные данные или аккаунт уже существует');</script>";
+					echo "<script>alert('". Raptor::get_string('account_exists') ."');</script>";
 					break;
 				case 'loginerror':
-					echo "<script>alert('Неверный логин или пароль');</script>";
+					echo "<script>alert('". Raptor::get_string('bad_login') ."');</script>";
 					break;
 				default:
 					break;
@@ -55,7 +55,7 @@ class indexDriver
 	{
         if ((Raptor::ModConfig('auth')['allowRegister'] == 0) and $_SESSION['invited']!==true) 
 		{
-            echo "<script>alert('Регистрация закрыта'); window.location = '/';</script>";
+            echo "<script>alert('". Raptor::get_string('closed_reg') ."'); window.location = '/';</script>";
             die();
         }
         if ($res = Player::register($_POST['login'], $_POST['password'], $_POST['email'])) 

@@ -2,6 +2,7 @@
 	
 	class Raptor 
 	{
+		
 		public static function AntiHack()
 		{
 			if (!defined("WEBSITE")) 
@@ -130,6 +131,11 @@
 			new Sessions;
 			@session_start();
 			return true;
+		}
+		
+		public static function get_string($str)
+		{
+			return Multilingual::i()->__get($str);
 		}
 		
 		public static function ErrorHandler($errno, $errstr, $errfile, $errline)

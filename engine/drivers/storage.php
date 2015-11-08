@@ -1,14 +1,14 @@
 ﻿<?php 
 
 /*
-	@last_edit 22.08.2015 by Mike
-	@comment Драйвер создан на случай, если файл в хранилище не найден и вызывается роутер
+	@last_edit 13.10.2015 by Mike
+	@comment Driver called when storage element wasnt found
 */
 
 class storageDriver() 
 {
 	function __call() 
 	{
-		echo "<h1>Элемент хранилища не найден</h1>";
+		echo Raptor::get_string('bad_storage');
 	}
 }

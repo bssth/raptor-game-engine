@@ -1,9 +1,8 @@
 ﻿<?php
 
 /*
-	@last_edit 22.08.2015
-	@last_autor Mike
-	@comment Интерфейс денежной системы.
+	@last_edit 13.10.2015
+	@comment Economics interface
 */
 
 class moneyDriver 

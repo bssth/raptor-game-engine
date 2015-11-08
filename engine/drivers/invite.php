@@ -1,23 +1,22 @@
 ﻿<?php
 	
 	/*
-		@last_edit 22.08.2015
-		@last_autor Mike
-		@comment Система инвайтов. Костыльная. По умолчанию закомментирована, используйте хуки
-		@todo Интерфейс, отключение
+		@last_edit 13.10.2015
+		@comment Invite system. Deprecated
+		@todo Interface
 	*/
 	
 	/*
-	if(!isset($_GET['t'])) { die("<h1>Ошибка! Не переданы все параметры</h1>"); }
-	if(!isset($_GET['key'])) { die("<h1>Ошибка! Не передан ключ</h1>"); }
+	if(!isset($_GET['t'])) { die("<h1>Error! Not enough params</h1>"); }
+	if(!isset($_GET['key'])) { die("<h1>Error! Bad key</h1>"); }
 	
 	if(sha1($GLOBALS['private_key'] . $_GET['t']) === $_GET['key']) 
 	{
 		$_SESSION['invited'] = true;
-		die("<h1>Поздравляем! Вы получили право зарегистрировать аккаунт. <a href='/'>Нажмите сюда</a></h1>");
+		die("<h1>You can now register. <a href='/'>Click here</a></h1>");
 	}
 	else 
 	{
-		die("<h1>Ошибка! Неверный ключ</h1>");
+		die("<h1>Error! Bad key</h1>");
 	}
 	*/

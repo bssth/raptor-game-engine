@@ -1,5 +1,4 @@
-<h2>Дизайн</h2>
-<h5>Шаблоны; также их можно найти в папке <b>/engine/template</b></h5>
+<h2><?=Raptor::get_string('templates')?></h2>
 <br>
 <hr>
 
@@ -12,12 +11,12 @@ if (isset($_POST['file']))
         $fp = fopen($file, 'w');
         fwrite($fp, $_POST['edit']);
         fclose($fp);
-        echo '<div class="alert alert-success">Шаблон успешно отредактирован. Кэш шаблона очищен.</div>';
+        echo '<div class="alert alert-success">'. Raptor::get_string('admin_saved') .'. '. Raptor::get_string('cache_flush') .'</div>';
 		Cache::set(sha1($file), $_POST['edit'], 3600);
     } 
 	else 
 	{
-        echo '<div class="alert alert-danger">Данный файл недоступен для записи. Измените права доступа</div>';
+        echo '<div class="alert alert-danger">'. Raptor::get_string('error') .'</div>';
     }
 }
 if (isset($_GET['edit'])) 
@@ -25,7 +24,7 @@ if (isset($_GET['edit']))
     echo "<form action='' method='POST'>
         <input type='hidden' name='file' value='" . $_GET['edit'] . "'>
         <textarea rows=15 cols=105 name='edit'>" . file_get_contents(TEMPLATE_ROOT . SEPARATOR . $_GET['edit']) . "</textarea> <br>
-        <button type='submit' class='btn btn-default'>Сохранить</button>
+        <button type='submit' class='btn btn-default'>". Raptor::get_string('save') ."</button>
         </form>
         <hr>";
 }
@@ -34,7 +33,7 @@ if (isset($_GET['edit']))
     <table class="table table-bordered table-hover table-striped">
         <thead>
             <tr>
-                <td>Шаблон</td>
+                <td><?=Raptor::get_string('templates')?></td>
                 <td></td>
             </tr>
         </thead>
@@ -57,12 +56,12 @@ if (isset($_GET['edit']))
 							{ 
 								continue; 
 							}
-							echo "<tr><td> <b><font size=3>". $file . SEPARATOR . $f . "</font></b> </td><td> <a href='?edit=". $file . SEPARATOR . $f . "'>Редактировать</a> </td></tr>";
+							echo "<tr><td> <b><font size=3>". $file . SEPARATOR . $f . "</font></b> </td><td> <a href='?edit=". $file . SEPARATOR . $f . "'>". Raptor::get_string('save') ."</a> </td></tr>";
 						}
 					}
 					else 
 					{
-						echo "<tr><td> <b><font size=3>" . $file . "</font></b> </td><td> <a href='?edit=" . $file . "'>Редактировать</a> </td></tr>";
+						echo "<tr><td> <b><font size=3>" . $file . "</font></b> </td><td> <a href='?edit=" . $file . "'>". Raptor::get_string('edit') ."</a> </td></tr>";
 					}
                 }
             }

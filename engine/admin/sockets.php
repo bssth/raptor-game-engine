@@ -10,7 +10,7 @@
 		
 		socket = new WebSocket(document.getElementById("sock-addr").value);
 
-		socket.onopen = connectionOpen; 
+socket.onopen = connectionOpen; 
 		socket.onmessage = messageReceived; 
 		//socket.onerror = errorOccurred; 
 		//socket.onopen = connectionClosed;
@@ -35,11 +35,11 @@
 
 
 	function connectionOpen() {
-	   socket.send("Подключение к \""+document.getElementById("sock-addr").value+"\" успешно");
+	   socket.send("Connect to \""+document.getElementById("sock-addr").value+"\" - successful");
 	}
 
 	function messageReceived(e) {
-	    console.log("Ответ сервера: " + e.data);
+	    console.log("Answer: " + e.data);
         document.getElementById("sock-info").innerHTML += ("Server: "+e.data+"<br />");
 	}
 
@@ -62,9 +62,9 @@
 })().load();
 </script>
 
-Вебсокет-сервер:
+Server:
 <input id="sock-addr" type="text" value="ws://<?=$GLOBALS['socket_ip'];?>:<?=$GLOBALS['socket_port'];?>"><br />
-Запрос:
+Query:
 <input id="sock-msg" type="text">
 
 <input id="sock-send-butt" type="button" value="send">

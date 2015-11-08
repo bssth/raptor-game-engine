@@ -14,7 +14,7 @@ else
 
 $reports = Database::Get("errors", array())->limit($c);
 
-echo '<p>[<a href="?clean=1">Очистить</a>]</p>';
+echo '<p>[<a href="?clean=1">'. Raptor::get_string('clear') .'</a>]</p>';
 
 foreach(explode("\n", file_get_contents(LOGS_ROOT . SEPARATOR . "errors.log")) as $string) 
 {

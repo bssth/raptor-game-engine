@@ -87,4 +87,4 @@ else
     </div>
 */
 ?>
-<h1>Временно недоступно</h1>
+<h1><?=Raptor::get_string('unavailable')?></h1>

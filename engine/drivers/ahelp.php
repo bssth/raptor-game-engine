@@ -1,7 +1,8 @@
 <?php
 
 /*
-	@deprecated 10.10.2015 by Mike
+	@last_edit 10.10.2015 by Mike
+	@comment Deprecated
 */
 
 class ahelpDriver 

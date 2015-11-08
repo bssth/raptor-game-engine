@@ -8,7 +8,23 @@
 	class Multilingual
 	{
 		protected $words;
+		protected static $instance = null;
 		var $language;
+		
+		public static function i()
+		{
+			if(self::$instance == null)
+			{
+				$lang = isset($GLOBALS['language']) ? $GLOBALS['language'] : 'en';
+				self::$instance = new Multilingual($lang);
+				self::$instance->load($lang);
+				return self::$instance;
+			}
+			else
+			{
+				return self::$instance;
+			}
+		}
 		
 		function __construct($lang = null)
 		{
@@ -37,7 +53,7 @@
 		
 		function __get($key)
 		{
-			return $this->words[$key];
+			return isset($this->words[$key]) ? $this->words[$key] : null;
 		}
 		
 		function __set($key, $value)

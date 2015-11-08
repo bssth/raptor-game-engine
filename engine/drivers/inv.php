@@ -1,9 +1,9 @@
 ﻿<?php
 
 /*
-	@last_edit 09.10.2015 by Mike
-	@comment Инвентарь персонажа. Очень хрупкая система, поскольку требует тщательной настройки
-	@todo Дополнительные проверки, дабы система не давала сбои
+	@last_edit 13.10.2015 by Mike
+	@comment Inventory system. Needs to be used safe
+	@todo Additional checks and bugfixes
 */
 
 class invDriver 

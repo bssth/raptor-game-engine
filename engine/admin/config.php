@@ -2,7 +2,7 @@
 if (isset($_POST['name'])) 
 {
     Raptor::SetConfig($_POST);
-    echo "<div class='alert alert-success'>Настройки сохранены. Кэш конфигурации обновлен. <a href=?>Обновить страницу</a></div>";
+    echo "<div class='alert alert-success'>". Raptor::get_string('admin_saved') .". ". Raptor::get_string('cache_flush') .". <a href=?>". Raptor::get_string('cache_flush') ."</a></div>";
 }
 ?>
 <script>
@@ -18,35 +18,40 @@ if (isset($_POST['name']))
 
 <form action="" method="POST">
     <div class="form-group">
-        <label>Название игры</label>
+        <label><?=Raptor::get_string('title')?></label>
         <input class="form-control" name="name" value="<?= $GLOBALS['name'] ?>">
     </div>
     <div class="form-group">
-        <label>ID игры</label>
+        <label>ID</label>
         <input class="form-control" id="id" name="id" value="<?= $GLOBALS['id'] ?>">
-        <p class="help-block">Уникальный идентификатор игры для каталога RAPTOR. Генерируется при установке</p>
-        <p class="help-block"><a href='#' onclick="generateNewID()">Сгенерировать новый</a></p>
+        <p class="help-block"></p>
+        <p class="help-block"><a href='#' onclick="generateNewID()">Generate</a></p>
     </div>
     <div class="form-group">
-        <label>Версия игры</label>
+        <label>Version</label>
         <input class="form-control" name="version" value="<?= $GLOBALS['version'] ?>">
     </div>
     <div class="form-group">
-        <label>Public Key (публичный ключ для API)</label>
+        <label>Public Key</label>
         <input class="form-control" name="public_key" value="<?= $GLOBALS['public_key'] ?>">
     </div>
     <div class="form-group">
-        <label>Private Key (приватный ключ для API; не сообщайте его сторонним лицам)</label>
+        <label>Private Key</label>
         <input class="form-control" name="private_key" value="<?= $GLOBALS['private_key'] ?>">
     </div>
 	<div class="form-group">
-        <label>RCON (пароль абсолютного управления; доступ к нему должен иметь лишь основатель)</label>
+        <label>RCON</label>
         <input class="form-control" name="rcon" value="<?= $GLOBALS['rcon'] ?>">
     </div>
-    <div class="form-group">
-        <label for="disabledSelect">База данных MongoDB</label>
-        <input class="form-control" id="disabledInput" value="<?= $GLOBALS['database']; ?>" disabled="" type="text">
-        <p class="help-block">Редактируйте вручную в config.php</p>
+	<div class="form-group">
+        <label>Language</label>
+        <input class="form-control" name="language" value="<?= $GLOBALS['language'] ?>">
+		<p class="help-block">en - English, ru - Русский</p>
     </div>
-    <button type="submit" name="active" value="1" class="btn btn-default">Сохранить</button>
+    <div class="form-group">
+        <label for="disabledSelect">MongoDB</label>
+        <input class="form-control" id="disabledInput" value="<?= $GLOBALS['database']; ?>" disabled="" type="text">
+        <p class="help-block">Edit in config.php</p>
+    </div>
+    <button type="submit" name="active" value="1" class="btn btn-default"><?=Raptor::get_string('save')?></button>
 </form>

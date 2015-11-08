@@ -2,7 +2,7 @@
 	if (isset($_POST['mod'])) 
 	{
 		Raptor::SetModConfig("_payments", $_POST);
-		echo "<div class='alert alert-success'>Настройки сохранены. <a href=?>Обновить страницу</a></div>";
+		echo "<div class='alert alert-success'>". Raptor::get_string('admin_saved') .". <a href=?>". Raptor::get_string('refresh') ."</a></div>";
 	}
 	
 	$psconfig = Raptor::ModConfig('_payments');
@@ -20,10 +20,9 @@
     }
 </script>
 
-<h4>Обратите внимание! В большинстве случаев модуль каждой платёжной системы имеет свои дополнительные настройки</h4>
 
 <form action="" method="POST">
-	<div class="form-group"><label>Модуль платёжной системы</label>
+	<div class="form-group"><label><?=Raptor::get_string('module')?></label>
 		<select name="pay_mod" class="form-control">'; 
 		<?php
 			foreach($GLOBALS['modules'] as $mod) 
@@ -34,27 +33,27 @@
 		</select>
 	</div>
     <div class="form-group">
-        <label>Секретный ключ (выдаётся платёжной системой)</label>
+        <label>Secret Key</label>
         <input class="form-control" name="secret_key" value="<?= $psconfig['secret_key'] ?>">
     </div>
 	<div class="form-group">
-        <label>Драйвер оплаты (обычно поле заполняется после установки модуля)</label>
+        <label>Driver</label>
         <input class="form-control" name="pay_driver" value="<?= $psconfig['pay_driver'] ?>">
     </div>
 	<div class="form-group">
-        <label>Класс платёжной системы (обычно поле заполняется после установки модуля)</label>
+        <label>Class</label>
         <input class="form-control" name="pay_class" value="<?= $psconfig['pay_class'] ?>">
     </div>
 	<div class="form-group">
-        <label>Коллекция в БД с платежами (обычно payments)</label>
+        <label>DB Collection</label>
         <input class="form-control" name="pay_class" value="<?= $psconfig['pay_class'] ?>">
     </div>
 	<div class="form-group">
-        <label>Публичный ключ (выдаётся платёжной системой)</label>
+        <label>Public Key</label>
         <input class="form-control" name="secret_key" value="<?= $psconfig['secret_key'] ?>">
     </div>
 	<div class="form-group">
-        <label>Секретный ключ (выдаётся платёжной системой)</label>
+        <label>Secret Key</label>
         <input class="form-control" name="secret_key" value="<?= $psconfig['secret_key'] ?>">
     </div>
     <button name="mod" value="_payments" type="submit" class="btn btn-default">Сохранить</button>

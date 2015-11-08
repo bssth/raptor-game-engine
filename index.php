@@ -45,4 +45,3 @@ require_once(SITE_ROOT . "/engine/router.php");
 
 Router::Start();
 
-?>

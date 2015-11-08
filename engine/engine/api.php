@@ -12,7 +12,6 @@ if (!defined('ENGINE_ROOT'))
         define('SITE_ROOT', __DIR__ . '/..');
     }
     define("ENGINE_ROOT", __DIR__); # Root of 'engine' directory
-    define("HOOKS_ROOT", ENGINE_ROOT . SEPARATOR . "hooks");
     define("CACHE_ROOT", ENGINE_ROOT . SEPARATOR . "cache"); # Root of 'cache' directory
     define("STORAGE_ROOT", SITE_ROOT . SEPARATOR . "storage"); # Root of 'engine' directory
     define("STATIC_ROOT", STORAGE_ROOT . SEPARATOR . "static"); # Root of 'engine' directory

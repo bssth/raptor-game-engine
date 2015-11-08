@@ -2,24 +2,24 @@
 if (isset($_POST['new'])) 
 {
 	Raptor::SetModConfig('params', array("mod" => "params", $_POST['name'] => array()));
-    echo '<div class="alert alert-success">Параметр <b>' . $_POST['name'] . '</b> успешно создан</div>';
+    echo '<div class="alert alert-success">' . $_POST['name'] . ' '. Raptor::get_string('edited', true) .'</div>';
 }
 if (isset($_GET['edit'])) 
 {
     if (isset($_POST['name'])) 
 	{
 		Raptor::SetModConfig('params', array("mod" => "params", $_GET['edit'] => $_POST));
-        echo '<div class="alert alert-success">Параметр <b>' . $_GET['edit'] . '</b> успешно отредактирован</div>';
+        echo '<div class="alert alert-success"><b>' . $_GET['edit'] . '</b> '. Raptor::get_string('edited', true) .'</div>';
     }
     $param = Raptor::ModConfig('params')[$_GET['edit']];
     echo '<form action="" method="POST">
-		<div class="form-group"><label for="disabledSelect">Код параметра</label><input class="form-control" id="disabledInput" placeholder="' . $_GET['edit'] . '" disabled="" type="text"></div>
-		<div class="form-group"><label>Название параметра</label><input name="name" value="' . $param['name'] . '" class="form-control"><p class="help-block">Название, отображаемое игрокам</p></div>
-		<div class="form-group"><label>Название параметра на английском</label><input name="name_en" value="' . $param['name_en'] . '" class="form-control"></div>
-		<div class="form-group"><label>Тип параметра</label><select name="type" onchange="if (this.selectedIndex == 3) document.getElementById(\'script_text\').style.display = \'block\'" class="form-control"><option value="int" ' . ($param['type'] == 'int' ? 'selected' : '') . '>Целое число</option><option value="float" ' . ($param['type'] == 'float' ? 'selected' : '') . '>Дробное число</option><option ' . ($param['type'] == 'str' ? 'selected' : '') . ' value="str">Строка</option><option ' . ($param['type'] == 'id' ? 'selected' : '') . ' value="id">ID персонажа</option><option ' . ($param['type'] == 'script' ? 'selected' : '') . ' value="script" >Формула (скриптовое выражение)</option></select></div>
-		<div class="form-group" style="display: ' . ($param['type'] == 'script' ? 'block' : 'none') . ';" id="script_text"><label>Формула</label><input name="script" value="' . $param['script'] . '" class="form-control"><p class="help-block">PHP-код. Переменная $char - объект с персонажем. Пример использования: <b>return $char->name;</b></p></div>
-		<div class="form-group"><label>Значение по умолчанию</label><input name="def" value="' . $param['def'] . '" class="form-control"><p class="help-block">Отображаемое значение параметра, когда оно не установлено у персонажа. Для типа Формула неактуально</p></div>
-		<button type="submit" class="btn btn-default">Сохранить</button>
+		<div class="form-group"><label for="disabledSelect">'. Raptor::get_string('code') .'</label><input class="form-control" id="disabledInput" placeholder="' . $_GET['edit'] . '" disabled="" type="text"></div>
+		<div class="form-group"><label>'. Raptor::get_string('name') .'</label><input name="name" value="' . $param['name'] . '" class="form-control"><p class="help-block">Название, отображаемое игрокам</p></div>
+		<div class="form-group"><label>'. Raptor::get_string('name_en') .'</label><input name="name_en" value="' . $param['name_en'] . '" class="form-control"></div>
+		<div class="form-group"><label>'. Raptor::get_string('type') .'</label><select name="type" onchange="if (this.selectedIndex == 3) document.getElementById(\'script_text\').style.display = \'block\'" class="form-control"><option value="int" ' . ($param['type'] == 'int' ? 'selected' : '') . '>'. Raptor::get_string('int') .'</option><option value="float" ' . ($param['type'] == 'float' ? 'selected' : '') . '>'. Raptor::get_string('float') .'</option><option ' . ($param['type'] == 'str' ? 'selected' : '') . ' value="str">'. Raptor::get_string('string') .'</option><option ' . ($param['type'] == 'id' ? 'selected' : '') . ' value="id">Character ID</option><option ' . ($param['type'] == 'script' ? 'selected' : '') . ' value="script" >'. Raptor::get_string('script') .'</option></select></div>
+		<div class="form-group" style="display: ' . ($param['type'] == 'script' ? 'block' : 'none') . ';" id="script_text"><label>Формула</label><input name="script" value="' . $param['script'] . '" class="form-control"><p class="help-block">PHP-code. char() - '. Raptor::get_string('char') .'. '. Raptor::get_string('example') .': <b>return char()->name;</b></p></div>
+		<div class="form-group"><label>'. Raptor::get_string('default') .'</label><input name="def" value="' . $param['def'] . '" class="form-control"><p class="help-block"></p></div>
+		<button type="submit" class="btn btn-default">'. Raptor::get_string('save') .'</button>
 		</form>';
 } 
 else 
@@ -47,7 +47,7 @@ else
 		{
             continue;
         }
-        echo "<tr><td> <b><font size=3>" . $value['name'] . "</font></b> </td> <td> <b><font size=3>" . $key . "</font></b> </td> <td> <a href='?edit=" . $key . "'>Редактировать</a> </td></tr>";
+        echo "<tr><td> <b><font size=3>" . $value['name'] . "</font></b> </td> <td> <b><font size=3>" . $key . "</font></b> </td> <td> <a href='?edit=" . $key . "'>". Raptor::get_string('edit') ."</a> </td></tr>";
     }
     echo base64_decode('PC90Ym9keT4NCjwvdGFibGU+DQo8L2Rpdj4=');
 }

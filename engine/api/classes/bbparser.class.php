@@ -30,7 +30,15 @@
 				'[/u]' => '</u>',
 				'[hr]' => '<hr>'
 			);
-			self::$smiles = Database::GetOne("config", array("mod" => "smiles"));
+			if(is_array(Cache::get('smiles')))
+			{
+				self::$smiles = Cache::get('smiles');
+			}
+			else
+			{
+				self::$smiles = Database::GetOne("config", array("mod" => "smiles"));
+				Cache::set('smiles', Database::GetOne("config", array("mod" => "smiles")), 86400);
+			}
 		}
 	
 		public static function parseAll($string)

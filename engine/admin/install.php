@@ -35,7 +35,7 @@
 	$config[] = array (
 			  'mod' => 'locations',
 			  '_onrun' => '[
-			  "SHOW_TEXT: {\'text\': \'Добро пожаловать в вашу новую игру!\'}"
+			  "SHOW_TEXT: {\'text\': \'Welcome!!\'}"
 			]',
 			  '_onsync' => '[
 			]',

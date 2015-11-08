@@ -32,7 +32,7 @@ if(isset($_GET['take']))
 
 if (empty($schar['_id'])) 
 {
-    echo '<div class="alert alert-danger">Персонаж не найден</div>';
+    echo '<div class="alert alert-danger">'. Raptor::get_string('char_not_found') .'</div>';
     die();
 }
 ?>
@@ -51,7 +51,7 @@ if (empty($schar['_id']))
     <div class="col-sm-4">
         <div class="panel panel-default">
             <div class="panel-heading">
-                <h3 class="panel-title">Поля базы данных</h3>
+                <h3 class="panel-title"><?=Raptor::get_string('db_fields')?></h3>
             </div>
             <div class="panel-body">
 				<?php
@@ -68,7 +68,7 @@ if (empty($schar['_id']))
         </div>
         <div class="panel panel-primary">
             <div class="panel-heading">
-                <h3 class="panel-title">Изменить поля БД</h3>
+                <h3 class="panel-title"><?=Raptor::get_string('change')?> <?=Raptor::get_string('db_fields')?></h3>
             </div>
             <div class="panel-body">
                 <?php
@@ -80,7 +80,7 @@ if (empty($schar['_id']))
                     }
                     echo "<form method='POST'>"
                     . "<p>" . $key . " = <input type='text' value='" . $value . "' name='" . $key . "'>"
-                    . '<button name="change" type="submit" value="1" class="btn btn-xs btn-default">Изменить</button>'
+                    . '<button name="change" type="submit" value="1" class="btn btn-xs btn-default">'. Raptor::get_string('save') .'</button>'
                     . '</form></p>';
                 }
                 ?>
@@ -91,21 +91,21 @@ if (empty($schar['_id']))
     <div class="col-sm-4">
         <div class="panel panel-success">
             <div class="panel-heading">
-                <h3 class="panel-title">Игрок</h3>
+                <h3 class="panel-title"><?=Raptor::get_string('player')?></h3>
             </div>
             <div class="panel-body">
-                <p>ID игрока: <?= $schar['player']; ?></p>
-                <p><a class="btn btn-xs btn-default" href="/admin/player?id=<?= $schar['player']; ?>">Открыть управление игроком</a></p>
+                <p>Player ID: <?= $schar['player']; ?></p>
+                <p><a class="btn btn-xs btn-default" href="/admin/player?id=<?= $schar['player']; ?>">Control Panel</a></p>
             </div>
         </div>
         <div class="panel panel-info">
             <div class="panel-heading">
-                <h3 class="panel-title">Добавить поле БД</h3>
+                <h3 class="panel-title"><?=Raptor::get_string('add')?> <?=Raptor::get_string('db_fields')?></h3>
             </div>
             <div class="panel-body">
                 <form method='POST'>
                     <p><input type='text' name='name'></p>
-                    <p><button name="make" value="1" type="submit" value="1" class="btn btn-xs btn-default">Добавить</button></p>
+                    <p><button name="make" value="1" type="submit" value="1" class="btn btn-xs btn-default"><?=Raptor::get_string('add')?></button></p>
                 </form>
             </div>
         </div>
@@ -113,24 +113,22 @@ if (empty($schar['_id']))
     <div class="col-sm-4">
         <div class="panel panel-warning">
             <div class="panel-heading">
-                <h3 class="panel-title">Заметки</h3>
+                <h3 class="panel-title"><?=Raptor::get_string('notices')?></h3>
             </div>
             <div class="panel-body">
-                Здесь можно оставить любые заметки по этому персонажу
                 <div class="form-group">
                     <form method="POST">
                         <textarea name="notes" class="form-control" rows="3"><?= $schar['notes']; ?></textarea> <br>
-                        <button type="submit" class="btn btn-xs btn-default">Сохранить</button>
+                        <button type="submit" class="btn btn-xs btn-default"><?=Raptor::get_string('save')?></button>
                     </form>
 					</div>
             </div>
         </div>
 		<div class="panel panel-warning">
             <div class="panel-heading">
-                <h3 class="panel-title">Инвентарь</h3>
+                <h3 class="panel-title"><?=Raptor::get_string('inventory')?></h3>
             </div>
             <div class="panel-body">
-                Здесь можно управлять имуществом персонажа
                 <div class="form-group">
                     <?php
 						$inv_params = Raptor::ModConfig('inv_params');
@@ -148,7 +146,7 @@ if (empty($schar['_id']))
 						}
 					?>
 					<hr>
-					<h4>Выдать предмет</h4>
+
 					<form method="GET">
 						<select name="give" class="form-control">
 							<?php
@@ -164,7 +162,7 @@ if (empty($schar['_id']))
 						</select>
 						<input type='text' value='1' name='cnt'>
 						<input type='hidden' name='id' value='<?=$_GET['id']?>'>
-						<button type="submit" class="btn btn-xs btn-default">Выдать</button>
+						<button type="submit" class="btn btn-xs btn-default"><?=Raptor::get_string('give')?></button>
 					</form>
                 </div>
             </div>

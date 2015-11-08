@@ -1,7 +1,7 @@
 ﻿<?php
 /*
-	@last_edit 10.10.2015 by Mike
-	@comment Кабинет пользователя с выбором персонажа
+	@last_edit 13.10.2015 by Mike
+	@comment User cabinet with character selection
 */
 
 class cabinetDriver {
@@ -73,7 +73,7 @@ class cabinetDriver {
 		{
 			if($check->ban >= time()) 
 			{
-				die('<script>alert("Вы были заблокированы \n\n Причина: '. $check->ban_reason .'"); location.href = "/";</script>');
+				die('<script>alert('. Raptor::get_string('acc_ban') .' '. $check->ban_reason .'); location.href = "/";</script>');
 			}
 			else 
 			{
@@ -84,7 +84,7 @@ class cabinetDriver {
 		else
 		{
             raptor_error("Bad character id");
-			echo '<script>alert("Ошибка при выборе персонажа");</script>';
+			echo '<script>alert("'. Raptor::get_string('select_error') .'");</script>';
         }
     }
 
@@ -99,7 +99,7 @@ class cabinetDriver {
             $chars = Player::getChars($_SESSION['id'])->count();
             if ($chars >= $maxchars) 
 			{
-                echo "<h1>Исчерпан лимит персонажей на одного игрока (" . $maxchars . ")</h1>";
+                echo "<h1>". Raptor::get_string('char_limit') ." (" . $maxchars . ")</h1>";
             } 
 			else
 			{
@@ -116,7 +116,7 @@ class cabinetDriver {
                 } 
 				else
 				{
-                    $error = "Персонаж уже существует";
+                    $error = Raptor::get_string('char_exists');
                 }
             }
         }
