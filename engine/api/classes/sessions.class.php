@@ -1,4 +1,4 @@
-﻿<?php
+<?php
 
 /*
 	** @last_edit 22.08.2015 by Mike

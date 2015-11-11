@@ -1,7 +1,7 @@
 <?php
 	
 	/* 
-		@comment Peïîðòû èãðîêîâ
+		@comment PeÐ¿Ð¾Ñ€Ñ‚Ñ‹ Ð¸Ð³Ñ€Ð¾ÐºÐ¾Ð²
 		@last_edit 11.10.2015 by Mike
 	*/
 	
