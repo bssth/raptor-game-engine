@@ -248,27 +248,28 @@ function getScript($name)
 
 function char($id = false)
 {
-    if ($id !== false) 
+	$id = __toString($id);
+	
+    if (isset($GLOBALS['chars'][$id]) and is_object($GLOBALS['chars'][$id])) 
 	{
-		$id = __toString($id);
-		$GLOBALS['chars'][$id] = new Char($id);
         return $GLOBALS['chars'][$id];
-    }
-    if (isset($GLOBALS['chars'][$_SESSION['cid']]) and is_object($GLOBALS['chars'][$_SESSION['cid']])) 
-	{
-        return $GLOBALS['chars'][$_SESSION['cid']];
     } 
 	else
 	{
         $char = new Char();
-		$GLOBALS['chars'][$_SESSION['cid']] = $char;
+		$GLOBALS['chars'][$id] = $char;
         return $char;
     }
 }
 
+function array_to_object($ar)
+{
+	return (object)$ar;
+}
+
 function CharById($id)
 {
-    return new Char($id);
+    return char($id);
 }
 
 function CharByName($name)

@@ -1,7 +1,7 @@
 <?php
 
 /*
-	** @last_edit 22.08.2015 by Mike
+	** @last_edit 14.11.2015 by Mike
 	** @comment Класс для работы с персонажами. Нужно создавать экземпляр
 	** @todo Работа с веб-сокетами, если используются
 */
@@ -19,7 +19,8 @@ class Char
             $id = $_SESSION['cid'];
         }
         $this->id = $id;
-        $this->inv = new CharacterInventory($id);
+        $this->inv = new CharacterInventory($id, false, false);
+		$this->all();
     }
 
     function get($name)
@@ -39,10 +40,7 @@ class Char
 
     function __set($name, $value)
     {
-		$data = $this->all();
-		$data[$name] = $value;
-		Cache::set('char_'.$this->id, $data, 3600);
-        return Database::Edit("characters", array("_id" => toId($this->id)), array($name => $value));
+		return Char::change($this->id, $name, $value);
     }
 
     function __get($name)
@@ -73,14 +71,15 @@ class Char
 
     function setOnline()
     {
-        $online = $this->__get("online");
+        $online = $this->online;
+		
         if ($online > time()) 
 		{
             return false;
         } 
 		else 
 		{
-            $this->__set("online", time() + 600);
+            $this->online = time() + 600;
             $online_a = Cache::get('chars_online');
 			if(!is_array($online_a) or !isset($online_a[$this->id]) or $online_a[$this->id] < time()) 
 			{ 
@@ -94,22 +93,35 @@ class Char
 
     function all()
     {
-		$cd = Cache::get('char_'.$this->id);
+		return Char::data($this->id);
+    }
+
+	public static function data($id)
+	{
+		$cd = Cache::get('char_'.$id);
 		if(is_array($cd))
 		{
 			return $cd;
 		}
 		else 
 		{
-			$cd = Database::GetOne("characters", array("_id" => toId($this->id)));
-			Cache::set('char_'.$this->id, $cd, 3600);
+			$cd = Database::GetOne("characters", array("_id" => toId($id)));
+			Cache::set('char_'.$id, $cd, 3600);
 			return $cd;
 		}
-    }
-
+	}
+	
+	public static function change($id, $name, $value)
+	{
+		$data = Char::data($id);
+		$data[$name] = $value;
+		Cache::set('char_'.$id, $data, 3600);
+        return Database::Edit("characters", array("_id" => toId($id)), array($name => $value));
+	}
+	
     function getParam($pname)
     {
-        $param = Database::GetOne("config", array("mod" => "params"))[$pname];
+        $param = Raptor::ModConfig('params')[$pname];
         if (!is_array($param)) 
 		{
             raptor_warning("Bad parameter for getParam ($pname)");
@@ -212,14 +224,8 @@ class Char
 	
     function check()
     {
-        if (!is_object($this->id)) 
-		{
-            $array = Database::GetOne("characters", array("_id" => new MongoId($this->id)));
-        } 
-		else 
-		{
-            $array = $this->all();
-        }
+		$array = $this->all();
+
         if (!empty($array['_id'])) 
 		{
             return true;

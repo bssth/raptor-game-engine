@@ -2,7 +2,7 @@
 
 /*
 	** @comment Класс для работы с инвентарём персонажа. Экземпляр хранится в переменной inv класса Char
-	** @last_edit 11.10.2015 by Mike
+	** @last_edit 14.11.2015 by Mike
 */
 
 class CharacterInventory 
@@ -22,18 +22,19 @@ class CharacterInventory
         $this->id = $id;
         if ($inv === false) 
 		{
-            $temp = Database::GetOne('characters', array('_id' => toId($id)));
+            $temp = Char::data($this->id);
             $this->inv = isset($temp['inv']) ? (array)$temp['inv'] : array();
         }
         if ($conf === false) 
 		{
-            $this->conf = Database::GetOne('config', array('mod' => 'inventory'));
+            $this->conf = Raptor::ModConfig('inventory');
         }
     }
 
     function save()
     {
-        return Database::Edit("characters", array('_id' => toId($this->id)), array("inv" => $this->inv));
+		Char::change($this->id, 'inv', $this->inv);
+		return true;
     }
 
     function __destruct()
@@ -46,7 +47,7 @@ class CharacterInventory
 
 	function refresh()
     {
-        $this->inv = Database::GetOne('characters', array('_id' => toId($this->id)))['inv'];
+        $this->inv = array_to_object(Char::data($this->id))->inv;
     }
 
     function giveItem($id, $count)
@@ -141,12 +142,12 @@ class CharacterInventory
         switch ($param['type'])
         {
             case "script":
-                $char = new Char();
+                $char = array_to_object(Char::data($this->id));
                 $inv = $this;
                 return eval($param['script']);
                 break;
             case "id":
-                return new Char($id);
+                return Char::data($id);
                 break;
             case "int":
                 return (int) $this->conf[$id][$pname];
