@@ -13,7 +13,8 @@ class FileCache
 	
     function get($key)
     {
-		$this->memory = @file_get_contents($this->dir . SEPARATOR . $this->prefix . $key . $this->sufix);
+		if(!file_exists($this->dir . SEPARATOR . $this->prefix . $key . $this->sufix)) { return null; }
+		$this->memory = file_get_contents($this->dir . SEPARATOR . $this->prefix . $key . $this->sufix);
 		if(is_string($this->memory))
 		{
 			$array = unserialize($this->memory);
@@ -50,7 +51,7 @@ class FileCache
 		}
     }
 
-    function replace($key, $var, $lifetime)
+    function replace($key, $var, $t, $lifetime)
     {
         if(file_exists($this->dir . SEPARATOR . $this->prefix . $key . $this->sufix))
 		{
@@ -62,7 +63,7 @@ class FileCache
 		}
     }
 
-    function set($key, $value, $lifetime)
+    function set($key, $value, $t, $lifetime)
     {
 		if(is_array($value))
 		{
