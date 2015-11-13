@@ -18,7 +18,7 @@
 		<div class="form-group"><label>'. Raptor::get_string('name_en') .'</label><input name="name_en" value="'. $param['name_en'] .'" class="form-control"></div>
 		<div class="form-group"><label>'. Raptor::get_string('type') .'</label>
 		<select name="type" class="form-control">
-		<option '. (!$param['type'] or $param['type']=='default'?'selected':'') .' value="default">RPG.JS</option>'; 
+		<option '. (!$param['type'] or $param['type']=='default'?'selected':'') .' value="default">-</option>'; 
 		foreach(Raptor::ModConfig('location_types') as $key => $value) 
 		{
 			if(!is_array($value)) { continue; }

@@ -122,7 +122,6 @@
                         <li>
                             <a href="javascript:;" data-toggle="collapse" data-target="#graphic"><i class="fa fa-fw fa-folder"></i> <?=Raptor::get_string('graphics')?> <i class="fa fa-fw fa-caret-down"></i></a>
                             <ul id="graphic" class="collapse">
-								<li><a href="/admin/grsettings"><?=Raptor::get_string('settings')?></a></li>
 								<li><a href="/admin/graphic"><?=Raptor::get_string('all')?></a></li>
 								<?php
 									foreach(scandir(STATIC_ROOT . SEPARATOR . "Graphics") as $sub)
@@ -147,7 +146,6 @@
 								<li><a href="/admin/grsettings"><?=Raptor::get_string('resources')?></a></li>
                                 <li><a href="/admin/mapedit"><?=Raptor::get_string('mapedit')?></a></li>
 								<li><a href="/admin/loctypes"><?=Raptor::get_string('types')?></a></li>
-                                <li><a href="/admin/scredit">JavaScript</a></li>
                                 <li><a href="javascript:;" data-toggle="collapse" data-target="#graphic"><?=Raptor::get_string('graphics')?></a></li>
                             </ul>
                         </li>

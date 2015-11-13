@@ -3,8 +3,7 @@
 /*
 	** @comment Данный файл используется для объявления стандартных функций
 	** @comment Они такие же обычные и серые для RAPTOR, как функции PHP для PHP...
-	** @last_edit 22.08.2015
-	** @last_autor Mike
+	** @last_edit 22.08.2015 by 
 	** @todo Убрать лишние функции
 */
 
@@ -308,10 +307,11 @@ function createEventTimer($id, $time)
     createTimer($id, $time, "call_user_func('EventTimerExpired', " . $id . ");");
 }
 
-function check_player_events($id, $delete = false, $clearEval = true)
+function check_player_events($id = false, $delete = false, $clearEval = true)
 {
+	if(!is_numeric($id)) { $id = $_SESSION['cid']; }
     $result = array("js" => array(), "eval" => array());
-    $all = Cache::get('events_' . $_SESSION['cid']);
+    $all = Cache::get('events_' . $id);
 	if(!is_array($all)) 
 	{ 
 		return array(); 
@@ -334,11 +334,11 @@ function check_player_events($id, $delete = false, $clearEval = true)
     }
     if ($delete == true) 
 	{
-        Cache::set('events_' . $_SESSION['cid'], '0', 0);
+        Cache::set('events_' . $id, '0', 0);
     } 
 	elseif ($clearEval == true) 
 	{
-        Cache::set('events_' . $_SESSION['cid'], $all, 0);
+        Cache::set('events_' . $id, $all, 0);
     }
     return $result;
 }

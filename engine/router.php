@@ -1,8 +1,7 @@
 <?php
 
 /*
-	@last_edit 22.08.2015
-	@last_autor Mike
+	@last_edit 13.11.2015 by Mike
 	@comment Роутер, который определяет драйвер и действие
 */
 
@@ -71,7 +70,7 @@ class Router
         #$dAction = ucfirst($dAction);
         $actionMethod = "action" . $dAction;
 		
-		if(call_user_func("onRouted", $dDriver, $dAction, $urlArray) === false) 
+		if(function_exists("onRouted") and @call_user_func("onRouted", $dDriver, $dAction, $urlArray) === false) 
 		{
 			return false;
 		}
@@ -91,7 +90,7 @@ class Router
             } 
 			elseif (MODE == 'production') 
 			{
-                die("<center style='margin-top:20%;'><h1>404</h1>Page not found</center>");
+                WebApp::not_found();
             }
         }
         $controllerClass = new $controllerClassName;

@@ -96,8 +96,9 @@
 			return Modules::i()->InitModules($modules);
 		}
 		
-		public static function Launcher()
+		public static function Launcher($check = true)
 		{
+			if($check == true and ( strstr(@$_SERVER['REQUEST_URI'], "/api") )) { return; }
 			if (isset($_SESSION['cid'])) 
 			{
 				if (is_object($_SESSION['cid'])) 
@@ -144,6 +145,7 @@
 			log_error("[$errno] $errstr (file: $errfile, line $errline) \n");
 			if (defined("HIDE_ERRORS")) 
 			{
+				WebApp::internal();
 				return false;
 			}
 

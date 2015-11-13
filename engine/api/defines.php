@@ -12,5 +12,9 @@
 
 	define("ENGINE_NAME", "Raptor Game Engine");
 	define("ENGINE_STAMP", ENGINE_NAME . " " . ENGINE_VERSION);
+	
+	define("DEVELOPER", "Disaytid");
+	define("FOUNDER", "Mike Chip");
+	define("DEVELOPER_URL", "http://disaytid.ru");
 
 ?>

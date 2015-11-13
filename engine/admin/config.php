@@ -11,7 +11,7 @@ if (isset($_POST['name']))
         $.get('/api?a=uniqid', 
 			function (data) {
 				document.getElementById('id').value = data;
-			}
+			}, 'text'
 		);
     }
 </script>

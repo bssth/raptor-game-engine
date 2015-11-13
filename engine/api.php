@@ -20,7 +20,7 @@ if (!defined('ENGINE_ROOT'))
     define("ADMIN_ROOT", ENGINE_ROOT . SEPARATOR . "admin"); # Root of 'admin' directory
 	define("LANG_ROOT", ENGINE_ROOT . SEPARATOR . "lang"); # Root of 'lang' directory
     define("MODS_ROOT", ENGINE_ROOT . SEPARATOR . "mods"); # Root of 'api' directory
-    define("SITE_URL", @$_SERVER['SERVER_NAME']);
+    define("SITE_URL", $GLOBALS['url']);
     define("TEMPLATE_ROOT", ENGINE_ROOT . SEPARATOR . "templates");
     define("SCRIPTS_ROOT", ENGINE_ROOT . SEPARATOR . "scripts");
     define("LOGS_ROOT", ENGINE_ROOT . SEPARATOR . "logs");
@@ -81,7 +81,7 @@ Raptor::InitModules($cursor['modules']);
 
 if(!defined("NOT_CLIENT_USE") and defined("CLIENT_USE")) 
 {
-	Raptor::Launcher();
+	Raptor::Launcher(true);
 }
 
 ?>

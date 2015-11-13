@@ -210,17 +210,18 @@ class ExtAPI
     public static function online($array)
     {
         $answer = array();
-        $chars = Database::Get("characters", array("map" => (string) $array['map'], 'online' => array('$gt' => time())));
-        foreach ($chars as $c) 
+		$chars = Char::online(); 
+		
+        foreach ($chars as $n => $c) 
 		{
-            $c['_id'] = __toString($c['_id']);
-            $answer[$c['_id']]['id'] = $c['_id'];
-            $answer[$c['_id']]['name'] = $c['name'];
-            $answer[$c['_id']]['x'] = $c['pos_x'];
-            $answer[$c['_id']]['y'] = $c['pos_y'];
-            $answer[$c['_id']]['skin'] = $c['skin'];
-            $answer[$c['_id']]['dir'] = $c['dir'];
-            $answer[$c['_id']]['online'] = $c['online'];
+			$ids = __toString($c->_id);
+            $answer[$ids]['id'] = __toString($c->_id);
+            $answer[$ids]['name'] = $c->name;
+            $answer[$ids]['x'] = $c->pos_x;
+            $answer[$ids]['y'] = $c->pos_y;
+            $answer[$ids]['skin'] = $c->skin;
+            $answer[$ids]['dir'] = $c->dir;
+            $answer[$ids]['online'] = $c->online;
         }
         $answer = json_encode($answer, JSON_FORCE_OBJECT);
         return $answer;
@@ -251,7 +252,7 @@ class ExtAPI
 
     public static function call($array)
     {
-        return call_user_func("onClientCall", $array['name'], json_decode($array['params'], true));
+        return call_user_func("onClientCall", @$array['name'], @json_decode($array['params'], true));
     }
 
     public static function dialog($array)

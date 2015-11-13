@@ -39,6 +39,9 @@ class Char
 
     function __set($name, $value)
     {
+		$data = $this->all();
+		$data[$name] = $value;
+		Cache::set('char_'.$this->id, $data, 3600);
         return Database::Edit("characters", array("_id" => toId($this->id)), array($name => $value));
     }
 
@@ -48,19 +51,15 @@ class Char
 		{
             return $this->getParam($name);
         }
-        if (!is_object($this->id)) 
-		{
-            $array = Database::GetOne("characters", array("_id" => toId($this->id)));
-        } 
-		else
-		{
-            $array = Database::GetOne("characters", array("_id" => $this->id));
-        }
+        $array = $this->all();
         return isset($array[$name]) ? $array[$name] : false;
     }
 
     function isOnline()
     {
+		$online_a = Cache::get('chars_online');
+		if(is_array($online_a) and isset($online_a[$this->id]) and $online_a[$this->id] > time()) { return true; }
+			
         $online = $this->__get("online");
         if ($online > time()) 
 		{
@@ -82,21 +81,30 @@ class Char
 		else 
 		{
             $this->__set("online", time() + 600);
-            return true;
+            $online_a = Cache::get('chars_online');
+			if(!is_array($online_a) or !isset($online_a[$this->id]) or $online_a[$this->id] < time()) 
+			{ 
+				$online_a = is_array($online_a) ? $online_a : array();
+				$online_a[$this->id] = time() + 600;
+				Cache::set('chars_online', $online_a, 86400);
+			}
+			return true;
         }
     }
 
     function all()
     {
-        if (!is_object($this->id)) 
+		$cd = Cache::get('char_'.$this->id);
+		if(is_array($cd))
 		{
-            $array = Database::GetOne("characters", array("_id" => toId($this->id)));
-        } 
-		else
+			return $cd;
+		}
+		else 
 		{
-            $array = Database::GetOne("characters", array("_id" => $this->id));
-        }
-        return $array;
+			$cd = Database::GetOne("characters", array("_id" => toId($this->id)));
+			Cache::set('char_'.$this->id, $cd, 3600);
+			return $cd;
+		}
     }
 
     function getParam($pname)
@@ -110,7 +118,7 @@ class Char
         if (!isset($param['type'])) 
 		{
             raptor_warning("Cannot get param type for $pname");
-            $c_base = Database::GetOne("characters", array("_id" => toId($this->id)))[$pname];
+            $c_base = $this->all()[$pname];
             $value = isset($c_base[$pname]) ? $c_base[$pname] : $param['def'];
             return $value;
         }
@@ -121,28 +129,28 @@ class Char
                 return eval($param['script']);
                 break;
             case "id":
-                $c_base = Database::GetOne("characters", array("_id" => toId($this->id)));
+                $c_base = $this->all();
                 $value = isset($c_base[$pname]) ? $c_base[$pname] : $param['def'];
                 return new Char($value);
                 break;
             case "int":
-                $c_base = Database::GetOne("characters", array("_id" => toId($this->id)));
+                $c_base = $this->all();
                 $value = isset($c_base[$pname]) ? $c_base[$pname] : $param['def'];
                 return (int) $value;
                 break;
             case "str":
-                $c_base = Database::GetOne("characters", array("_id" => toId($this->id)));
+                $c_base = $this->all();
                 $value = isset($c_base[$pname]) ? $c_base[$pname] : $param['def'];
                 return (string) $value;
                 break;
             case "float":
-                $c_base = Database::GetOne("characters", array("_id" => toId($this->id)));
+                $c_base = $this->all();
                 $value = isset($c_base[$pname]) ? $c_base[$pname] : $param['def'];
                 return (float) $value;
                 break;
             default:
                 raptor_warning("Cannot get param type for $pname");
-                $c_base = Database::GetOne("characters", array("_id" => toId($this->id)));
+                $c_base = $this->all();
                 $value = isset($c_base[$pname]) ? $c_base[$pname] : $param['def'];
                 return $value;
                 break;
@@ -162,7 +170,7 @@ class Char
     function makeEvent($event)
     {
 		$event['char'] = $this->id;
-		if((!is_string(Cache::get('events_' . $this->id)) and !is_array(Cache::get('events_' . $this->id))) or Cache::get('events_' . $this->id) == '0') 
+		if(!is_array(Cache::get('events_' . $this->id)) or Cache::get('events_' . $this->id) == '0') 
 		{
 			Cache::set('events_' . $this->id, array($event), 0);
 		}
@@ -210,7 +218,7 @@ class Char
         } 
 		else 
 		{
-            $array = Database::GetOne("characters", array("_id" => $this->id));
+            $array = $this->all();
         }
         if (!empty($array['_id'])) 
 		{
@@ -221,7 +229,21 @@ class Char
             return false;
 		}
     }
-
+	
+	public static function online()
+	{
+		$result = array();
+		$online_a = is_array(Cache::get('chars_online')) ? Cache::get('chars_online') : array();
+		foreach($online_a as $k => $v)
+		{
+			if($v > time())
+			{
+				$result[] = char($k);
+			}
+		}
+		return $result;
+	}
+	
     public static function create($data = array())
     {
         $array = Database::GetOne("characters", array("name" => $data['name']));
