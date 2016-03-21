@@ -1,1 +1,0 @@
-﻿<iframe id="gui" src="/storage/static/syslocations.html" scrolling="no" width="1045" height="530" frameborder=0></iframe>

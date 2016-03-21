@@ -1,0 +1,159 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<title><?=\Game\Config::game_title;?></title>
+<meta name="description" content="<?=\Game\Config::meta_desc;?>">
+<meta name="keywords" content="<?=\Game\Config::meta_keys;?>">
+<link href="<?=\Game\Config::sample_storage;?>/css/style.css" rel="stylesheet" type="text/css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script> 
+<script>
+	function game_register()
+	{
+		login = prompt('Enter your new login');
+		password = prompt('Enter password');
+		password2 = prompt('Enter password another time');
+
+		if(password != password2) { 
+			alert('Passwords dont equal'); 
+			return;
+		}
+
+		email = prompt('Enter your email');
+
+		$.getJSON('/api/method/auth.register', {'login': login, 'password': password, 'email': email}, function(data) {
+			if(data.error) { alert(data.error); }
+			if(data.id) { alert('Youre successfully registered. Login now'); }
+		});
+	}
+	
+	function game_login()
+	{
+		login = prompt('Enter your login');
+		password = prompt('Enter your password');
+
+		$.getJSON('/api/method/auth.login', {'login': login, 'password': password}, function(data) {
+			if(data.error) { alert(data.error); return; }
+			if(data.id) {
+				sessionStorage.setItem('id', data.id);
+				sessionStorage.setItem('token', data.token);
+				sessionStorage.setItem('chars', JSON.stringify(data.characters));
+				window.location = '/index/cabinet';
+			}
+		});
+	}
+</script>
+</head>
+<body>
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td height="1" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="1"><img src="<?=\Game\Config::sample_storage;?>/images/h1.jpg" width="183" height="156"></td>
+<td width="256" valign="top" background="<?=\Game\Config::sample_storage;?>/images/h2.jpg" class="norepeat"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td height="1"><img src="<?=\Game\Config::sample_storage;?>/images/spacer.gif" width="44" height="3"></td>
+<td height="1"><img src="<?=\Game\Config::sample_storage;?>/images/spacer.gif" width="212" height="4"></td>
+</tr>
+<tr>
+<td><img src="<?=\Game\Config::sample_storage;?>/images/logo.gif" width="44" height="35"></td>
+<td class="cn" id='title'><?=\Game\Config::game_title;?></td>
+</tr>
+</table></td>
+<td width="1"><img src="<?=\Game\Config::sample_storage;?>/images/h3.jpg" width="308" height="156"></td>
+<td width="100%" background="<?=\Game\Config::sample_storage;?>/images/hm.gif" class="bgx">&nbsp;</td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td height="1" valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="1" background="<?=\Game\Config::sample_storage;?>/images/ml_mu.gif"><img src="<?=\Game\Config::sample_storage;?>/images/spacer.gif" width="199" height="26"></td>
+<td valign="top" bgcolor="#444f79"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="1"><img src="<?=\Game\Config::sample_storage;?>/images/menu_marker.gif" width="26" height="26"></td>
+<td class="menu"><a href="#" class="menu_lnk">Home</a></td>
+<!-- <td width="1"><img src="<?=\Game\Config::sample_storage;?>/images/menu_marker.gif" width="26" height="26"></td>
+<td class="menu"><a href="#" class="menu_lnk">Home</a></td> -->
+<td width="100%">&nbsp;</td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td valign="top"><table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td width="1"><table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td background="<?=\Game\Config::sample_storage;?>/images/sub_btn.gif" class="norepeat"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td></td>
+<td><img src="<?=\Game\Config::sample_storage;?>/images/spacer.gif" width="198" height="1"></td>
+</tr>
+<tr>
+<td><img src="<?=\Game\Config::sample_storage;?>/images/spacer.gif" width="1" height="19"></td>
+<td class="sub"><a href="#" onclick="game_register()" class="sub_lnk">Register</a></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td background="<?=\Game\Config::sample_storage;?>/images/sub_btn.gif" class="norepeat"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td></td>
+<td><img src="<?=\Game\Config::sample_storage;?>/images/spacer.gif" width="198" height="1"></td>
+</tr>
+<tr>
+<td><img src="<?=\Game\Config::sample_storage;?>/images/spacer.gif" width="1" height="19"></td>
+<td class="sub"><a href="#" onclick="game_login()" class="sub_lnk">Login</a></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td height="1"><img src="<?=\Game\Config::sample_storage;?>/images/sub_1.gif" width="199" height="3"></td>
+</tr>
+<tr>
+<td height="100%" bgcolor="#5A688F">&nbsp;</td>
+</tr>
+<tr>
+<td width="1"><img src="<?=\Game\Config::sample_storage;?>/images/sub_bot.jpg" width="199" height="278"></td>
+</tr>
+</table></td>
+<td valign="top" bgcolor="#444f79">
+<table width="100%" height="100%" border="0" cellpadding="0" cellspacing="0">
+<tr>
+<td valign="top"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="1" background="<?=\Game\Config::sample_storage;?>/images/welc_bg.gif" class="norepeat"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td><img src="<?=\Game\Config::sample_storage;?>/images/spacer.gif" width="548" height="1"></td>
+</tr>
+<tr>
+<td class="welcome">Welcome to <?=\Game\Config::game_title;?>!</td>
+</tr>
+</table></td>
+<td width="100%" background="<?=\Game\Config::sample_storage;?>/images/welc_mult.gif" class="bgx"><img src="<?=\Game\Config::sample_storage;?>/images/welc_mult.gif" width="1" height="49"></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td height="100%" class="base_txt">
+<p>Welcome to your new game!</p>
+<p>To edit this page, just create template named <b>static_index.html</b> and place it in <b>/engine/templates</b> directory</p>
+</td>
+</tr>
+</table></td>
+</tr>
+</table></td>
+</tr>
+<tr>
+<td height="1" valign="top" background="<?=\Game\Config::sample_storage;?>/images/b_bg.gif" class="bgx"><table width="100%" border="0" cellspacing="0" cellpadding="0">
+<tr>
+<td width="1"><img src="<?=\Game\Config::sample_storage;?>/images/spacer.gif" width="1" height="23"></td>
+<td class="bottom_menu">&copy; <?=\Game\Config::copyright;?></td>
+</tr>
+</table></td>
+</tr>
+</table>
+</body>
+</html>

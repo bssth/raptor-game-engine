@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags-->
+        <meta name="description" content="<?=\Game\Config::meta_desc;?>">
+        <meta name="author" content="<?=\Game\Config::meta_keys;?>">
+
+        <title><?=\Game\Config::game_title;?></title>
+
+        <!-- Bootstrap core CSS-->
+        <link href="<?=\Game\Config::sample_storage;?>/bootstrap.min.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries-->
+        <!--[if lt IE 9]>-->
+        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    </head>
+
+    <body>
+
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-2">
+					<iframe height='500' style='margin-top: 5px;' id='chat-messages'>
+					</iframe>
+						<div class="form-group">
+							<form onsubmit='RGame.sendchat(); return false;'>
+								<input class="form-control" id="chat-message" type="text">
+								<button type="button" onclick='RGame.sendchat()' class="btn btn-default">
+									Send
+								</button>
+							</form>
+						</div>
+				</div>
+				<div class="col-md-8">
+					
+					<div class="modal fade" id="modal-container-750053" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+						<div class="modal-dialog">
+							<div class="modal-content">
+								<div class="modal-header">
+									<!-- <a id="modal-750053" href="#modal-container-750053" role="button" class="btn" data-toggle="modal">Launch demo modal</a> -->
+									<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+										×
+									</button>
+									<h4 class="modal-title" id="ModalLabel">
+										loading...
+									</h4>
+								</div>
+								<div class="modal-body" id='modal-body'>
+									loading...
+								</div>
+								<div class="modal-footer">
+									 
+									<button type="button" class="btn btn-default" data-dismiss="modal">
+										Close
+									</button>
+								</div>
+							</div>
+							
+						</div>
+						
+					</div>
+				</div>
+				<div id='character-list' class="col-md-2">
+					
+				</div>
+			</div>
+		</div>
+	
+        <!-- Bootstrap core JavaScript
+        ================================================== 
+        <!-- Placed at the end of the document so the pages load faster -->
+        <script src="<?=\Game\Config::sample_storage;?>/jquery-1.11.0.js"></script>
+        <script src="<?=\Game\Config::sample_storage;?>/bootstrap.min.js"></script>
+		<script>
+		<?=$client;?>
+		</script>
+    </body>
+</html>
