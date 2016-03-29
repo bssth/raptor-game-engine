@@ -1,3 +1,0 @@
-<?php 
-	
-	# Deprecated\reserved

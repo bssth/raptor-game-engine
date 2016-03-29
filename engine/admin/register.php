@@ -1,1 +1,0 @@
-﻿<h1><?=Raptor::get_string('unavailable')?></h1>
