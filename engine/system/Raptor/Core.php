@@ -31,7 +31,7 @@
 				require_once(__DIR__ . '/../../config.php');
 			}
 			else {
-				die('<h1>Cannot load configuration</h1>');
+				throw new Exception('<h1>Cannot load configuration</h1>');
 			}
 			
 			spl_autoload_register('\Raptor\Core::autoloader'); // register autoloader 
