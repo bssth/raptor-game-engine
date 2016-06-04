@@ -21,12 +21,36 @@
 			return (isset($arr[$k])) ? $arr[$k] : null;
 		}
 		
+		public function checkPermission($perm)
+		{
+			return in_array((string)$perm, $this->perms);
+		}
+		
+		public function setPermission($perm, $status = true)
+		{
+			if(!is_bool($status))
+			{
+				return false;
+			}
+			$perms = is_array($this->perms) ? $this->perms : array();
+			if($status === true)
+			{
+				$perms[] = $perm;
+			}
+			else
+			{
+				unset($perms[$perm]);
+			}
+			$this->perms = array_values($perms);
+			return true;
+		}
+		
 		public function __set($k, $v)
 		{
 			$arr = \Database\Cache::get('char_' . $this->id);
 			$arr[$k] = $v;
 			\Database\Cache::set('char_' . $this->id, $arr, null, 3600);
-			\Database\Current::update('char_', array('_id' => $this->id), $arr);
+			\Database\Current::update('characters', array('_id' => $this->id), $arr);
 		}
 		
 		public static function create($name = null, $player = null)
