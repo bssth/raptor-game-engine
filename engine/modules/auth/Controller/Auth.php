@@ -44,7 +44,7 @@
 				return '';
 			}
 			
-			if(\Auth\Player::register($_REQUEST['login'], $_REQUEST['password']))
+			if( \Auth\Player::register($_REQUEST['login'], $_REQUEST['password']) )
 			{
 				header('Location: /index?ok=1');
 				return '';
