@@ -42,6 +42,11 @@
 				return false;
 			}
 			
+			if(strlen($login) > 20 or strlen($login) < 2 or strlen($password) < 6)
+			{
+				return false;
+			}
+			
 			\Database\Current::insert('players', array(
 				'login' => $login,
 				'password' => sha1($password),
@@ -60,6 +65,18 @@
 			$result = \Database\Current::getOne('players', $query);
 			
 			return (is_array($result)) ? (new Player($result['_id'])) : null;
+		}
+		
+		public function getCharacters()
+		{
+			$list = \Database\Current::getAll('characters', array('player' => $this->id));
+			$res = array();
+			foreach($list as $l)
+			{
+				if(!isset($l['name'])) continue;
+				$res[] = new \Auth\Char((string)$l['_id']);
+			}
+			return $res;
 		}
 		
 		public function precache()

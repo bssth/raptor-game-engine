@@ -1,0 +1,13 @@
+﻿Персонажи:
+<ul>
+	<?php foreach($chars as $c) { ?>
+	<li><a href='/cabinet/select?id=<?=(string)$c->_id;?>'><?=($c->name)?></a></li>
+	<?php } ?>
+</ul>
+<hr>
+<p><font color='red'><?=($error) ? 'Неверное имя' : ''?></font></p>
+Создать нового:
+<form action='/cabinet/new' method='POST'>
+	<input type='text' name='name' placeholder='Имя'>
+	<input type='submit' value='Создать'>
+</form>
