@@ -7,7 +7,12 @@
 		
 		public function actionIndex()
 		{
-			return 'test';
+			if(isset($_SESSION['id'])) {
+				header('Location: /cabinet');
+				return '';
+			}
+			
+			return (new \Raptor\Templater('mainpage'))->set('error', isset($_REQUEST['error']))->render();
 		}
 		
 	}

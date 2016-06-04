@@ -1,0 +1,7 @@
+﻿<p>Приветствую! Я - простой шаблон главной страницы. Изменить меня можно в админке. Возможно, в будущих версиях будет предоставляться главная страница по умолчанию куда лучше.</p>
+<?=($error === true) ? '<p><font color="red">Неверный логин или пароль</font></p>' : ''?>
+<form action='/auth/login' method='POST'>
+	<p><input type='text' value='' name='login' placeholder='Ваш ник'></p>
+	<p><input type='password' value='' name='password' placeholder='Ваш пароль'></p>
+	<p><input type='submit' value='Вход'></p>
+</form>

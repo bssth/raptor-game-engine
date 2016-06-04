@@ -117,11 +117,15 @@
 		public static function web_init()
 		{
 			$uri = (isset($_SERVER['REQUEST_URI']) and strlen($_SERVER['REQUEST_URI']) > 1) ? substr($_SERVER['REQUEST_URI'], 1) : 'index/index';
+
+			if(strpos($uri, '?') != false and strpos($uri, '?') >= 0) { 
+				$uri = trim(strstr($uri, '?', true), '?'); 
+			}
 			
 			$route = explode('/', $uri);
 			
-			$driver = '\\Controller\\' . ucfirst(isset($route[0]) ? $route[0] : 'index');
-			$action = 'action' . ucfirst(isset($route[1]) ? $route[1] : 'index');
+			$driver = '\\Controller\\' . ucfirst(isset($route[0]) ? $route[0] : 'Index');
+			$action = 'action' . ucfirst(isset($route[1]) ? $route[1] : 'Index');
 			
 			if(!class_exists($driver)) {
 				die('404 Not Found');

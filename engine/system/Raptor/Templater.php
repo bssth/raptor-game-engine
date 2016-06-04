@@ -20,11 +20,11 @@
 		 */
 		public function __construct($tpl = 'empty')
 		{
-			if(file_exists(Core::root() . Core::SEPARATOR . 'templates' . Core::SEPARATOR . $tpl . '.html')) {
-				$this->path = Core::root() . Core::SEPARATOR . 'templates' . Core::SEPARATOR . $tpl . '.html';
+			if(file_exists(Config::ROOT . Core::SEPARATOR . 'templates' . Core::SEPARATOR . $tpl . '.html')) {
+				$this->path = Config::ROOT . Core::SEPARATOR . 'templates' . Core::SEPARATOR . $tpl . '.html';
 			}
-			else if(file_exists(Core::root() . Core::SEPARATOR . 'templates' . Core::SEPARATOR . 'default' . Core:SEPARATOR . $tpl . '.html')) {
-				$this->path = Core::root() . Core::SEPARATOR . 'templates' . Core::SEPARATOR . 'default' . Core:SEPARATOR . $tpl . '.html';
+			else if(file_exists(Config::ROOT . Core::SEPARATOR . 'templates' . Core::SEPARATOR . 'default' . Core::SEPARATOR . $tpl . '.html')) {
+				$this->path = Config::ROOT . Core::SEPARATOR . 'templates' . Core::SEPARATOR . 'default' . Core::SEPARATOR . $tpl . '.html';
 			}
 			else {
 				throw new \Fructum\Exception('Template is not found');
@@ -33,7 +33,7 @@
 		
 		public static function exists($tpl = 'empty')
 		{
-			if(file_exists($tpl) or file_exists(Core::root() . Core::SEPARATOR . 'templates' . Core::SEPARATOR . $tpl . '.html'))
+			if(file_exists($tpl) or file_exists(Config::ROOT . Core::SEPARATOR . 'templates' . Core::SEPARATOR . $tpl . '.html'))
 			{
 				return true;
 			}
