@@ -1,6 +1,6 @@
 <?php
 	/**
-	 *	Native fructum templater. Uses PHP variables in HTML templates
+	 *	Native Raptor templater. Uses PHP variables in HTML templates
 	 *
 	 * @version 1.0 
 	 * @author Mike Chip
@@ -27,7 +27,7 @@
 				$this->path = Config::ROOT . Core::SEPARATOR . 'templates' . Core::SEPARATOR . 'default' . Core::SEPARATOR . $tpl . '.html';
 			}
 			else {
-				throw new \Fructum\Exception('Template is not found');
+				throw new \Raptor\Exception('Template is not found');
 			}
 		}
 		
@@ -70,7 +70,6 @@
 		public function set($key, $value)
 		{
 			$this->__set($key, $value);
-			EventListener::invoke('tpl_set', $key, $value);
 			return $this;
 		}
 		
@@ -89,7 +88,6 @@
 			}
 			ob_start(NULL, 0, PHP_OUTPUT_HANDLER_CLEANABLE | PHP_OUTPUT_HANDLER_FLUSHABLE | PHP_OUTPUT_HANDLER_REMOVABLE); // start output buffer temporary
 			require_once($this->path); // evaluate template with PHP code 
-			EventListener::invoke('tpl_render', $this->vars); 
 			return ob_get_clean(); // clear output buffer with template and return it
 		}
 	}

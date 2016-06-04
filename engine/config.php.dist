@@ -8,6 +8,9 @@
 		const ROOT = __DIR__; // DO NOT TOUCH
 		const debug = true; // show error reportings
 		
+		// Game config
+		const game_title = 'My New Game';
+		
 		// Database
 		const db_type = 'Mongo'; // current database type (may be Mongo, Mysql)
 		const db_host = 'localhost';

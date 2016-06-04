@@ -16,9 +16,10 @@
 				return '';
 			}
 			
-			$chars = (new \Auth\Player($_SESSION['id']))->getCharacters();
+			$player = new \Auth\Player($_SESSION['id']);
+			$chars = $player->getCharacters();
 			
-			return (new \Raptor\Templater('cabinet'))->set('chars', $chars)->set('error', isset($_REQUEST['error']))->render();
+			return (new \Raptor\Templater('cabinet'))->set('player', $player)->set('chars', $chars)->set('error', isset($_REQUEST['error']))->render();
 		}
 		
 		public function actionSelect()
