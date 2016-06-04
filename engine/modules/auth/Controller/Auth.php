@@ -14,7 +14,7 @@
 				return '';
 			}
 			
-			$result = \Auth\Player::select(array('login' => $_REQUEST['login'], 'password' => $_REQUEST['password']));
+			$result = \Auth\Player::select(array('login' => $_REQUEST['login'], 'password' => sha1($_REQUEST['password'])));
 
 			if(is_null($result)) {
 				header('Location: /index?error=data');
@@ -22,6 +22,10 @@
 			}
 			
 			$_SESSION['id'] = (string)$result->_id;
+			$result->last_ip = isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'error';
+			$result->last_date = time();
+			$result->domain = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'error';
+			
 			header('Location: /cabinet');
 			return '';
 		}
@@ -35,6 +39,18 @@
 		
 		public function actionRegister()
 		{
+			if(!isset($_REQUEST['login']) or !isset($_REQUEST['password'])) {
+				header('Location: /index?error=empty');
+				return '';
+			}
+			
+			if(\Auth\Player::register($_REQUEST['login'], $_REQUEST['password']))
+			{
+				header('Location: /index?ok=1');
+				return '';
+			}
+			
+			header('Location: /index?error=data');
 			return '';
 		}
 	}

@@ -5,3 +5,10 @@
 	<p><input type='password' value='' name='password' placeholder='Ваш пароль'></p>
 	<p><input type='submit' value='Вход'></p>
 </form>
+<hr>
+<?=(isset($_GET['ok']) ? 'Вы успешно зарегистрировались' : '');?>
+<form action='/auth/register' method='POST'>
+	<p><input type='text' value='' name='login' placeholder='Ваш ник'></p>
+	<p><input type='password' value='' name='password' placeholder='Ваш пароль'></p>
+	<p><input type='submit' value='Регистрация'></p>
+</form>

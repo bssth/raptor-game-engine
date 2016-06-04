@@ -26,7 +26,33 @@
 			$arr = \Database\Cache::get('player_' . $this->id);
 			$arr[$k] = $v;
 			\Database\Cache::set('player_' . $this->id, $arr, null, 3600);
-			\Database\Current::update('players', array('_id' => $this->id), array($k => $v));
+			\Database\Current::update('players', array('_id' => $this->id), $arr);
+		}
+		
+		public static function register($login = null, $password = null)
+		{
+			if(!is_string($login) or !is_string($password))
+			{
+				throw new \Raptor\Exception('Bad input data');
+			}
+			
+			$test = \Database\Current::getOne('players', array('login' => $login));
+			if(is_array($test) and isset($test['login']))
+			{
+				return false;
+			}
+			
+			\Database\Current::insert('players', array(
+				'login' => $login,
+				'password' => sha1($password),
+				'last_ip' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'error',
+				'last_date' => time(),
+				'reg_ip' => isset($_SERVER['REMOTE_ADDR']) ? $_SERVER['REMOTE_ADDR'] : 'error',
+				'reg_date' => time(),
+				'domain' => isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'error'
+			));
+			
+			return true;
 		}
 		
 		public static function select($query)
