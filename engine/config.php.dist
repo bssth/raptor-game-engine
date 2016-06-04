@@ -8,6 +8,17 @@
 		const ROOT = __DIR__; // DO NOT TOUCH
 		const debug = true; // show error reportings
 		
+		// Database
+		const db_type = 'Mongo'; // current database type (may be Mongo, Mysql)
+		const db_host = 'localhost';
+		const db_database = 'gamedev';
+		const db_user = null;
+		const db_password = null;
 		
+		// Cache
+		// const cache_type = 'Memcache'; -- Is not available now
+		const cache_host = '127.0.0.1';
+		const cache_port = 11211;
+		// const cache_prefix = 'raptor_'; // prefix will be added to all cache variable names -- Is not available now
 		
 	}
