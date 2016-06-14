@@ -117,7 +117,6 @@
 											<td><b>Добавить из списка</b></td>
 											<td>
 												<select id="selectperm">
-													<option value="">...</option>
 													<option value="">выберите...</option>
 													<option value="admin.all">Полный доступ (главный админ.)</option>
 													<option value="admin.char">Редактор персонажа</option>
@@ -158,6 +157,11 @@
                                 </div>
                                 <div class="tab-pane fade in active" id="home">
                                     <table class="table table-condensed">
+										<tr>
+											<td><b>ID</b></td>
+											<td><?=$char->id;?></td>
+											<td>[нельзя изменить]</td>
+										</tr>
 										<tr>
 											<td><b>Имя</b></td>
 											<td><?=$char->name;?></td>
