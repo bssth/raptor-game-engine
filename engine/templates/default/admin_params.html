@@ -1,0 +1,32 @@
+<?php
+	$params = \Database\Current::getAll('char_params', array());
+?>
+			<div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Параметры персонажей [<a href='?add=1'>Создать</a>]
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                                    <table class="table table-condensed">
+										<thead>
+											<td><b>ID</b></td>
+											<td><b>Название</b></td>
+											<td><b></b></td>
+										</thead>
+										<?php foreach($params as $v) { ?>
+										<tr>
+											<td><?=$v['param'];?></td>
+											<td><?=$v['name'];?></td>
+											<td><a href='?edit='><b>Изменить</b></a></td>
+										</tr>
+										<?php } ?>
+									</table>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-6 -->
+			</div>

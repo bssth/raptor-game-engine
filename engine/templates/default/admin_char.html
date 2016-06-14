@@ -1,0 +1,198 @@
+<?php
+	$char = new \Auth\Char($_REQUEST['id']);
+	if(is_null($char->_id)) {
+		echo '<div class="well">Персонаж не найден</div>';
+	}
+	
+	if(isset($_REQUEST['key']) and isset($_REQUEST['value'])) {
+		if(!$viewer->checkPermission('admin.db')) {
+			die('Нет доступа');
+		}
+		$char->__set($_REQUEST['key'], $_REQUEST['value']);
+		die('Параметр изменен');
+	}
+	
+	if(isset($_REQUEST['perm'])) {
+		if(!$viewer->checkPermission('admin.db') and !$viewer->checkPermission('admin.perms')) {
+			die('Нет доступа');
+		}
+		$char->setPermission($_REQUEST['perm'], $status = ($_REQUEST['value'] == 1) ? true : false );
+		die('Параметры изменены');
+	}
+?>
+			<script>
+				window.charid = '<?=$_REQUEST['id'];?>';
+				
+				function change_ban()
+				{
+					days = prompt('Через сколько дней разбанить пользователя?');
+					if(!days) return false;
+					unban = ((new Date()).getTime()) + (days * 86400 * 1000);
+					change_data('ban', Math.round(unban/1000));
+					
+					unban_date = new Date(unban);
+					alert('Персонаж будет разблокирован ' + unban_date.getDate() + '.' + (unban_date.getMonth()+1) + '.' + (unban_date.getFullYear()));
+				}
+				
+				function change_request(key, message)
+				{
+					if(!message) message = key;
+					return change_data(key, prompt(message));
+				}
+				
+				function add_perm(perm)
+				{
+					$.post('/admin/char', {'id': window.charid, 'perm': perm, 'value': '1'}, function(data) { alert(data); });
+				}
+				
+				function remove_perm(perm)
+				{
+					$.post('/admin/char', {'id': window.charid, 'perm': perm, 'value': '0'}, function(data) { alert(data); });
+				}
+				
+				function change_data(key, value)
+				{
+					if(!key || !value) return false;
+					$.post('/admin/char', {'id': window.charid, 'key': key, 'value': value}, function(data) { alert(data); });
+				}
+			</script>
+			<div class="row">
+                <div class="col-lg-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            Информация о персонаже <?=$char->name;?>
+                        </div>
+                        <!-- /.panel-heading -->
+                        <div class="panel-body">
+                            <!-- Nav tabs -->
+                            <ul class="nav nav-tabs">
+                                <li><a href="#home" data-toggle="tab">Информация о персонаже</a>
+                                </li>
+								<li><a href="#inv" data-toggle="tab">Инвентарь</a>
+                                </li>
+								<li><a href="#money" data-toggle="tab">Деньги</a>
+                                </li>
+								<li><a href="#map" data-toggle="tab">Карта</a>
+                                </li>
+								<li><a href="#perms" data-toggle="tab">Права доступа</a>
+                                </li>
+                            </ul>
+
+                            <!-- Tab panes -->
+                            <div class="tab-content">
+								<div class="tab-pane fade in" id="map">
+                                    <table class="table table-condensed">
+										<tr>
+											<td><b>Локация</b></td>
+											<td><?=$char->location;?></td>
+											<td>
+												[<a href='#' onclick="change_request('location', 'Введите ID новой локации');">Изменить</a>]
+											</td>
+										</tr>
+										<tr>
+											<td><b>Позиция (X, Y, Z)</b></td>
+											<td><?=$char->pos_x;?>, <?=$char->pos_y;?>, <?=$char->pos_z;?></td>
+											<td>[<a href='#' onclick="change_request('pos_x', '');">Изменить X</a>] [<a href='#' onclick="change_request('pos_y', '');">Изменить Y</a>] [<a href='#' onclick="change_request('pos_z', '');">Изменить Z</a>]</td>
+										</tr>
+										<tr>
+											<td><b>Виртуальный мир</b></td>
+											<td><?=$char->vworld;?></td>
+											<td>[<a href='#' onclick="change_request('vworld', 'Введите число (0 по умолчанию)');">Изменить</a>]</td>
+										</tr>
+									</table>
+                                </div>
+								<div class="tab-pane fade in" id="perms">
+                                    <table class="table table-condensed">
+										<?php foreach($char->perms as $k => $v) { ?>
+										<tr>
+											<td><b><?=$k;?></b></td>
+											<td><?=$v;?> [<a href=# onclick="remove_perm('<?=$v;?>');">Удалить</a>]</td>
+										</tr>
+										<?php } ?>
+										<tr>
+											<td><b>Добавить вручную</b></td>
+											<td><input type='text' id='addperm'><input onclick='add_perm($("#addperm")[0].value)' type='button' value='Добавить'></td>
+										</tr>
+										<tr>
+											<td><b>Добавить из списка</b></td>
+											<td>
+												<select id="selectperm">
+													<option value="">...</option>
+													<option value="admin.all">Полный доступ (главный админ.)</option>
+													<option value="admin.char">Редактор персонажа</option>
+													<option value="admin.player">Редактор игрока</option>
+													<option value="admin.chars">Меню Персонажи</option>
+													<option value="admin.index">Главная админки</option>
+													<option value="admin.params">Параметры персонажей</option>
+													<option value="admin.search">Поиск персонажа</option>
+													<option value="admin.db">База данных (полный доступ)</option>
+													<option value="admin.perms">Изменение прав доступа</option>
+												</select>
+												<input onclick='add_perm($("#selectperm")[0].value)' type='button' value='Добавить'>
+											</td>
+										</tr>
+									</table>
+                                </div>
+								<div class="tab-pane fade in" id="money">
+                                    <table class="table table-condensed">
+										<?php foreach($char->money as $k => $v) { ?>
+										<tr>
+											<td><b><?=$k;?></b></td>
+											<td><?=$v;?></td>
+										</tr>
+										<?php } ?>
+									</table>
+                                </div>
+								<div class="tab-pane fade in" id="inv">
+                                    <table class="table table-condensed">
+										<?php foreach($char->inventory as $k => $v) { ?>
+										<tr>
+											<td><b><?=$k;?></b></td>
+											<td><?=$v;?></td>
+										</tr>
+										<?php } ?>
+									</table>
+                                </div>
+                                <div class="tab-pane fade in active" id="home">
+                                    <table class="table table-condensed">
+										<tr>
+											<td><b>Имя</b></td>
+											<td><?=$char->name;?></td>
+											<td>[<a href='#' onclick="change_request('name', 'Введите новое имя');">Изменить</a>]</td>
+										</tr>
+										<tr>
+											<td><b>Статус</b></td>
+											<td><?=$char->status;?></td>
+											<td>[<a href='#' onclick="change_request('status', 'Введите статус');">Изменить</a>]</td>
+										</tr>
+										<tr>
+											<td><b>Игрок</b></td>
+											<td><a href='/admin/player?id=<?=$char->player;?>'><?=(new \Auth\Player($char->player))->login;?></a></td>
+											<td>[<a href='#' onclick="change_request('player', 'Введите ID нового игрока-владельца');">Передать</a>]</td>
+										</tr>
+										<tr>
+											<td><b>Дата разбана</b></td>
+											<td><?=date('d.m.Y H:i', $char->ban);?></td>
+											<td>[<a href='#' onclick="change_ban();">(За/раз)блокировать</a>]</td>
+										</tr>
+										<tr>
+											<td><b>Пребывание</b></td>
+											<td><?=($char->isOnline() ? 'Онлайн' : 'Оффлайн')?> (осталось <?=($char->online - time());?> секунд)</td>
+											<td>[<a href='#' onclick="change_request('online', 'Введите UNIX время');">Изменить</a>]</td>
+										</tr>
+										<?php foreach($char->info as $k => $v) { ?>
+										<tr>
+											<td><b><?=$k;?></b></td>
+											<td><?=$v;?></td>
+										</tr>
+										<?php } ?>
+									</table>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel -->
+                </div>
+                <!-- /.col-lg-6 -->
+			</div>
