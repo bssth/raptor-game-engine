@@ -177,7 +177,7 @@
 										</tr>
 										<tr>
 											<td><b>Пребывание</b></td>
-											<td><?=($char->isOnline() ? 'Онлайн' : 'Оффлайн')?> (осталось <?=($char->online - time());?> секунд)</td>
+											<td><?=($char->isOnline() ? '<b>Онлайн</b> (осталось '.($char->online - time()).' секунд)' : '<b>Оффлайн</b> (был онлайн '.((time()-$char->online)/86400).' дней назад)')?></td>
 											<td>[<a href='#' onclick="change_request('online', 'Введите UNIX время');">Изменить</a>]</td>
 										</tr>
 										<?php foreach($char->info as $k => $v) { ?>
