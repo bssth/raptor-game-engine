@@ -53,6 +53,14 @@
 		}
 		
 		/**
+		 * Gets templates root
+		 */
+		public static function root()
+		{
+			return Config::ROOT . Core::SEPARATOR . 'templates';
+		}
+		
+		/**
 		 * Gets value of variable 
 		 *
 		 * @param string $key
@@ -71,6 +79,28 @@
 		{
 			$this->__set($key, $value);
 			return $this;
+		}
+		
+		/**
+		 * Just get template source 
+		 * @return string
+		 */
+		public function source()
+		{
+			if(!file_exists($this->path)) {
+				throw new Exception("Template not found in {$this->path}");
+			}
+			return file_get_contents($this->path);
+		}
+		
+		/**
+		 * Save template 
+		 * @return boolean
+		 */
+		public static function save($tpl, $html)
+		{
+			file_put_contents(Config::ROOT . Core::SEPARATOR . 'templates' . Core::SEPARATOR . $tpl . '.html', $html);
+			return true;
 		}
 		
 		/**

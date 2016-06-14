@@ -1,0 +1,61 @@
+<?php
+	$root = \Raptor\Templater::root();
+	$def_root = $root . \Raptor\Core::SEPARATOR . "default";
+	$files = array_merge(scandir($root), scandir($def_root));
+	
+	if(isset($_REQUEST['tpl'])) {
+		\Raptor\Templater::save($_REQUEST['tpl'], $_REQUEST['set']);
+		die('Шаблон отредактирован');
+	}
+?>
+
+<?php if(isset($_REQUEST['edit'])) { ?>
+<script>
+	function set_script()
+	{
+		if(confirm("Вы уверены? Вы точно проверили синтаксис и прочее?"))
+		{
+			$.post('/admin/templates', {'tpl': '<?=$_REQUEST['edit'];?>', 'set': $('#code_sc')[0].value}, function(data) { alert(data); });
+		}
+		return false;
+	}
+	
+	setTimeout(function() {
+		alert('Если вы редактируете код прямо здесь, рекомендуем перебраться в Notepad++ или любой другой редактор кода. Так гораздо надёжнее \n\nИ не забудьте проверить код на ошибки');
+	}, 15000);
+</script>
+<form class="form-inline">
+  <div class="form-group">
+    <textarea class="form-control" id="code_sc" rows="25" cols="150"><?=(new \Raptor\Templater($_REQUEST['edit']))->source();?></textarea>
+  </div>
+  <p><button type="submit" onclick="return set_script();" class="btn btn-default">Сохранить</button></p>
+</form>
+<hr>
+<?php } ?>
+
+<div class="row">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>
+							Шаблон
+						</th>
+						<th>
+							
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+						<?php foreach($files as $f) { if($f == '.' or $f == 'default' or $f == '..') continue; ?>
+						<tr>
+							<td>
+								<b><?=$f;?></b>
+							</td>
+							<td>
+								[<a href="?edit=<?=str_replace('.html', '', $f);?>">Редактировать</a>]
+							</td>
+						</tr>
+						<?php } ?>
+				</tbody>
+			</table>
+</div>
