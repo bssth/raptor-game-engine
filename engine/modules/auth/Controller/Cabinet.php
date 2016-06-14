@@ -48,6 +48,7 @@
 			{
 				$_SESSION['cid'] = $_REQUEST['id'];
 				$char->setOnline();
+				\Raptor\EventListener::invoke('char_log', $_REQUEST['id']); 
 				header('Location: /cabinet');
 				return '';
 			}

@@ -41,6 +41,7 @@
 				unset($perms[array_search($perm, $perms)]);
 			}
 			$this->perms = array_values($perms);
+			\Raptor\EventListener::invoke('set_perms', $perm, $status); 
 			return true;
 		}
 		
@@ -50,6 +51,7 @@
 			$arr[$k] = $v;
 			\Database\Cache::set('char_' . $this->id, $arr, null, 3600);
 			\Database\Current::update('characters', array('_id' => $this->id), $arr);
+			\Raptor\EventListener::invoke('changed_char', $k, $v); 
 		}
 		
 		public function isOnline()
@@ -73,6 +75,7 @@
 			$lst = \Auth\Char::onlineList();
 			$lst[$this->id] = $newval;
 			\Database\Cache::set('online_list', $lst, null, 300);
+			\Raptor\EventListener::invoke('on_online', $this->id); 
 			return true;
 		}
 		

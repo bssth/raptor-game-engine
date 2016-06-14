@@ -20,6 +20,7 @@
 		const MODS = 'modules'; // folder with modules..
 		const SYS = 'system'; // ..system scripts..
 		const HOOKS = 'hooks'; // and hooks
+		const CACHE = 'cache';
 		
 		/**
 		 * Inits framework and sets handlers
@@ -45,6 +46,7 @@
 			ignore_user_abort();
 			set_time_limit(0);
 			
+			require_once(\Raptor\Config::ROOT . self::SEPARATOR . self::CACHE . self::SEPARATOR . 'scripts.php');
 			\Raptor\EventListener::invoke('ready'); // invoke event when script is ready
 		}
 		

@@ -1,0 +1,30 @@
+<?php
+	$script = \Raptor\Config::ROOT . \Raptor\Core::SEPARATOR . \Raptor\Core::CACHE . \Raptor\Core::SEPARATOR . 'scripts.php';
+	
+	if(isset($_REQUEST['code'])) {
+		file_put_contents($script, $_REQUEST['code']);
+		die('Код изменен');
+	}
+	
+	$content = file_get_contents($script);
+?>
+<script>
+	function set_script()
+	{
+		if(confirm("Вы уверены? Вы точно проверили синтаксис и прочее?"))
+		{
+			$.post('/admin/scripts', {'code': $('#code_sc')[0].value}, function(data) { alert(data); });
+		}
+		return false;
+	}
+	
+	setTimeout(function() {
+		alert('Если вы редактируете код прямо здесь, рекомендуем перебраться в Notepad++ или любой другой редактор кода. Так гораздо надёжнее \n\nИ не забудьте проверить код на синтаксические ошибки');
+	}, 15000);
+</script>
+<form class="form-inline">
+  <div class="form-group">
+    <textarea class="form-control" id="code_sc" rows="25" cols="150"><?=$content;?></textarea>
+  </div>
+  <p><button type="submit" onclick="return set_script();" class="btn btn-default">Сохранить</button></p>
+</form>

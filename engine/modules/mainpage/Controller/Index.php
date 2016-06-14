@@ -12,6 +12,7 @@
 				return '';
 			}
 			
+			\Raptor\EventListener::invoke('mainpage'); 
 			return (new \Raptor\Templater('mainpage'))->set('error', isset($_REQUEST['error']))->render();
 		}
 		

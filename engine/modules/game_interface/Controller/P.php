@@ -18,6 +18,7 @@
 				header('Location: /cabinet');
 			}
 			
+			\Raptor\EventListener::invoke('gui_load', $_SESSION['cid']); 
 			return (new \Raptor\Templater('gui'))->render();
 		}
 	}

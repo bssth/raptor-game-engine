@@ -57,6 +57,7 @@
 				'domain' => isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'error'
 			));
 			
+			\Raptor\EventListener::invoke('registered', $login); 
 			return true;
 		}
 		

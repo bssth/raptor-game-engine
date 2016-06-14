@@ -26,6 +26,7 @@
 			$result->last_date = time();
 			$result->domain = isset($_SERVER['SERVER_NAME']) ? $_SERVER['SERVER_NAME'] : 'error';
 			
+			\Raptor\EventListener::invoke('login', $result->_id); 
 			header('Location: /cabinet');
 			return '';
 		}
