@@ -31,6 +31,7 @@
 				'char' => (string)$char,
 				'desc' => (string)$desc,
 				'cat' => (string)$cat,
+				'time' => (string)time(),
 				'icon' => (string)$icon
 			));
 			\Database\Cache::delete('logs_' . $cat);
