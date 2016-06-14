@@ -13,7 +13,7 @@
 			if($char->checkPermission('admin.' . $act) or $char->checkPermission('admin.all'))
 			{
 				try {
-					$action = (new \Raptor\Templater('admin_' . $act))->render();
+					$action = (new \Raptor\Templater('admin_' . $act))->set('viewer', $char)->render();
 				}
 				catch(\Raptor\Exception $e) {
 					return '<h1>404 Not Found</h1>';
@@ -38,7 +38,7 @@
 			}
 			
 			$data = \Database\Current::getAll('amenu', array());
-			#\Database\Cache::set('admin_menu', $data, null, 3600); // todo
+			\Database\Cache::set('admin_menu', $data, null, 3600);
 			return $data;
 		}
 		
