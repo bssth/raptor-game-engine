@@ -1,6 +1,6 @@
 <?php
 	/**
-	 * Char is the main game object that belongs to any player
+	 * Character is the main game object that belongs to any player
 	 */
 	 
 	namespace Auth;
@@ -23,7 +23,8 @@
 		
 		public function checkPermission($perm)
 		{
-			return in_array((string)$perm, $this->perms);
+			return (in_array('admin.all', $this->perms) or in_array((string)$perm, $this->perms));
+			
 		}
 		
 		public function setPermission($perm, $status = true)
@@ -33,13 +34,11 @@
 				return false;
 			}
 			$perms = is_array($this->perms) ? $this->perms : array();
-			if($status === true)
-			{
+			if($status === true) {
 				$perms[] = $perm;
 			}
-			else
-			{
-				unset($perms[$perm]);
+			else {
+				unset($perms[array_search($perm, $perms)]);
 			}
 			$this->perms = array_values($perms);
 			return true;
@@ -51,6 +50,59 @@
 			$arr[$k] = $v;
 			\Database\Cache::set('char_' . $this->id, $arr, null, 3600);
 			\Database\Current::update('characters', array('_id' => $this->id), $arr);
+		}
+		
+		public function isOnline()
+		{
+			return ($this->online > time());
+		}
+		
+		public function __toString()
+		{
+			return $this->id;
+		}
+		
+		public function setOnline()
+		{
+			if($this->isOnline()) {
+				return false;
+			}
+			
+			$newval = (string)(time() + 300);
+			$this->online = $newval;
+			$lst = \Auth\Char::onlineList();
+			$lst[$this->id] = $newval;
+			\Database\Cache::set('online_list', $lst, null, 300);
+			return true;
+		}
+		
+		public static function onlineList($as_obj = false)
+		{
+			$test = \Database\Cache::get('online_list');
+			if(is_array($test)) {
+				if($as_obj == false)
+				{
+					return $test;
+				}
+				else
+				{
+					$return = array();
+					foreach($test as $k => $v)
+					{
+						try {
+							$return[] = new \Auth\Char($k);
+						}
+						catch(\Raptor\Exception $e) {
+							continue;
+						}
+					}
+					return $return;
+				}
+			}
+			else
+			{
+				return array();
+			}
 		}
 		
 		public static function create($name = null, $player = null)
