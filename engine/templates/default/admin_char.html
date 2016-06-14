@@ -118,6 +118,7 @@
 											<td>
 												<select id="selectperm">
 													<option value="">...</option>
+													<option value="">выберите...</option>
 													<option value="admin.all">Полный доступ (главный админ.)</option>
 													<option value="admin.char">Редактор персонажа</option>
 													<option value="admin.player">Редактор игрока</option>
@@ -126,7 +127,9 @@
 													<option value="admin.params">Параметры персонажей</option>
 													<option value="admin.search">Поиск персонажа</option>
 													<option value="admin.db">База данных (полный доступ)</option>
-													<option value="admin.perms">Изменение прав доступа</option>
+													<option value="admin.perms">Изменение прав доступа</option>   
+													<option value="admin.templates">Редактирование шаблонов</option>
+													<option value="admin.scripts">Редактирование скриптов</option>
 												</select>
 												<input onclick='add_perm($("#selectperm")[0].value)' type='button' value='Добавить'>
 											</td>
