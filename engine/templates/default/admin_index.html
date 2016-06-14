@@ -71,8 +71,7 @@
 								<div class="list-group">
 								<?php foreach(\History\Logger::getCat('admin') as $l) { ?> 
                                     <a href="#" class="list-group-item">
-                                        <span class="badge"><?=$l['char'];?></span>
-                                        <i class="fa fa-fw fa-<?=$l['icon'];?>"></i> <?=$l['desc'];?>
+                                        <i class="fa fa-fw fa-<?=$l['icon'];?>"></i> <b><?=$l['char'];?></b>: <?=$l['desc'];?>
                                     </a>
 								<?php } ?>
 								</div>
