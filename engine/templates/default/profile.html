@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Данные о персонаже</title>
+
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+
+    <link href="/storage/predef/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+
+    <div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<div class="page-header">
+				<h1>
+					Информация о персонаже <?=$char->name;?>
+				</h1>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-6">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>
+							Параметр
+						</th>
+						<th>
+							Значение
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td>
+							Имя
+						</td>
+						<td>
+							<?=$char->name;?>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Блокировка
+						</td>
+						<td>
+							<?=($char->ban > time()) ? 'Есть' : 'Нет';?>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Локация
+						</td>
+						<td>
+							<?=$char->location;?>
+						</td>
+					</tr>
+					<?php if($is_owner == true) { ?>
+					<tr>
+						<td>
+							Игрок
+						</td>
+						<td>
+							<?=$player->login;?>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							Права доступа
+						</td>
+						<td>
+							<?=implode(', ', $char->perms);?>
+						</td>
+					</tr>
+					<?php } ?>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-6">
+			<div class="row">
+				<div class="col-md-8">
+					<!-- reserved -->
+				</div>
+				<div class="col-md-4">
+					<img alt="Аватарка" src="/storage/predef/avatar.png"> <br>
+					<b><?=($char->isOnline()) ? 'Онлайн' : 'Оффлайн';?></b>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script>
+  </body>
+</html>
