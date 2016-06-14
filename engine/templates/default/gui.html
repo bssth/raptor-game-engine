@@ -53,32 +53,21 @@
 					</div>
 					<div class="panel-body">
 						<ul class="media-list">
-							<li class="media">
-								<div class="media-body">
-									<div class="media">
-										<a class="pull-left" href="#">
-											<img class="media-object img-circle" style="max-height:40px;" src="http://lorempixel.com/64/64/" />
-										</a>
-										<div class="media-body" >
-											<h5>Mike</h5>
-										   <small class="text-muted">Администратор</small>
+							<?php foreach(\Auth\Char::onlineList(true) as $ch) { ?>
+								<li class="media">
+									<div class="media-body">
+										<div class="media">
+											<a class="pull-left" href="#">
+												<img class="media-object img-circle" style="max-height:40px;" src="/storage/predef/avatar.png" />
+											</a>
+											<div class="media-body" >
+												<h5><?=$ch->name;?></h5>
+												<small class="text-muted"><?=$ch->status;?></small>
+											</div>
 										</div>
 									</div>
-								</div>
-							</li>
-							<li class="media">
-								<div class="media-body">
-									<div class="media">
-										<a class="pull-left" href="#">
-											<img class="media-object img-circle" style="max-height:40px;" src="http://lorempixel.com/64/64/" />
-										</a>
-										<div class="media-body" >
-											<h5>Edwardaaa</h5>
-										   <small class="text-muted">Модератор</small>
-										</div>
-									</div>
-								</div>
-							</li>
+								</li>
+							<?php } ?>
 						</ul>
 					</div>
 				</div>

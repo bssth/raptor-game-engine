@@ -37,9 +37,17 @@
 				return '';
 			}
 			
-			if( (new \Auth\Char($_REQUEST['id']))->player === (string)$_SESSION['id'] )
+			try {
+				$char = new \Auth\Char($_REQUEST['id']);
+			}
+			catch(\Raptor\Exception $e) {
+				return 'Неверный ID персонажа';
+			}
+			
+			if( $char->player === (string)$_SESSION['id'] )
 			{
 				$_SESSION['cid'] = $_REQUEST['id'];
+				$char->setOnline();
 				header('Location: /cabinet');
 				return '';
 			}

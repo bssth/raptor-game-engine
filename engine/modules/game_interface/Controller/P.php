@@ -11,6 +11,13 @@
 				return '';
 			}
 			
+			try {
+				(new \Auth\Char($_SESSION['cid']))->setOnline();
+			}
+			catch(\Raptor\Exception $e) {
+				header('Location: /cabinet');
+			}
+			
 			return (new \Raptor\Templater('gui'))->render();
 		}
 	}
