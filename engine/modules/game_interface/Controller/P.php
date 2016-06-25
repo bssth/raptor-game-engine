@@ -12,13 +12,14 @@
 			}
 			
 			try {
-				(new \Auth\Char($_SESSION['cid']))->setOnline();
+				$char = new \Auth\Char($_SESSION['cid']);
+				$char->setOnline();
 			}
 			catch(\Raptor\Exception $e) {
 				header('Location: /cabinet');
 			}
 			
 			\Raptor\EventListener::invoke('gui_load', $_SESSION['cid']); 
-			return (new \Raptor\Templater('gui'))->render();
+			return (new \Raptor\Templater('gui'))->set('char', $char)->render();
 		}
 	}

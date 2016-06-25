@@ -14,7 +14,12 @@
 
   </head>
   <body>
-
+	<script>
+		function modal_set(url)
+		{
+			$('#modal-iframe')[0].src = url;
+		}
+	</script>
     <div class="container-fluid">
 		<div class="row">
 			<div class="col-md-3">
@@ -38,7 +43,7 @@
 				<div class="row">
 					<ul class="nav nav-tabs">
 						<li class="active">
-							<a id="modal-1" onclick="" href="#modal-container-1" role="button" class="btn" data-toggle="modal">Профиль</a>
+							<a id="modal-1" onclick="modal_set('/profile/<?=$char->_id;?>');" href="#modal-container-1" role="button" class="btn" data-toggle="modal">Профиль</a>
 						</li>
 					</ul>
 				</div>
@@ -61,7 +66,7 @@
 												<img class="media-object img-circle" style="max-height:40px;" src="/storage/predef/avatar.png" />
 											</a>
 											<div class="media-body" >
-												<h5><?=$ch->name;?></h5>
+												<h5><a id="modal-1" onclick="modal_set('/profile/<?=$ch->_id;?>');" href="#modal-container-1" role="button" data-toggle="modal"><?=$ch->name;?></a></h5>
 												<small class="text-muted"><?=$ch->status;?></small>
 											</div>
 										</div>
@@ -85,7 +90,7 @@
 					</button>
 				</div>
 				<div class="modal-body">
-					<iframe id='modal-iframe' width=1150 height=550 src='/profile/<?=$ch->_id;?>'></iframe>
+					<iframe id='modal-iframe' width=1150 height=550 src='/profile/<?=$char->_id;?>'></iframe>
 				</div>
 			</div>
 		</div>
