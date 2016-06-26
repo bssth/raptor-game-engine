@@ -77,9 +77,11 @@
 			if(isset($find['_id']) and !is_object($find['_id'])) {
 				$find['_id'] = new \MongoId($find['_id']);
 			}
+			if(isset($apply['_id']) and !is_object($apply['_id'])) {
+				$apply['_id'] = new \MongoId($apply['_id']);
+			}
 			
-			
-			return $tbl->update($find, $apply);
+			return $tbl->update($find, $apply)['nModified'];
 		}
 		
 	}
