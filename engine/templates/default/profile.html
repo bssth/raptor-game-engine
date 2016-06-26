@@ -80,6 +80,13 @@
 						</td>
 					</tr>
 					<?php } ?>
+					<?php $params = $char->param->getAllParams(); 
+					foreach($params['values'] as $k => $v) { ?>
+					<tr>
+						<td><b><?=$params['list'][$k]['name'];?></b></td>
+						<td><?=$v;?></td>
+					</tr>
+					<?php } ?>
 				</tbody>
 			</table>
 		</div>

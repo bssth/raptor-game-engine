@@ -8,10 +8,12 @@
 	class Char
 	{
 		public $id = null;
+		public $param = null;
 		
 		public function __construct($id)
 		{
-			$this->id = $id;
+			$this->id = (string)$id;
+			$this->param = new \Mmorpg\Parameter('char', (string)$id);
 			$this->precache();
 		}
 		
@@ -61,7 +63,7 @@
 		
 		public function __toString()
 		{
-			return $this->id;
+			return (string)$this->id;
 		}
 		
 		public function setOnline()

@@ -1,32 +1,109 @@
 <?php
-	$params = \Database\Current::getAll('char_params', array());
+	if(isset($_GET['add'])) {
+		\Database\Current::insert('char_params', array('name' => 'новый параметр', 'param' => $_GET['add'], 'type' => 'integer', 'default' => '0'));
+		die;
+	}
+	
+	if(isset($_POST['_id'])) {
+		$apply = \Database\Current::update('char_params', array('_id' => $_POST['_id']), $_POST);
+	}
+	
+	if(isset($_GET['edit'])) {
+		$params = \Database\Current::getOne('char_params', array('param' => $_GET['edit']));
+	} else {
+		$params = \Database\Current::getAll('char_params', array());
+	}
 ?>
-			<div class="row">
-                <div class="col-lg-12">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            Параметры персонажей [<a href='?add=1'>Создать</a>]
-                        </div>
-                        <!-- /.panel-heading -->
-                        <div class="panel-body">
-                                    <table class="table table-condensed">
-										<thead>
-											<td><b>ID</b></td>
-											<td><b>Название</b></td>
-											<td><b></b></td>
-										</thead>
-										<?php foreach($params as $v) { ?>
-										<tr>
-											<td><?=$v['param'];?></td>
-											<td><?=$v['name'];?></td>
-											<td><a href='?edit='><b>Изменить</b></a></td>
-										</tr>
-										<?php } ?>
-									</table>
-                        </div>
-                        <!-- /.panel-body -->
-                    </div>
-                    <!-- /.panel -->
-                </div>
-                <!-- /.col-lg-6 -->
-			</div>
+			<?php if(isset($_GET['edit'])) { ?>
+				<?php if(isset($apply) and $apply >= 1) { ?>
+				<script>alert('Параметр изменен');</script>
+				<?php } ?>
+				<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3>Параметр <b><?=isset($params['name']) ? $params['name'] : 'без имени';?></b><h3>
+							</div>
+							<!-- /.panel-heading -->
+							<div class="panel-body">
+								<div class="row">
+									<div class="col-lg-12">
+										<form role="form" method="POST" action="">
+											<div class="form-group">
+												<label for="disabledSelect">ID параметра</label>
+												<input class="form-control" type="text" name="_id" value="<?=isset($params['_id']) ? $params['_id'] : '';?>">
+												<p class="help-block">Изменение кода параметра может нарушить работу игры</p>
+											</div>
+											<div class="form-group">
+												<label for="disabledSelect">Код параметра</label>
+												<input class="form-control" name="param" type="text" value="<?=isset($params['param']) ? $params['param'] : '';?>">
+												<p class="help-block">Изменение кода параметра может нарушить работу игры</p>
+											</div>
+											<div class="form-group">
+												<label>Название параметра</label>
+												<input class="form-control" name="name" value="<?=isset($params['name']) ? $params['name'] : '';?>">
+												<p class="help-block">Данное название по умолчанию отображается в профиле персонажей и админке</p>
+											</div>
+											<div class="form-group">
+												<label>Тип параметра</label>
+												<select name="type" class="form-control">
+													<option value='integer' <?=($params['type'] == 'integer') ? 'selected' : ''?>>Целое число</option>
+													<option value='float' <?=($params['type'] == 'float') ? 'selected' : ''?>>Число с плавающей точкой</option>
+													<option value='string' <?=($params['type'] == 'string') ? 'selected' : ''?>>Строковой</option>
+													<option value='char' <?=($params['type'] == 'chat') ? 'selected' : ''?>>Указатель  на персонажа</option>
+												</select>
+											</div>
+											<div class="form-group">
+												<label>Значение по умолчанию</label>
+												<input class="form-control" name="default" value="<?=isset($params['default']) ? $params['default'] : '0';?>" placeholder="0">
+											</div>
+											<button type="submit" class="btn btn-default">Сохранить</button>
+										</form>
+									</div>
+									<!-- /.col-lg-6 (nested) -->
+								</div>
+							</div>
+							<!-- /.panel-body -->
+						</div>
+						<!-- /.panel -->
+					</div>
+					<!-- /.col-lg-12 -->
+			<?php } else { ?>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								Параметры персонажей [<a href='#' onclick='add_new();'>Создать</a>]
+							</div>
+							<!-- /.panel-heading -->
+							<div class="panel-body">
+										<table class="table table-condensed">
+											<thead>
+												<td><b>ID</b></td>
+												<td><b>Название</b></td>
+												<td><b></b></td>
+											</thead>
+											<?php foreach($params as $v) { ?>
+											<tr>
+												<td><?=$v['param'];?></td>
+												<td><?=$v['name'];?></td>
+												<td><a href='?edit=<?=$v['param'];?>'><b>Изменить</b></a></td>
+											</tr>
+											<?php } ?>
+										</table>
+							</div>
+							<!-- /.panel-body -->
+						</div>
+						<!-- /.panel -->
+					</div>
+					<!-- /.col-lg-12 -->
+				</div>
+				
+				<script>
+					function add_new()
+					{
+						name = prompt("Выберите код параметра", "p_");
+						if(!name) return;
+						$.get('/admin/params', {'add': name}, function(data) { window.location = '?'; });
+					}
+				</script>
+			<?php } ?>

@@ -12,6 +12,14 @@
 		die('Параметр изменен');
 	}
 	
+	if(isset($_REQUEST['param'])) { 
+		if(!$viewer->checkPermission('admin.setparam')) {
+			die('Нет доступа');
+		}
+		$char->param->setValue($_REQUEST['param'], $_REQUEST['value']);
+		die('Параметр изменен');
+	}
+	
 	if(isset($_REQUEST['perm'])) {
 		if(!$viewer->checkPermission('admin.db') and !$viewer->checkPermission('admin.perms')) {
 			die('Нет доступа');
@@ -19,6 +27,8 @@
 		$char->setPermission($_REQUEST['perm'], $status = ($_REQUEST['value'] == 1) ? true : false );
 		die('Параметры изменены');
 	}
+	
+	$params = $char->param->getAllParams();
 ?>
 			<script>
 				window.charid = '<?=$_REQUEST['id'];?>';
@@ -38,6 +48,14 @@
 				{
 					if(!message) message = key;
 					return change_data(key, prompt(message));
+				}
+				
+				function change_param(key)
+				{
+					value = prompt("Введите новое значение для параметра " + key);
+					if(!value) return false;
+					$.post('/admin/char', {'id': window.charid, 'param': key, 'value': value}, function(data) { alert(data); });
+					return true;
 				}
 				
 				function add_perm(perm)
@@ -123,6 +141,7 @@
 													<option value="admin.player">Редактор игрока</option>
 													<option value="admin.chars">Меню Персонажи</option>
 													<option value="admin.index">Главная админки</option>
+													<option value="admin.setparam">Изменение параметров персонажам</option>
 													<option value="admin.params">Параметры персонажей</option>
 													<option value="admin.search">Поиск персонажа</option>
 													<option value="admin.db">База данных (полный доступ)</option>
@@ -187,11 +206,18 @@
 											<td><?=($char->isOnline() ? '<b>Онлайн</b> (осталось '.($char->online - time()).' секунд)' : '<b>Оффлайн</b> (был онлайн '.((time()-$char->online)/86400).' дней назад)')?></td>
 											<td>[<a href='#' onclick="change_request('online', 'Введите UNIX время');">Изменить</a>]</td>
 										</tr>
-										<?php foreach($char->info as $k => $v) { ?>
 										<tr>
-											<td><b><?=$k;?></b></td>
-											<td><?=$v;?></td>
+											<td><b>Дата разбана</b></td>
+											<td><?=date('d.m.Y H:i', $char->ban);?></td>
+											<td>[<a href='#' onclick="change_ban();">(За/раз)блокировать</a>]</td>
 										</tr>
+										<tr><td></td><td>&nbsp;</td><td></td></tr>
+										<?php foreach($params['values'] as $k => $v) { ?>
+											<tr>
+												<td><b><?=$params['list'][$k]['name'];?></b></td>
+												<td><?=$v;?></td>
+												<td>[<a href='#' onclick="change_param('<?=$k;?>');">Изменить</a>]</td>
+											</tr>
 										<?php } ?>
 									</table>
                                 </div>
