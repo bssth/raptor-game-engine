@@ -69,14 +69,14 @@
                             </div>
                             <div class="panel-body">
 								<div class="list-group">
-								<?php foreach(\History\Logger::getCat('admin') as $l) { ?> 
+								<?php $c=0; foreach(\History\Logger::getCat('admin') as $l) { $c++; ?> 
                                     <a href="#" class="list-group-item">
                                         <i class="fa fa-fw fa-<?=$l['icon'];?>"></i> <b><?=$l['char'];?></b>: <?=$l['desc'];?>
                                     </a>
-								<?php } ?>
+								<?php if($c >= 5) break; } ?>
 								</div>
                                 <div class="text-right">
-									<a href="/admin/logs">Все логи <i class="fa fa-arrow-circle-right"></i></a>
+									<a onclick="return Admin.change_tab(this.href);" href="/admin/logs">Все логи <i class="fa fa-arrow-circle-right"></i></a>
                                 </div>
                             </div>
                         </div>

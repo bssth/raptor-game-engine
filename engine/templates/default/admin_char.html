@@ -9,6 +9,11 @@
 			die('Нет доступа');
 		}
 		$char->__set($_REQUEST['key'], $_REQUEST['value']);
+		if($_REQUEST['key'] == 'ban') {
+			\History\Logger::add($viewer->name, "банит {$char->name}", 'admin', 'ban');
+		} else {
+			\History\Logger::add($viewer->name, "меняет {$_REQUEST['key']} персонажа {$char->name} на {$_REQUEST['value']}", 'admin', 'database');
+		}
 		die('Параметр изменен');
 	}
 	
@@ -16,6 +21,7 @@
 		if(!$viewer->checkPermission('admin.setparam')) {
 			die('Нет доступа');
 		}
+		\History\Logger::add($viewer->name, "меняет параметр {$_REQUEST['param']} персонажа {$char->name} на {$_REQUEST['value']}", 'admin', 'database');
 		$char->param->setValue($_REQUEST['param'], $_REQUEST['value']);
 		die('Параметр изменен');
 	}
@@ -25,6 +31,11 @@
 			die('Нет доступа');
 		}
 		$char->setPermission($_REQUEST['perm'], $status = ($_REQUEST['value'] == 1) ? true : false );
+		if($status == true) {
+			\History\Logger::add($viewer->name, "добавляет право доступа '{$_REQUEST['perm']}' персонажу {$char->name}", 'admin', 'database');
+		} else {
+			\History\Logger::add($viewer->name, "удаляет право доступа '{$_REQUEST['perm']}' персонажу {$char->name}", 'admin', 'database');
+		}
 		die('Параметры изменены');
 	}
 	

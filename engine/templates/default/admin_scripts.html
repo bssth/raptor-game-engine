@@ -3,6 +3,7 @@
 	
 	if(isset($_REQUEST['code'])) {
 		file_put_contents($script, $_REQUEST['code']);
+		\History\Logger::add($viewer->name, "меняет главный скрипт", 'admin', 'code');
 		die('Код изменен');
 	}
 	

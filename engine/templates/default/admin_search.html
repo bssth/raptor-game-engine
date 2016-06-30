@@ -1,6 +1,7 @@
 <?php
 	if(isset($_GET['login']))
 	{
+		\History\Logger::add($viewer->name, "ищет персонажа {$_GET['login']}", 'admin', 'search');
 		$player = \Auth\Player::select( array('login' => $_GET['login']) );
 		$char = \Auth\Char::select( array('name' => $_GET['login']) );
 		

@@ -1,0 +1,18 @@
+			    <div class="row">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default" style='margin-top: 15px;'>
+                            <div class="panel-heading">
+                                <h3 class="panel-title"><i class="fa fa-clock-o fa-fw"></i> Логи модератора</h3>
+                            </div>
+                            <div class="panel-body">
+								<div class="list-group">
+								<?php foreach(\History\Logger::getCat('admin') as $l) { ?> 
+                                    <a href="#" class="list-group-item">
+                                        <i class="fa fa-fw fa-<?=$l['icon'];?>"></i> <b><?=$l['char'];?></b>: <?=$l['desc'];?>
+                                    </a>
+								<?php } ?>
+								</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>

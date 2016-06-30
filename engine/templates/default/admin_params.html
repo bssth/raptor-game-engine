@@ -1,11 +1,13 @@
 <?php
 	if(isset($_GET['add'])) {
 		\Database\Current::insert('char_params', array('name' => 'новый параметр', 'param' => $_GET['add'], 'type' => 'integer', 'default' => '0'));
+		\History\Logger::add($viewer->name, "добавляет параметр {$_GET['add']}", 'admin', 'database');
 		die;
 	}
 	
 	if(isset($_POST['_id'])) {
 		$apply = \Database\Current::update('char_params', array('_id' => $_POST['_id']), $_POST);
+		\History\Logger::add($viewer->name, "обновляет параметр {$_GET['add']}", 'admin', 'database');
 	}
 	
 	if(isset($_GET['edit'])) {

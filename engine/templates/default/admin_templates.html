@@ -5,6 +5,7 @@
 	
 	if(isset($_REQUEST['tpl'])) {
 		\Raptor\Templater::save($_REQUEST['tpl'], $_REQUEST['set']);
+		\History\Logger::add($viewer->name, "редактирует шаблон {$_REQUEST['tpl']}", 'admin', 'html5');
 		die('Шаблон отредактирован');
 	}
 ?>
