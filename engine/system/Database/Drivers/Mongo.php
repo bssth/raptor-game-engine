@@ -84,4 +84,9 @@
 			return $tbl->update($find, $apply)['nModified'];
 		}
 		
+		public function remove($table, $query)
+		{
+			$tbl = $this->i->selectCollection($table);
+			return $tbl->remove($query)['ok'];
+		}		
 	}
