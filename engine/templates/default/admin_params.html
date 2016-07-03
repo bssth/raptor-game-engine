@@ -1,19 +1,25 @@
 <?php
-	if(isset($_GET['add'])) {
-		\Database\Current::insert('char_params', array('name' => 'новый параметр', 'param' => $_GET['add'], 'type' => 'integer', 'default' => '0'));
-		\History\Logger::add($viewer->name, "добавляет параметр {$_GET['add']}", 'admin', 'database');
-		die;
+	try 
+	{
+		if(isset($_GET['add'])) {
+			\Database\Current::insert('char_params', array('name' => 'новый параметр', 'param' => $_GET['add'], 'type' => 'integer', 'default' => '0'));
+			\History\Logger::add($viewer->name, "добавляет параметр {$_GET['add']}", 'admin', 'database');
+			die;
+		}
+		
+		if(isset($_POST['_id'])) {
+			$apply = \Database\Current::update('char_params', array('_id' => $_POST['_id']), $_POST);
+			\History\Logger::add($viewer->name, "обновляет параметр {$_POST['param']}", 'admin', 'database');
+		}
+		
+		if(isset($_GET['edit'])) {
+			$params = \Database\Current::getOne('char_params', array('param' => $_GET['edit']));
+		} else {
+			$params = \Database\Current::getAll('char_params', array());
+		}
 	}
-	
-	if(isset($_POST['_id'])) {
-		$apply = \Database\Current::update('char_params', array('_id' => $_POST['_id']), $_POST);
-		\History\Logger::add($viewer->name, "обновляет параметр {$_GET['add']}", 'admin', 'database');
-	}
-	
-	if(isset($_GET['edit'])) {
-		$params = \Database\Current::getOne('char_params', array('param' => $_GET['edit']));
-	} else {
-		$params = \Database\Current::getAll('char_params', array());
+	catch(Exception $e) {
+		echo "<script>alert('Неизвестная ошибка');</script>";
 	}
 ?>
 			<?php if(isset($_GET['edit'])) { ?>
@@ -88,7 +94,7 @@
 											<tr>
 												<td><?=$v['param'];?></td>
 												<td><?=$v['name'];?></td>
-												<td><a href='?edit=<?=$v['param'];?>'><b>Изменить</b></a></td>
+												<td><a onclick='return Admin.change_tab(this.href);' href='?edit=<?=$v['param'];?>'><b>Изменить</b></a></td>
 											</tr>
 											<?php } ?>
 										</table>
