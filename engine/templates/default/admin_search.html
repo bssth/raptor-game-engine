@@ -7,12 +7,12 @@
 		
 		if(!is_null($player))
 		{
-			echo '<div class="well"><a href="/admin/player?id='. (string)$player->_id .'">Игрок найден</a></div>';
+			echo '<div class="well"><a onclick="return Admin.change_tab(this.href);" href="/admin/player?id='. (string)$player->_id .'">Игрок найден</a></div>';
 		}
 		
 		if(!is_null($char))
 		{
-			echo '<div class="well"><a href="/admin/char?id='. (string)$char->_id .'">Персонаж найден</a></div>';
+			echo '<div class="well"><a onclick="return Admin.change_tab(this.href);" href="/admin/char?id='. (string)$char->_id .'">Персонаж найден</a></div>';
 		}
 		
 		if(is_null($char) and is_null($player))

@@ -70,7 +70,7 @@
                             <div class="panel-body">
 								<div class="list-group">
 								<?php $c=0; foreach(\History\Logger::getCat('admin') as $l) { $c++; ?> 
-                                    <a href="#" class="list-group-item">
+                                    <a onclick='return Admin.change_tab(this.href);' href="#" class="list-group-item">
                                         <i class="fa fa-fw fa-<?=$l['icon'];?>"></i> <b><?=$l['char'];?></b>: <?=$l['desc'];?>
                                     </a>
 								<?php if($c >= 5) break; } ?>

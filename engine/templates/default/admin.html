@@ -51,7 +51,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="/"><?=\Raptor\Config::game_title;?></a>
+                <a class="navbar-brand" onclick='return Admin.change_tab(this.href);' href="/"><?=\Raptor\Config::game_title;?></a>
             </div>
             <!-- /.navbar-header -->
 
@@ -62,7 +62,7 @@
                     </a>
                     <ul class="dropdown-menu dropdown-messages">
                         <li>
-                            <a href="#">
+                            <a onclick='return Admin.change_tab(this.href);' href="#">
                                 <div>
                                     <strong>John Smith</strong>
                                     <span class="pull-right text-muted">
@@ -82,7 +82,7 @@
                     </a>
                     <ul class="dropdown-menu dropdown-tasks">
                         <li>
-                            <a href="#">
+                            <a onclick='return Admin.change_tab(this.href);' href="#">
                                 <div>
                                     <p>
                                         <strong>Task 4</strong>
@@ -101,12 +101,12 @@
                 </li>
                 <!-- /.dropdown -->
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                    <a onclick='return Admin.change_tab(this.href);' class="dropdown-toggle" data-toggle="dropdown" href="#">
                         <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-alerts">
                         <li>
-                            <a href="#">
+                            <a onclick='return Admin.change_tab(this.href);' href="#">
                                 <div>
                                     <i class="fa fa-upload fa-fw"></i> Server Rebooted
                                     <span class="pull-right text-muted small">4 minutes ago</span>
@@ -122,7 +122,7 @@
                         <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-						<li><a href="#"><i class="fa fa-male fa-fw"></i> <?=$char->name;?></a>
+						<li><a onclick='return Admin.change_tab(this.href);' href="#"><i class="fa fa-male fa-fw"></i> <?=$char->name;?></a>
                         <li class="divider"></li>
                         <li><a href="/auth/logout"><i class="fa fa-sign-out fa-fw"></i> Выход</a>
                         </li>
