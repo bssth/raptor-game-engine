@@ -1,0 +1,39 @@
+<?php
+	if(isset($_GET['login']))
+	{
+		$char = \Auth\Char::select( array('name' => $_GET['login']) );
+		if(!is_object($char)) {
+			die("Персонаж не найден");
+		}
+		
+		try {
+			$char->delete();
+		}
+		catch(Exception $e) {
+			die("Ошибка во время удаления");
+		}
+		
+		die("Персонаж удален");
+	}
+?>
+
+			<div class="row" style="margin-top: 15px;">
+				<form method='GET' action="">
+				  <div class="form-group">
+					<label for="login-find">Введите логин</label>
+					<input type="text" name="login" class="form-control" id="login-find" placeholder="Логин">
+				  </div>
+				  <button type="submit" onclick="return delete_char()" class="btn btn-default">Удалить</button>
+				</form>
+            </div>
+			
+			<script>
+				function delete_char()
+				{
+					if(!confirm("Вы уверены, что хотите удалить " + $('#login-find')[0].value + "?\nЭто действие невозможно отменить. Если что-то закреплено за этим персонажем через сторонние модули, оно может быть не удалено и возникнут различные ошибки")) return false;
+					$.get('/admin/delete', {'login': $('#login-find')[0].value}, function(data) {
+						alert(data);
+					});
+					return false;
+				}
+			</script>

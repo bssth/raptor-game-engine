@@ -153,6 +153,12 @@
 			return (is_array($result)) ? (new Char($result['_id'])) : null;
 		}
 		
+		public function delete()
+		{
+			\Database\Cache::delete('char_' . $this->id);
+			return \Database\Current::remove('characters', array('_id' => $this->id));
+		}
+		
 		public function precache()
 		{
 			$test = \Database\Cache::get('char_' . $this->id);

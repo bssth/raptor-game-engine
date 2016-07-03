@@ -46,6 +46,7 @@
 				
 				function change_ban()
 				{
+					if(!confirm("Точно заблокировать?")) return false;
 					days = prompt('Через сколько дней разбанить пользователя?');
 					if(!days) return false;
 					unban = ((new Date()).getTime()) + (days * 86400 * 1000);
@@ -65,17 +66,20 @@
 				{
 					value = prompt("Введите новое значение для параметра " + key);
 					if(!value) return false;
+					if(!confirm("Вы уверены, что хотите изменить параметр")) return false;
 					$.post('/admin/char', {'id': window.charid, 'param': key, 'value': value}, function(data) { alert(data); });
 					return true;
 				}
 				
 				function add_perm(perm)
 				{
+					if(!confirm("Вы уверены, что хотите повысить права доступа?")) return false;
 					$.post('/admin/char', {'id': window.charid, 'perm': perm, 'value': '1'}, function(data) { alert(data); });
 				}
 				
 				function remove_perm(perm)
 				{
+					if(!confirm("Вы уверены, что хотите понизить права доступа?")) return false;
 					$.post('/admin/char', {'id': window.charid, 'perm': perm, 'value': '0'}, function(data) { alert(data); });
 				}
 				
@@ -147,7 +151,7 @@
 											<td>
 												<select id="selectperm">
 													<option value="">выберите...</option>
-													<option value="admin.all">Полный доступ (главный админ.)</option>
+													<option value="admin.all">Полный доступ (осторожно!)</option>
 													<option value="admin.char">Редактор персонажа</option>
 													<option value="admin.player">Редактор игрока</option>
 													<option value="admin.chars">Меню Персонажи</option>
@@ -155,10 +159,11 @@
 													<option value="admin.setparam">Изменение параметров персонажам</option>
 													<option value="admin.params">Параметры персонажей</option>
 													<option value="admin.search">Поиск персонажа</option>
-													<option value="admin.db">База данных (полный доступ)</option>
-													<option value="admin.perms">Изменение прав доступа</option>   
+													<option value="admin.delete">Удаление персонажей (осторожно!)</option>
+													<option value="admin.db">База данных (осторожно!)</option>
+													<option value="admin.perms">Изменение прав доступа (осторожно!)</option>   
 													<option value="admin.templates">Редактирование шаблонов</option>
-													<option value="admin.scripts">Редактирование скриптов</option>
+													<option value="admin.scripts">Редактирование скриптов (осторожно!)</option>
 												</select>
 												<input onclick='add_perm($("#selectperm")[0].value)' type='button' value='Добавить'>
 											</td>
