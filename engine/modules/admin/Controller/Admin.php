@@ -16,7 +16,7 @@
 					$action = (new \Raptor\Templater('admin_' . $act))->set('viewer', $char)->render();
 				}
 				catch(\Raptor\Exception $e) {
-					return '<h1>404 Not Found</h1>';
+					\Raptor\Core::web_error(404);
 				}
 				if(isset($_GET['embed']))
 				{
@@ -26,7 +26,7 @@
 			}
 			else
 			{
-				return '<h1>403 Forbidden</h1>';
+				\Raptor\Core::web_error(403);
 			}
 		}
 		

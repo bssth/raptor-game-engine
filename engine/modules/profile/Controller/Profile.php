@@ -7,12 +7,12 @@
 		public function __call($k, $v)
 		{
 			if(!isset($_SESSION['cid'])) {
-				return '403 Forbidden';
+				\Raptor\Core::web_error(403);
 			}
 			
 			$id = strtolower(str_replace('action', '', $k));
 			if(empty($id) or $id === 'index') {
-				return '404 Not Found';
+				\Raptor\Core::web_error(404);
 			}
 			
 			try {
@@ -20,14 +20,14 @@
 				$current = new \Auth\Char($_SESSION['cid']);
 			}
 			catch(\Raptor\Exception $e) {
-				return '404 Not Found';
+				\Raptor\Core::web_error(404);
 			}
 			
 			try {
 				$player = (new \Auth\Player($char->player));
 			}
 			catch(\Raptor\Exception $e) {
-				return '500 Internal Server Error';
+				\Raptor\Core::web_error(500);
 			}
 			
 			$is_owner = ( (isset($_SESSION['cid'])) and ((string)$_SESSION['cid'] === (string)$id) ) or $current->checkPermission('admin.char');

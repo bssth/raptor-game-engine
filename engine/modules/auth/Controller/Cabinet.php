@@ -41,7 +41,7 @@
 				$char = new \Auth\Char($_REQUEST['id']);
 			}
 			catch(\Raptor\Exception $e) {
-				return 'Неверный ID персонажа';
+				\Raptor\Core::web_error(404);
 			}
 			
 			if( $char->player === (string)$_SESSION['id'] )

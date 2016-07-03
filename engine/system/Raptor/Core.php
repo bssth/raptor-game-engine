@@ -58,6 +58,18 @@
 			if(Config::debug === true) {
 				die(nl2br($e->__toString()));
 			}
+			else {
+				die((new \Raptor\Templater('error_500'))->render());
+			}
+		}
+		
+		/**
+		 * Web errors handler 
+		 */
+		public static function web_error($num)
+		{
+			die((new \Raptor\Templater('error_' . $num))->render());
+			return null;
 		}
 		
 		/**
@@ -130,13 +142,13 @@
 			$action = 'action' . ucfirst(isset($route[1]) ? $route[1] : 'Index');
 			
 			if(!class_exists($driver)) {
-				die('404 Not Found');
+				self::web_error(404);
 			}
 			
 			$class = new $driver;
 			
 			if(!method_exists($class, $action) and !method_exists($class, '__call')) {
-				die('404 Not Found');
+				self::web_error(404);
 			}
 			
 			print( is_string($result = $class->$action()) ? $result : '500 Internal Server Error' );
