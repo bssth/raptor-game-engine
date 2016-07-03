@@ -17,12 +17,12 @@
 			
 			$data = \Database\Current::getAll('logs', array());
 			\Database\Cache::set('all_logs', $data, null, 3600);
-			return $data;
+			return array_reverse($data);
 		}
 		
 		public static function get($needle)
 		{
-			return \Database\Current::getAll('logs', $needle);
+			return array_reverse(\Database\Current::getAll('logs', $needle));
 		}
 		
 		public static function add($char, $desc, $cat, $icon = 'legal')
@@ -42,12 +42,12 @@
 		{
 			$test = \Database\Cache::get('logs_' . $cat);
 			if(is_array($test)) {
-				return $test;
+				return array_reverse($test);
 			}
 			
 			$data = \Database\Current::getAll('logs', array('cat' => $cat));
 			\Database\Cache::set('logs_' . $cat, $data, null, 3600);
-			return $data;
+			return array_reverse($data);
 		}
 		
 	}
