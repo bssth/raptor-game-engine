@@ -12,11 +12,11 @@
 		const game_title = 'My New Game';
 		
 		// Database
-		const db_type = 'Mongo'; // current database type (may be Mongo, Mysql)
+		const db_type = 'Mysql'; // current database type (may be Mongo, Mysql)
 		const db_host = 'localhost';
-		const db_database = 'gamedev';
-		const db_user = null;
-		const db_password = null;
+		const db_database = 'raptor';
+		const db_user = 'root';
+		const db_password = '';
 		
 		// Socket IO
 		const secret_key = ''; // super secret password for socket.io server controlling
