@@ -12,8 +12,15 @@
 		public static function prepare()
 		{
 			if(self::$i === null) {
-				self::$i = new \Memcache;
-				self::$i->connect(\Raptor\Config::cache_host, \Raptor\Config::cache_port);
+				if(false and class_exists('\\Memcache'))
+				{
+					self::$i = new \Memcache;
+					self::$i->connect(\Raptor\Config::cache_host, \Raptor\Config::cache_port);
+				}
+				else
+				{
+					self::$i = new \Database\Helpers\Nocache;
+				}
 			}
 			return 1;
 		}

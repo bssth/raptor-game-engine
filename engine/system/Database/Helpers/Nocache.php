@@ -5,14 +5,14 @@
 	 
 	namespace Database\Helpers;
 	
-	class Filecache
+	class Nocache
 	{
 		private $data = array();
 		
 		public function __call($k, $v) { return false; }
 		
 		public function delete($k) { 
-			unset($data[$k]);
+			if(isset($data[$k])) unset($data[$k]);
 			return true;
 		}
 		
