@@ -43,6 +43,14 @@ Game.send_message = function(message)
 	return false; // todo
 }
 
+Game.char_click = function(target, action)
+{
+	$.getJSON('/api/char.click', {'action': action, 'char': target}, function(ans) {
+		console.log(ans);
+	});
+	return true;
+}
+
 Game.get_message = function(author, message)
 {	
 	if($('#chat-messages').length >= 1)
