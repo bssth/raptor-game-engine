@@ -12,12 +12,8 @@
 			$char = new \Auth\Char($_SESSION['cid']);
 			if($char->checkPermission('admin.' . $act) or $char->checkPermission('admin.all'))
 			{
-				try {
-					$action = (new \Raptor\Templater('admin_' . $act))->set('viewer', $char)->render();
-				}
-				catch(\Raptor\Exception $e) {
-					\Raptor\Core::web_error(404);
-				}
+				$action = (new \Raptor\Templater('admin_' . $act))->set('viewer', $char)->render();
+				
 				if(isset($_GET['embed']))
 				{
 					return $action;
