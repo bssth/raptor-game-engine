@@ -19,17 +19,29 @@
 	
 	new \Raptor\EventListener('registered', function($e, $login) 
 	{ 
-		// вызывается при регистрации игрока. $login - логин игрока. По нему можно найти его в БД
+		// вызывается при регистрации игрока. 
+		// $login - логин игрока. По нему можно найти его в БД
 	});
 	
 	new \Raptor\EventListener('set_perms', function($e, $perm, $status) 
 	{ 
-		// вызывается при изменении прав доступа. $perm - наименование, $status - новый статус (true/false)
+		// вызывается при изменении прав доступа. 
+		// $perm - наименование, 
+		// $status - новый статус (true/false)
 	});
 	
 	new \Raptor\EventListener('changed_char', function($e, $key, $value) 
 	{ 
-		// вызывается при изменении любого поля персонажа. $key, $value - ключ и значение
+		// вызывается при изменении любого поля персонажа. 
+		// $key, $value - ключ и значение
+	});
+	
+	new \Raptor\EventListener('char_act', function($e, $char, $target, $act) 
+	{ 
+		// вызывается, когда персонаж нажимает на кнопку в контекстном меню другого персонажа. 
+		// $char - ID нажавшего, 
+		// $target - ID персонажа, на которого нажали. 
+		// $act - ID действия
 	});
 	
 	new \Raptor\EventListener('on_online', function($e, $id) 
