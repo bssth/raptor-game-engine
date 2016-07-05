@@ -58,30 +58,30 @@
             <ul class="nav navbar-top-links navbar-right">
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-envelope fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                        <i class="fa fa-envelope fa-fw"></i> Репорты <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-messages">
-                        <li>
+                        <!--<li>
                             <a onclick='return Admin.change_tab(this.href);' href="#">
                                 <div>
-                                    <strong>John Smith</strong>
+                                    <strong>я</strong>
                                     <span class="pull-right text-muted">
-                                        <em>Yesterday</em>
+                                        <em>01.01.0001</em>
                                     </span>
                                 </div>
-                                <div>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque eleifend...</div>
+                                <div>пусто</div>
                             </a>
-                        </li>
+                        </li>-->
                     </ul>
                     <!-- /.dropdown-messages -->
                 </li>
                 <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-tasks fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                        <i class="fa fa-tasks fa-fw"></i> Процессы <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-tasks">
-                        <li>
+                        <!--<li>
                             <a onclick='return Admin.change_tab(this.href);' href="#">
                                 <div>
                                     <p>
@@ -95,34 +95,37 @@
                                     </div>
                                 </div>
                             </a>
-                        </li>
+                        </li>-->
                     </ul>
                     <!-- /.dropdown-tasks -->
                 </li>
                 <!-- /.dropdown -->
                 <li class="dropdown">
-                    <a onclick='return Admin.change_tab(this.href);' class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-bell fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
+                        <i class="fa fa-bell fa-fw"></i> События <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-alerts">
-                        <li>
-                            <a onclick='return Admin.change_tab(this.href);' href="#">
+						<?php $c = 0; foreach(\History\Logger::getCat('admin') as $l) { $c++ ?> 
+						<li>
+                            <a onclick='return Admin.change_tab(this.href);' href="/admin/logs">
                                 <div>
-                                    <i class="fa fa-upload fa-fw"></i> Server Rebooted
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
+                                    <i class="fa fa-<?=$l['icon'];?> fa-fw"></i> <b><?=$l['char'];?></b> <?=$l['desc'];?>
                                 </div>
                             </a>
                         </li>
+						<?php if($c >= 15) break; } ?>
                     </ul>
                     <!-- /.dropdown-alerts -->
                 </li>
                 <!-- /.dropdown -->
                 <li class="dropdown">
                     <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-user fa-fw"></i>  <i class="fa fa-caret-down"></i>
+                        <i class="fa fa-user fa-fw"></i> <?=$char->name;?> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-						<li><a onclick='return Admin.change_tab(this.href);' href="#"><i class="fa fa-male fa-fw"></i> <?=$char->name;?></a>
+						<li><a onclick='return Admin.change_tab(this.href);' href="/admin/char?id=<?=$char->_id;?>"><i class="fa fa-male fa-fw"></i> Мой персонаж</a>
+						<li><a onclick='return Admin.change_tab(this.href);' href="/admin/player?id=<?=$char->player;?>"><i class="fa fa-male fa-fw"></i> Мой игрок</a>
+						<li><a target="_blank" href="/p"><i class="fa fa-external-link fa-fw"></i> В игру</a>
                         <li class="divider"></li>
                         <li><a href="/auth/logout"><i class="fa fa-sign-out fa-fw"></i> Выход</a>
                         </li>
