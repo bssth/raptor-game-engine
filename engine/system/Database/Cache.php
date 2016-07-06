@@ -12,7 +12,7 @@
 		public static function prepare()
 		{
 			if(self::$i === null) {
-				if(false and class_exists('\\Memcache'))
+				if(class_exists('\\Memcache'))
 				{
 					self::$i = new \Memcache;
 					self::$i->connect(\Raptor\Config::cache_host, \Raptor\Config::cache_port);
