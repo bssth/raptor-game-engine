@@ -92,17 +92,19 @@
                                         <thead>
                                             <tr>
                                                 <th>ID</th>
-                                                <th>Дата</th>
-                                                <th>Ник</th>
-                                                <th>Сумма</th>
+												<th>Персонаж</th>
+												<th>Действие</th>
+												<th>Время</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td></td>
-                                                <td></td>
-                                                <td>недоступно</td>
-                                                <td></td>
+												<?php foreach(\History\Logger::getCat('donate') as $v) { ?>
+													<td><?=$v['_id'];?></td>
+													<td><?=$v['char'];?></td>
+													<td><?=$v['desc'];?> <i class="fa fa-<?=$v['icon'];?> fa-fw"></i></td>
+													<td><?=date('d.m.Y H:i', $v['time']);?></td>
+												<?php } ?>
                                             </tr>
                                         </tbody>
                                     </table>
