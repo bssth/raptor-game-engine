@@ -57,6 +57,9 @@
 			$this->last_query = $this->i->query('SELECT * FROM ?n WHERE ?p', $table, $args);
 			
 			$result = $this->i->fetch($this->last_query);
+			if(!is_array($result)) {
+				return null;
+			}
 			$iter = $result;
 			foreach($iter as $k => $v)
 			{
@@ -87,6 +90,10 @@
 			$ans = [];
 			while($a = $this->i->fetch($this->last_query))
 			{
+				if(!is_array($a)) {
+					break;
+				}
+				
 				$iter = $a;
 				foreach($iter as $k => $v)
 				{
