@@ -6,6 +6,7 @@ Game.chat_limit = 10; // count of messages after previous will be deleted
 
 $( document ).ready(function() {
     Game.init_chat();
+	Game.online_polling();
 });
 
 Game.modal = function(url) {
@@ -32,10 +33,44 @@ Game.init_chat = function()
 		{
 			Game.get_message('Server', '');
 		}
-		Game.get_message('Server', 'Подключаемся к серверу чата...');
+		Game.get_message('Server', 'Подключаемся к серверу чата (нет)');
 		return true;
 	}
 	return false;
+}
+
+Game.apply_online = function() 
+{
+	
+}
+
+Game.online_polling = function() 
+{
+	/*if(!Game.cache.online) {
+		Game.cache.online = {};
+		Game.cache.onlinepoll = JSON.stringify([]);
+	}
+	console.log("Started polling online...");
+	
+	$.get('/api/char.onlinepolling', {'list': Game.cache.onlinepoll}, function(data) {
+		console.log(data);
+		
+		json = JSON.parse(data);
+		if(json.error) {
+			setTimeout(function() { Game.online_polling(); }, 2000);
+			return false;
+		}
+		Game.cache.onlinepoll = data;
+		Game.cache.online = {};
+		
+		$.each(json, function(k, v) {
+			Game.cache.online[k] = k;
+		});
+		
+		setTimeout(function() { Game.online_polling(); }, 1200);
+	}, 'text');
+	*/
+	return true;
 }
 
 Game.send_message = function(message)

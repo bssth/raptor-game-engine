@@ -80,6 +80,18 @@
 			\Raptor\EventListener::invoke('on_online', $this->id); 
 			return true;
 		}
+
+		public static function getActions()
+		{
+			$test = \Database\Cache::get('char_act');
+			if(is_array($test)) {
+				return $test;
+			}
+			
+			$data = \Database\Current::getAll('char_act', array());
+			\Database\Cache::set('char_act', $data, null, 3600);
+			return $data;
+		}
 		
 		public static function onlineList($as_obj = false)
 		{

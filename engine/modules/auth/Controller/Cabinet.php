@@ -39,6 +39,7 @@
 			
 			try {
 				$char = new \Auth\Char($_REQUEST['id']);
+				$char->setOnline();
 			}
 			catch(\Raptor\Exception $e) {
 				\Raptor\Core::web_error(404);
