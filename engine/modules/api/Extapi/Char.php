@@ -20,6 +20,37 @@
 			return ['events' => (string)\Raptor\EventListener::invoke('char_act', $_SESSION['cid'], $_REQUEST['char'], $_REQUEST['action'])];
 		}
 		
+		public function onlinepolling()
+		{
+			/*$start = $_SERVER['REQUEST_TIME'];
+			ignore_user_abort(false);
+			set_time_limit(0);
+			
+			if(!isset($_REQUEST['list'])) {
+				$list = json_encode([]);
+			}
+			else {
+				$list = $_REQUEST['list'];
+			}
+			try 
+			{
+				$got = json_decode($list, true);
+				while(true)
+				{
+					$online = \Auth\Char::onlineList();
+					if(json_encode($online) != $list or (time() - $start > 60)) {
+						return $online;
+					}
+				}
+			}
+			catch(\Raptor\Exception $e) {
+				return ['error' => 'Bad data'];
+			}
+			return ['error' => 'Bad data'];
+			*/
+			return [];
+		}
+		
 		public function setonline()
 		{
 			if(!isset($_SESSION['cid'])) {
