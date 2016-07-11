@@ -3,12 +3,14 @@
 	{
 		if(isset($_GET['add'])) {
 			\Database\Current::insert('char_params', array('name' => 'новый параметр', 'param' => $_GET['add'], 'type' => 'integer', 'default' => '0'));
+			\Database\Cache::delete('char_params_list');
 			\History\Logger::add($viewer->name, "добавляет параметр {$_GET['add']}", 'admin', 'database');
 			die;
 		}
 		
 		if(isset($_POST['_id'])) {
 			$apply = \Database\Current::update('char_params', array('_id' => $_POST['_id']), $_POST);
+			\Database\Cache::delete('char_params_list');
 			\History\Logger::add($viewer->name, "обновляет параметр {$_POST['param']}", 'admin', 'database');
 		}
 		
@@ -80,7 +82,7 @@
 					<div class="col-lg-12">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								Параметры персонажей [<a href='#' onclick='add_new();'>Создать</a>]
+								Параметры персонажей [<a href='/admin/params' onclick='return add_new();'>Создать</a>]
 							</div>
 							<!-- /.panel-heading -->
 							<div class="panel-body">
@@ -109,9 +111,11 @@
 				<script>
 					function add_new()
 					{
+						if(!confirm("Вы уверены?")) { return false; }
 						name = prompt("Выберите код параметра", "p_");
-						if(!name) return;
+						if(!name) return false;
 						$.get('/admin/params', {'add': name}, function(data) { window.location = '?'; });
+						return false;
 					}
 				</script>
 			<?php } ?>
