@@ -45,6 +45,11 @@
 						<li class="active">
 							<a id="modal-1" onclick="modal_set('/profile/<?=$char->_id;?>');" href="#modal-container-1" role="button" class="btn" data-toggle="modal">Профиль</a>
 						</li>
+						<?php if(count($char->perms) >= 1) { ?>
+						<li class="active">
+							<a href="/admin" role="button" class="btn" target="_blank">Админ-панель</a>
+						</li>
+						<?php } ?>
 					</ul>
 				</div>
 				<div class="row" style='margin-top: 10px;'>
