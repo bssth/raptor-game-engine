@@ -109,6 +109,8 @@
                                 </li>
 								<li><a href="#perms" data-toggle="tab">Права доступа</a>
                                 </li>
+								<li><a href="#logs" data-toggle="tab">Логи</a>
+                                </li>
                             </ul>
 
                             <!-- Tab panes -->
@@ -235,6 +237,17 @@
 												<td>[<a href='#' onclick="change_param('<?=$k;?>');">Изменить</a>]</td>
 											</tr>
 										<?php } ?>
+									</table>
+                                </div>
+								<div class="tab-pane fade in" id="logs">
+                                    <table class="table table-condensed">
+										<?php $x = 0; foreach(\History\Logger::get(['char' => $char->name]) as $l) { if($x > 40) break; ?> 
+										<tr>
+											<td><?=date('d.m.Y H:i', $l['time']);?></td>
+											<td><i class="fa fa-fw fa-<?=$l['icon'];?>"></i> <b><?=$l['desc'];?></b></td>
+											<td><i><?=$l['cat'];?></i></td>
+										</tr>
+										<?php $x++; } ?>
 									</table>
                                 </div>
                             </div>
