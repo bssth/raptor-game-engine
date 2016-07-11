@@ -20,6 +20,17 @@
 			return ['events' => (string)\Raptor\EventListener::invoke('char_act', $_SESSION['cid'], $_REQUEST['char'], $_REQUEST['action'])];
 		}
 		
+		public function event()
+		{
+			if(!isset($_SESSION['cid'])) {
+				return ['error' => '403'];
+			}
+			if(!isset($_REQUEST['act'])) {
+				return ['error' => 'Action is not passed'];
+			}
+			return ['events' => (string)\Raptor\EventListener::invoke('char_event', $_SESSION['cid'], $_REQUEST['act'])];
+		}
+		
 		public function onlinepolling()
 		{
 			/*$start = $_SERVER['REQUEST_TIME'];

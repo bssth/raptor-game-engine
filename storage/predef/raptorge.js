@@ -2,7 +2,7 @@ var Game = {};
 
 Game.cache = {}; // storage for cache
 Game.events = {}; // storage for events can be invoked
-Game.chat_limit = 10; // count of messages after previous will be deleted
+Game.chat_limit = 13; // count of messages after previous will be deleted
 
 $( document ).ready(function() {
     Game.init_chat();
@@ -76,6 +76,13 @@ Game.online_polling = function()
 Game.send_message = function(message)
 {
 	return false; // todo
+}
+
+Game.send_event = function(act) {
+	$.get('/api/char.event', {'act': act}, function(data) {
+		console.log(data);
+	});
+	return true;
 }
 
 Game.char_click = function(target, action)
