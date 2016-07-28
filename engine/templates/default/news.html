@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Новости</title>
+    <link href="/storage/predef/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="well">
+			<h1>Новости</h1>
+        </div>
+		<?php foreach($list as $a) { if($a['show'] != 1) continue; ?>
+			<div class='row' style='margin-top: 15px;'>
+				<div class='col-md-4'>
+					<h4><?=$a['title'];?></h4>
+					<font size=1><?=date('d.m.Y H:i', $a['time']);?></font>
+				</div>
+				<div class='col-md-8'>
+					<div id='short<?=$a['_id'];?>'>
+						<?=nl2br($a['short']);?>
+						<p><a href='javascript:void(0)' onclick='return short_to_full(<?=$a['_id'];?>);'>показать полностью...</a></p>
+					</div>
+					<div style='display: none;' id='full<?=$a['_id'];?>'>
+						<?=nl2br($a['full']);?>
+					</div>
+				</div>
+			</div>
+		<?php } ?>
+    </div>
+
+	<script src="/storage/predef/jquery.min.js"></script>
+	<script>
+		function short_to_full(id)
+		{
+			$('#short' + id)[0].style.display = 'none';
+			$('#full' + id)[0].style.display = 'block';
+			return false;
+		}
+	</script>
+    <script src="/storage/predef/bootstrap.min.js"></script>
+</body>
+
+</html>
