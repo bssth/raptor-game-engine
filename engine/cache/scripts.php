@@ -37,6 +37,13 @@
 		// $status - новый статус (true/false)
 	});
 	
+	new \Raptor\EventListener('char_teleported', function($e, $char, $location) 
+	{ 
+		// вызывается при изменении локации персонажа 
+		// $char - ID персонажа 
+		// $location - ID локации
+	});
+	
 	new \Raptor\EventListener('changed_char', function($e, $key, $value) 
 	{ 
 		// вызывается при изменении любого поля персонажа. 
