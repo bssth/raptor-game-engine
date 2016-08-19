@@ -53,6 +53,21 @@
 			return true;
 		}
 		
+		public function setLocation($id)
+		{
+			$this->__set('location', $id);
+			\Raptor\EventListener::invoke('char_teleported', $char->id, $id); 
+			
+			if($id != 0) {
+				$this->location = new \Mmorpg\Location($id);
+				return true;
+			}
+			else {
+				$this->location = (object)['id' => '0', 'name' => 'неизвестная локация'];
+				return false;
+			}
+		}
+		
 		public function __set($k, $v)
 		{
 			$arr = \Database\Cache::get('char_' . $this->id);
