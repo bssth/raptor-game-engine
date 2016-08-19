@@ -9,12 +9,18 @@
 	{
 		public $id = null;
 		public $param = null;
+		public $location = null;
 		
 		public function __construct($id)
 		{
 			$this->id = (string)$id;
 			$this->param = new \Mmorpg\Parameter('char', (string)$id);
 			$this->precache();
+			
+			if($this->__get('location') != 0)
+				$this->location = new \Mmorpg\Location($this->__get('location'));
+			else
+				$this->location = (object)['id' => '0', 'name' => 'неизвестная локация'];
 		}
 		
 		public function __get($k)

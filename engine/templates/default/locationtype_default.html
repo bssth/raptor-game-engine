@@ -1,0 +1,7 @@
+<?php if($location->id != '0') { ?>
+	<b><?=$location->name;?></b>
+	<p><sub><?=$location->desc;?></sub></p>
+	<img width=680 src='<?=$location->getVar('image');?>'>
+<?php } else { ?>
+	<h2>Вы на находитесь в какой-либо локации</h2>
+<?php } ?>
