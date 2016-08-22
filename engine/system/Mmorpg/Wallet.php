@@ -56,13 +56,28 @@
 			$this->money[$k] = $v;
 		}
 		
+		public static function getCurrencies()
+		{
+			$test = \Database\Cache::get('currency');
+			if(is_array($test)) {
+				return $test;
+			}
+			
+			$data = \Database\Current::getAll('currency', array());
+			if(!is_array($data))
+				$data = [];
+			
+			\Database\Cache::set('currency', $data, null, 3600);
+			return $data;
+		}
+		
 		public function __destruct()
 		{
 			$this->updateDatabase();
 		}
 		
 		public function __get($k) {
-			return isset($this->money[$k]) ? $this->money[$k] : null;
+			return isset($this->money[$k]) ? $this->money[$k] : 0;
 		}
 
 		public function __toString() {
