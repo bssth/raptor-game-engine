@@ -121,12 +121,49 @@
 		public function checkTimers()
 		{
 			$list = \Database\Cache::get('timers_char_' . $this->id);
+			if(!is_array($list)) $list = [];
+			foreach($this->getPremium() as $k => $v) {
+				$list['cexpired_'.$k] = [
+					'char' => $v['char'],
+					'id' => 'cexpired_' . $v['item'],
+					'vars' => [],
+					'time' => $v['expires']
+				];
+				\Database\Cache::delete('charbought_' . $this->id);
+				\Database\Current::remove('char_bought', array('_id' => $v['_id']));
+			}
+
 			if(!is_array($list)) return false;
 			
 			foreach($list as $k => $v) {
 				if(time() > $v['time'])
 					\Raptor\EventListener::invoke('timeout', $v['char'], $v['id'], $v['vars']);
 			}
+			return true;
+		}
+		
+		public function getPremium()
+		{
+			$test = \Database\Cache::get('charbought_' . $this->id);
+			if(is_array($test) and isset($test['_id'])) {
+				return is_array($test) ? $test : [];
+			}
+			
+			$data = \Database\Current::getAll('char_bought', array('char' => $this->id));
+			\Database\Cache::set('charbought_' . $this->id, $data, null, 3600);
+			
+			return is_array($data) ? $data : [];
+		}
+		
+		public function setPremium($id, $timeout)
+		{
+			\Database\Current::insert('char_bought', [
+				'char' => $this->id,
+				'item' => $id,
+				'expires' => time()+$timeout
+			]);
+			\Database\Cache::delete('charbought_' . $this->id);
+			
 			return true;
 		}
 		

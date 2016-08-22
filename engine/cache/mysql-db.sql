@@ -117,6 +117,7 @@ CREATE TABLE IF NOT EXISTS `char_bought` (
   `expires` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ALTER TABLE `char_bought` CHANGE `_id` `_id` INT(11) NOT NULL AUTO_INCREMENT; 
 
 CREATE TABLE IF NOT EXISTS `currency` (
   `_id` int(11) NOT NULL AUTO_INCREMENT,

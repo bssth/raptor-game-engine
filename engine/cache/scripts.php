@@ -89,6 +89,7 @@
 	new \Raptor\EventListener('timeout', function($e, $char, $id, $vars) 
 	{ 
 		// вызывается при завершении таймера. $char - ID персонажа, $id - ID таймерa, $vars - массив с пользовательскими переменными
+		// завершение действия платной услуги также отлавливается здесь, только перед его ID стоит префикс cexpired_
 	});
 	
 	new \Raptor\EventListener('gui_load', function($e, $char) 
