@@ -9,6 +9,7 @@
 	{
 		public $id = null;
 		public $param = null;
+		public $client = null;
 		public $location = null;
 		
 		public function __construct($id)
