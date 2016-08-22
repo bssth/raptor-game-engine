@@ -43,6 +43,21 @@
 		// $char - ID персонажа 
 		// $location - ID локации
 	});
+
+	new \Raptor\EventListener('give_money', function($e, $char, $currency, $count) 
+	{ 
+		$obj = new \Auth\Char($char);
+		\History\Logger::add($obj->name, "получает {$count} {$currency}", 'money', 'money');
+		
+		// вызывается при изменении денег персонажа. 
+		// $char - ID персонажа, $currency - валюта, $count - сколько добавлено
+	});
+	
+	new \Raptor\EventListener('money_change', function($e, $char, $money) 
+	{ 
+		// вызывается при изменении денег персонажа. 
+		// $char - ID персонажа, $money - массив с валютами и значениями (всеми после обновления)
+	});
 	
 	new \Raptor\EventListener('changed_char', function($e, $key, $value) 
 	{ 

@@ -11,6 +11,7 @@
 		public $param = null;
 		public $client = null;
 		public $location = null;
+		public $money = null;
 		
 		public function __construct($id)
 		{
@@ -18,6 +19,7 @@
 			$this->param = new \Mmorpg\Parameter('char', (string)$id);
 			$this->precache();
 			$this->client = new \Mmorpg\Client((string)$id);
+			$this->money = new \Mmorpg\Wallet((string)$id);
 			
 			if($this->__get('location') != 0)
 				$this->location = new \Mmorpg\Location($this->__get('location'));
