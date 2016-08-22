@@ -39,6 +39,9 @@
 	
 	new \Raptor\EventListener('char_teleported', function($e, $char, $location) 
 	{ 
+		$obj = new \Auth\Char($char);
+		\History\Logger::add($obj->name, "переместился в локацию " . $location, 'teleports', 'globe');
+		
 		// вызывается при изменении локации персонажа 
 		// $char - ID персонажа 
 		// $location - ID локации
