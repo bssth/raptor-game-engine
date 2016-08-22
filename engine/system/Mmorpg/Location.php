@@ -27,9 +27,9 @@
 		
 		public function getVar($var)
 		{
-			if($this->vars == null) {
+			if($this->vars == null)
 				$this->vars = json_decode($this->info['vars'], true);
-			}
+
 			
 			return isset($this->vars[$var]) ? $this->vars[$var] : null;
 		}
@@ -37,14 +37,13 @@
 		public static function getLocation($id)
 		{
 			$test = \Database\Cache::get('locations_list');
-			if(is_array($test) and isset($test[$id])) {
+			if(is_array($test) and isset($test[$id]))
 				return $test[$id];
-			}
 			
 			$test = self::getLocations();
-			if(is_array($test) and isset($test[$id])) {
+			if(is_array($test) and isset($test[$id]))
 				return $test[$id];
-			}
+
 			throw new \Raptor\Exception('Trying to get undefined location');
 			return [];
 		}
@@ -52,9 +51,9 @@
 		public static function getLocations()
 		{
 			$test = \Database\Cache::get('locations_list');
-			if(is_array($test) and count($test)) {
+			if(is_array($test) and count($test))
 				return $test;
-			}
+
 			
 			$data = \Database\Current::getAll('locations', array());
 			$real = [];

@@ -33,15 +33,14 @@
 		public function checkPermission($perm)
 		{
 			return (in_array('admin.all', $this->perms) or in_array((string)$perm, $this->perms));
-			
 		}
 		
 		public function setPermission($perm, $status = true)
 		{
-			if(!is_bool($status))
-			{
+			if(!is_bool($status)) {
 				return false;
 			}
+			
 			$perms = is_array($this->perms) ? $this->perms : array();
 			if($status === true) {
 				$perms[] = $perm;
@@ -51,7 +50,7 @@
 			}
 			$this->perms = array_values($perms);
 			\Raptor\EventListener::invoke('set_perms', $perm, $status); 
-			return true;
+			return true; 
 		}
 		
 		public function setLocation($id)

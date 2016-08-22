@@ -16,7 +16,10 @@
 				$char->setOnline();
 			}
 			catch(\Raptor\Exception $e) {
-				header('Location: /cabinet');
+				if(\Raptor\Config::debug == true)
+					die((string)$e);
+				else
+					header('Location: /cabinet');
 			}
 			
 			\Raptor\EventListener::invoke('gui_load', $_SESSION['cid']); 

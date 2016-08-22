@@ -34,9 +34,8 @@
 		public static function exists($tpl = 'empty')
 		{
 			if(file_exists($tpl) or file_exists(Config::ROOT . Core::SEPARATOR . 'templates' . Core::SEPARATOR . $tpl . '.html'))
-			{
 				return true;
-			}
+			
 			return false;
 		}
 		
@@ -87,9 +86,9 @@
 		 */
 		public function source()
 		{
-			if(!file_exists($this->path)) {
+			if(!file_exists($this->path)) 
 				throw new Exception("Template not found in {$this->path}");
-			}
+
 			return file_get_contents($this->path);
 		}
 		
@@ -118,6 +117,9 @@
 			}
 			ob_start(NULL, 0, PHP_OUTPUT_HANDLER_CLEANABLE | PHP_OUTPUT_HANDLER_FLUSHABLE | PHP_OUTPUT_HANDLER_REMOVABLE); // start output buffer temporary
 			require_once($this->path); // evaluate template with PHP code 
+			foreach($this->vars as $k => $v) {
+				unset($k);
+			}
 			return ob_get_clean(); // clear output buffer with template and return it
 		}
 	}

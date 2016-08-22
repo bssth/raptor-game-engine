@@ -34,9 +34,8 @@
 			$data = \Database\Current::getAll($this->type . '_params', array());
 			$real = [];
 			foreach($data as $k => $v)
-			{
 				$real[$v['param']] = $v;
-			}
+
 			$data = $real;
 			
 			\Database\Cache::set($this->type . '_params_list', $data, null, 3600);
@@ -51,9 +50,8 @@
 			
 			$result = [];
 			foreach($this->params as $k => $parm)
-			{
 				$result[$parm['param']] = $this->getValue($parm['param']);
-			}
+
 			
 			$this->gap_cache = array('list' => $this->params, 'values' => $result);
 			return $this->gap_cache;
