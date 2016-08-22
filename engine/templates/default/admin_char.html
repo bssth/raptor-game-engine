@@ -174,20 +174,22 @@
                                 </div>
 								<div class="tab-pane fade in" id="money">
                                     <table class="table table-condensed">
-										<?php foreach($char->money as $k => $v) { ?>
+										<?php foreach(\Mmorpg\Wallet::getCurrencies() as $k => $v) { ?>
 										<tr>
-											<td><b><?=$k;?></b></td>
-											<td><?=$v;?></td>
+											<td><img width=25 height=25 src='<?=$v['image'];?>'> <br> <b><?=$v['name'];?></b></td>
+											<td><b><?=$char->money->{$v['tag']};?></b></td>
 										</tr>
 										<?php } ?>
 									</table>
                                 </div>
 								<div class="tab-pane fade in" id="inv">
                                     <table class="table table-condensed">
-										<?php foreach($char->inventory as $k => $v) { ?>
+										<?php foreach($char->inv->getInventory() as $k => $v) { ?>
 										<tr>
-											<td><b><?=$k;?></b></td>
-											<td><?=$v;?></td>
+											<td><b>Слот</b> <?=$k;?></td>
+											<td><b>Предмет <?=$v['id'];?></b></td>
+											<td><img src='<?=$v['image'];?>'> <?=$v['name'];?></td>
+											<td><?=json_encode($v['vars']);?></td>
 										</tr>
 										<?php } ?>
 									</table>
