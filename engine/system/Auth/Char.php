@@ -12,6 +12,8 @@
 		public $client = null;
 		public $location = null;
 		public $money = null;
+		public $inv = null;
+		public $inventory = null;
 		
 		public function __construct($id)
 		{
@@ -20,6 +22,8 @@
 			$this->param = new \Mmorpg\Parameter('char', (string)$id);
 			$this->client = new \Mmorpg\Client((string)$id);
 			$this->money = new \Mmorpg\Wallet((string)$id);
+			$this->inv = new \Mmorpg\Inventory((string)$id);
+			$this->inventory = &$this->inv;
 			$this->checkTimers();
 			
 			if($this->__get('location') != 0)

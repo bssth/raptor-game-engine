@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Данные о персонаже</title>
+
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+
+    <link href="/storage/predef/bootstrap.min.css" rel="stylesheet">
+  </head>
+  <body>
+
+    <div class="container-fluid">
+	<div class="row">
+			<table class="table">
+				<tbody>
+					<?php foreach($char->inv->getInventory() as $k => $v) { ?>
+						<tr id='slot<?=$v['slot'];?>'>
+							<td>
+								<img src='<?=$v['image'];?>'>
+							</td>
+							<td>
+								<b><?=$v['name'];?></b>
+							</td>
+							<td>
+								<?php foreach($v['vars'] as $k => $v) { ?>
+									<p><b><?=$k;?></b>: <?=$v;?></p>
+								<?php } ?>
+							</td>
+						</tr>
+					<?php } ?>
+					<tr>
+				</tbody>
+			</table>
+	</div>
+</div>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script>
+  </body>
+</html>
