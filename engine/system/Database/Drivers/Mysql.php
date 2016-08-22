@@ -168,7 +168,7 @@
 			$args[] = '1';
 			$args = implode(' AND ', $args);
 			
-			$this->last_query('DELETE FROM ?n WHERE ?p', $table, $args);
+			$this->last_query = $this->i->query('DELETE FROM ?n WHERE ?p', $table, $args);
 			return true;
 		}		
 	}
