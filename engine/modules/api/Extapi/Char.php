@@ -31,6 +31,47 @@
 			return ['events' => (string)\Raptor\EventListener::invoke('char_event', $_SESSION['cid'], $_REQUEST['act'])];
 		}
 		
+		public function eventpolling()
+		{
+			/*if(!isset($_SESSION['cid'])) {
+				return ['error' => '403'];
+			}
+			$start = $_SERVER['REQUEST_TIME'];
+			ignore_user_abort(false);
+			set_time_limit(0);
+
+			try 
+			{
+				$char = new \Auth\Char($_SESSION['cid']);
+				while(true)
+				{
+					$events = $char->client->getEvents();
+					if(count($events) >= 1 or (time() - $start > 60)) {
+						return $events;
+					}
+					sleep(1);
+				}
+			}
+			catch(\Raptor\Exception $e) {
+				return ['error' => 'Bad data'];
+			}*/
+			return [];
+		}
+		
+		public function events()
+		{
+			if(!isset($_SESSION['cid'])) {
+				return ['error' => '403'];
+			}
+			try {
+				return (new \Auth\Char($_SESSION['cid']))->client->getEvents();
+			}
+			catch(\Raptor\Exception $e) {
+				return ['error' => 'Bad data'];
+			}
+			return [];
+		}
+		
 		public function onlinepolling()
 		{
 			/*$start = $_SERVER['REQUEST_TIME'];
