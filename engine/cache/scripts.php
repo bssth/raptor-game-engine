@@ -83,6 +83,11 @@
 		// вызывается при запросе главной страницы
 	});
 	
+	new \Raptor\EventListener('timeout', function($e, $char, $id, $vars) 
+	{ 
+		// вызывается при завершении таймера. $char - ID персонажа, $id - ID таймерa, $vars - массив с пользовательскими переменными
+	});
+	
 	new \Raptor\EventListener('gui_load', function($e, $char) 
 	{ 
 		// вызывается при загрузке /p страницы - интерфейса игры. $char - ID персонажа

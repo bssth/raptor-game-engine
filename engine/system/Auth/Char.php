@@ -16,10 +16,11 @@
 		public function __construct($id)
 		{
 			$this->id = (string)$id;
-			$this->param = new \Mmorpg\Parameter('char', (string)$id);
 			$this->precache();
+			$this->param = new \Mmorpg\Parameter('char', (string)$id);
 			$this->client = new \Mmorpg\Client((string)$id);
 			$this->money = new \Mmorpg\Wallet((string)$id);
+			$this->checkTimers();
 			
 			if($this->__get('location') != 0)
 				$this->location = new \Mmorpg\Location($this->__get('location'));
@@ -115,6 +116,31 @@
 			$data = \Database\Current::getAll('char_act', array());
 			\Database\Cache::set('char_act', $data, null, 3600);
 			return $data;
+		}
+		
+		public function checkTimers()
+		{
+			$list = \Database\Cache::get('timers_char_' . $this->id);
+			if(!is_array($list)) return false;
+			
+			foreach($list as $k => $v) {
+				if(time() > $v['time'])
+					\Raptor\EventListener::invoke('timeout', $v['char'], $v['id'], $v['vars']);
+			}
+			return true;
+		}
+		
+		public function setTimer($id = 'noname', $time = 0, $vars = [])
+		{
+			$list = \Database\Cache::get('timers_char_' . $this->id);
+			if(!is_array($list)) 
+				$list = [];
+			
+			$time = time()+$time;
+			$list[$id] = ['char' => $this->id, 'time' => $time, 'id' => $id, 'vars' => $vars];
+			
+			\Database\Cache::set('timers_char_' . $this->id, $list, null, 3600);
+			return true;
 		}
 		
 		public static function onlineList($as_obj = false)
