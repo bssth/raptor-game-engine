@@ -16,6 +16,7 @@
 			$this->id = (string)$id;
 			$this->param = new \Mmorpg\Parameter('char', (string)$id);
 			$this->precache();
+			$this->client = new \Mmorpg\Client((string)$id);
 			
 			if($this->__get('location') != 0)
 				$this->location = new \Mmorpg\Location($this->__get('location'));
