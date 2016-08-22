@@ -1,0 +1,115 @@
+<?php
+	try 
+	{
+		if(isset($_GET['add'])) {
+			\Database\Current::insert('currency', ['tag' => $_GET['add'], 'name' => 'без имени', 'desc' => '', 'image' => '']);
+			\Database\Cache::delete('currency');
+			\History\Logger::add($viewer->name, "добавляет валюту {$_GET['add']}", 'admin', 'money');
+			die;
+		}
+		
+		if(isset($_POST['_id'])) {
+			$apply = \Database\Current::update('currency', array('_id' => $_POST['_id']), $_POST);
+			\Database\Cache::delete('currency');
+			\History\Logger::add($viewer->name, "обновляет валюту {$_POST['_id']}", 'admin', 'money');
+		}
+		
+		if(isset($_GET['edit'])) {
+			$params = \Database\Current::getOne('currency', array('_id' => $_GET['edit']));
+		} else {
+			$params = \Database\Current::getAll('currency', array());
+		}
+	}
+	catch(Exception $e) {
+		echo "<script>alert('Неизвестная ошибка');</script>";
+	}
+?>
+			<?php if(isset($_GET['edit'])) { ?>
+				<?php if(isset($apply) and $apply >= 1) { ?>
+				<script>alert('Валюта изменена');</script>
+				<?php } ?>
+				<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3>Валюта <b><?=isset($params['name']) ? $params['name'] : 'без имени';?></b><h3>
+							</div>
+							<!-- /.panel-heading -->
+							<div class="panel-body">
+								<div class="row"> 
+									<div class="col-lg-12">
+										<form role="form" method="POST" action="">
+											<div class="form-group">
+												<label for="disabledSelect">ID валюты</label>
+												<input class="form-control" type="text" name="_id" value="<?=isset($params['_id']) ? $params['_id'] : '';?>">
+												<p class="help-block">Изменение кода может нарушить работу игры</p>
+											</div>
+											<div class="form-group">
+												<label for="disabledSelect">Код валюты</label>
+												<input class="form-control" type="text" name="tag" value="<?=isset($params['tag']) ? $params['tag'] : '';?>">
+												<p class="help-block">Изменение кода может нарушить работу игры</p>
+											</div>
+											<div class="form-group">
+												<label for="disabledSelect">Название валюты</label>
+												<input class="form-control" type="text" name="name" value="<?=isset($params['name']) ? $params['name'] : '';?>">
+											</div>
+											<div class="form-group">
+												<label for="disabledSelect">Описание</label>
+												<input class="form-control" type="text" name="desc" value="<?=isset($params['desc']) ? $params['desc'] : '';?>">
+											</div>
+											<div class="form-group">
+												<label for="disabledSelect">Изображение</label>
+												<input class="form-control" type="text" name="image" value="<?=isset($params['image']) ? $params['image'] : '';?>">
+											</div>
+											<button type="submit" class="btn btn-default">Сохранить</button>
+										</form>
+									</div>
+									<!-- /.col-lg-6 (nested) -->
+								</div>
+							</div>
+							<!-- /.panel-body -->
+						</div>
+						<!-- /.panel -->
+					</div>
+					<!-- /.col-lg-12 -->
+			<?php } else { ?>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								Валюты [<a href='/admin/money' onclick='return add_new();'>Создать</a>]
+							</div>
+							<!-- /.panel-heading -->
+							<div class="panel-body">
+										<table class="table table-condensed">
+											<thead>
+												<td><b>ID</b></td>
+												<td><b>Название</b></td>
+												<td><b></b></td>
+											</thead>
+											<?php foreach($params as $v) { ?>
+											<tr>
+												<td><?=$v['_id'];?></td>
+												<td><img src='<?=$v['image'];?>'> <?=$v['name'];?></td>
+												<td><a onclick='return Admin.change_tab(this.href);' href='?edit=<?=$v['_id'];?>'><b>Изменить</b></a></td>
+											</tr>
+											<?php } ?>
+										</table>
+							</div>
+							<!-- /.panel-body -->
+						</div>
+						<!-- /.panel -->
+					</div>
+					<!-- /.col-lg-12 -->
+				</div>
+				
+				<script>
+					function add_new()
+					{
+						if(!confirm("Вы уверены?")) { return false; }
+						name = prompt("Придумайте код валюты (на латыни, без пробелов)", "");
+						if(!name) return false;
+						$.get('/admin/money', {'add': name}, function(data) { window.location = '?'; });
+						return false;
+					}
+				</script>
+			<?php } ?>
