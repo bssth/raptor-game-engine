@@ -29,6 +29,12 @@
 			\Database\Current::update('players', array('_id' => $this->id), $arr);
 		}
 		
+		/**
+		 * Register player
+		 * @param string $login
+		 * @param string $password
+		 * @return boolean
+		 */
 		public static function register($login = null, $password = null)
 		{
 			if(!is_string($login) or !is_string($password))
@@ -61,6 +67,11 @@
 			return true;
 		}
 		
+		/**
+		 * Select player by query
+		 * @param string $query
+		 * @return array
+		 */
 		public static function select($query)
 		{
 			$result = \Database\Current::getOne('players', $query);
@@ -68,6 +79,10 @@
 			return (is_array($result)) ? (new Player($result['_id'])) : null;
 		}
 		
+		/**
+		 * Get all characters of player as objects
+		 * @return array
+		 */
 		public function getCharacters()
 		{
 			$list = \Database\Current::getAll('characters', array('player' => $this->id));
@@ -80,6 +95,10 @@
 			return $res;
 		}
 		
+		/**
+		 * Add player data to cache 
+		 * @return boolean
+		 */
 		public function precache()
 		{
 			$test = \Database\Cache::get('player_' . $this->id);

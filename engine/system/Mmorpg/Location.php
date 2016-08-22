@@ -17,14 +17,28 @@
 			$this->info = \Mmorpg\Location::getLocation($id);
 		}
 		
+		/**
+		 * Get variable of location
+		 * @param string $k
+		 * @return mixed
+		 */
 		public function __get($k) {
 			return isset($this->info[$k]) ? $this->info[$k] : null;
 		}
 		
+		/**
+		 * Get location as HTML (template: locationtype_TYPE)
+		 * @return string
+		 */
 		public function asHTML() {
 			return (new \Raptor\Templater('locationtype_' . $this->type))->set('location', $this)->render();
 		}
 		
+		/**
+		 * Get variable (a.k.a. parameter) of location
+		 * @param string $var
+		 * @return mixed
+		 */
 		public function getVar($var)
 		{
 			if($this->vars == null)
@@ -34,6 +48,11 @@
 			return isset($this->vars[$var]) ? $this->vars[$var] : null;
 		}
 		
+		/**
+		 * Get location by id
+		 * @param string $id
+		 * @return array
+		 */
 		public static function getLocation($id)
 		{
 			$test = \Database\Cache::get('locations_list');
@@ -48,6 +67,10 @@
 			return [];
 		}
 		
+		/**
+		 * Get all locations
+		 * @return array
+		 */
 		public static function getLocations()
 		{
 			$test = \Database\Cache::get('locations_list');

@@ -24,6 +24,10 @@
 			return $this->getValue($k);
 		}
 		
+		/**
+		 * Get params of object
+		 * @return array
+		 */
 		public function getParams()
 		{
 			$test = \Database\Cache::get($this->type . '_params_list');
@@ -42,6 +46,10 @@
 			return $data;
 		}
 		
+		/**
+		 * Get all parameters from database
+		 * @return array
+		 */
 		public function getAllParams()
 		{
 			if(!is_null($this->gap_cache)) {
@@ -57,6 +65,11 @@
 			return $this->gap_cache;
 		}
 		
+		/**
+		 * Get value of parameter
+		 * @param string $param
+		 * @return mixed
+		 */
 		public function getValue($param)
 		{
 			$arr = \Database\Cache::get($this->type . '_' . $this->id);
@@ -78,6 +91,12 @@
 			return null;
 		}
 		
+		/**
+		 * Set value of parameter
+		 * @param string $param
+		 * @param string $value
+		 * @return boolean
+		 */
 		public function setValue($param, $value)
 		{
 			$arr = \Database\Cache::get($this->type . '_' . $this->id);

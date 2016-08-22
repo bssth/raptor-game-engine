@@ -27,6 +27,10 @@
 			}
 		}
 		
+		/**
+		 * Apply character money data 
+		 * @return boolean
+		 */
 		protected function updateDatabase()
 		{
 			$arr = \Database\Cache::get('char_' . $this->id);
@@ -38,6 +42,12 @@
 			return true;
 		}
 		
+		/**
+		 * Give money to character
+		 * @param string $currency
+		 * @param integer $count
+		 * @return integer
+		 */
 		public function giveMoney($currency, $count)
 		{
 			if(!isset($this->money[$currency]) or !is_numeric($count))
@@ -56,6 +66,10 @@
 			$this->money[$k] = $v;
 		}
 		
+		/**
+		 * Get all currencies
+		 * @return array
+		 */
 		public static function getCurrencies()
 		{
 			$test = \Database\Cache::get('currency');

@@ -11,16 +11,20 @@
 		protected static $type = null;
 		protected static $i = null;
 		
+		/**
+		 * Prepare manager by creating instance
+		 */
 		public static function prepare()
 		{
 			if(self::$type !== null)
-			{
 				return 0;
-			}
 			
 			self::$type = \Raptor\Config::db_type;
 		}
 		
+		/**
+		 * Link static calls to driver 
+		 */
 		public static function __callStatic($f, $a)
 		{
 			if(self::$i === null) {
@@ -32,9 +36,12 @@
 			return call_user_func_array(array(self::$i, $f), $a);
 		}
 		
+		/**
+		 * Get database type
+		 */
 		public static function info()
 		{
 			self::prepare();
-			return 'Database type is ' . self::$type;
+			return self::$type;
 		}
 	}

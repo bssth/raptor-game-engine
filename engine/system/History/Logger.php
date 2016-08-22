@@ -7,7 +7,11 @@
 	
 	class Logger
 	{
-	
+		
+		/**
+		 * Gets all logs
+		 * @return array
+		 */
 		public static function getAll()
 		{
 			$test = \Database\Cache::get('all_logs');
@@ -20,11 +24,23 @@
 			return array_reverse($data);
 		}
 		
+		/**
+		 * Get logs by query
+		 * @return array
+		 */
 		public static function get($needle)
 		{
 			return array_reverse(\Database\Current::getAll('logs', $needle));
 		}
 		
+		/**
+		 * Write log
+		 * @param string $char
+		 * @param string $desc
+		 * @param string $cat
+		 * @param string $icon
+		 * @return boolean
+		 */
 		public static function add($char, $desc, $cat, $icon = 'legal')
 		{
 			\Database\Current::insert('logs', array(
@@ -38,6 +54,11 @@
 			return true;
 		}
 		
+		/**
+		 * Get all logs in category
+		 * @param string $cat
+		 * @return array 
+		 */
 		public static function getCat($cat)
 		{
 			$test = \Database\Cache::get('logs_' . $cat);

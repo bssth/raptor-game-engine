@@ -30,6 +30,10 @@
 			}
 		}
 		
+		/**
+		 * Get all items
+		 * @return array
+		 */
 		public static function getItems()
 		{
 			$test = \Database\Cache::get('inv_items');
@@ -46,6 +50,11 @@
 			return $data;
 		}
 		
+		/**
+		 * Get data about item
+		 * @param string $id
+		 * @return array
+		 */
 		public static function getItem($id)
 		{
 			$test = \Database\Cache::get('inv_item_' . $id);
@@ -63,6 +72,12 @@
 			return $data;
 		}
 		
+		/**
+		 * Give item to character
+		 * @param string $id
+		 * @param array $vars
+		 * @return string
+		 */
 		public function giveItem($id, $vars)
 		{
 			$slot = uniqid();
@@ -71,6 +86,11 @@
 			return $slot;
 		}
 		
+		/**
+		 * Remove item in slot
+		 * @param string $slot
+		 * @return boolean
+		 */
 		public function removeItem($slot)
 		{
 			unset($this->inv[$slot]);
@@ -78,17 +98,35 @@
 			return isset($this->inv[$slot]) ? false : true;
 		}
 		
+		/**
+		 * Set variable in slot
+		 * @param string $slot
+		 * @param string $var
+		 * @param mixed $value
+		 * @return boolean
+		 */
 		public function setSlotVar($slot, $var, $value)
 		{
 			$this->gi_cache = null;
 			return ($this->inv[$slot]['vars'][$var] = $value);
 		}
 		
+		/**
+		 * Get item data from slot
+		 * @param string $slot
+		 * @return array|null
+		 */
 		public function getSlot($slot)
 		{
 			return isset($this->getInventory()[$slot]) ? $this->getInventory()[$slot] : null;
 		}
 		
+		/**
+		 * Get variable from slot
+		 * @param string $slot
+		 * @param string $var
+		 * @return mixed
+		 */
 		public function getSlotVar($slot, $var)
 		{
 			if(isset($this->getInventory()[$slot][$var]))
@@ -99,6 +137,10 @@
 				return null;
 		}
 		
+		/**
+		 * Get full inventory of character 
+		 * @return array
+		 */
 		public function getInventory()
 		{ 
 			if(is_array($this->gi_cache)) return $this->gi_cache;
@@ -116,6 +158,10 @@
 			$this->updateDatabase();
 		}
 		
+		/**
+		 * Apply inventory to database
+		 * @return boolean
+		 */
 		protected function updateDatabase()
 		{
 			$arr = \Database\Cache::get('char_' . $this->id);

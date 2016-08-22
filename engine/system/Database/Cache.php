@@ -9,6 +9,9 @@
 	{
 		protected static $i = null;
 	
+		/**
+		 * Prepare cache
+		 */
 		public static function prepare()
 		{
 			if(self::$i === null) {
@@ -25,6 +28,9 @@
 			return 1;
 		}
 	
+		/**
+		 * Link static calls to instance
+		 */
 		public static function __callStatic($f, $a)
 		{
 			self::prepare();

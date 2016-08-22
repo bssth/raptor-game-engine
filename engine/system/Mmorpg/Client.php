@@ -14,12 +14,22 @@
 			$this->id = (string)$id;
 		}
 		
+		/**
+		 * Send alert() function to client
+		 * @param string $message
+		 * @return array
+		 */
 		public function sendAlert($message)
 		{
 			$message = str_replace("'", "\'", $message);
 			return $this->sendJs("alert('{$message}');");
 		}
 		
+		/**
+		 * Send custom javascript to client
+		 * @param string $code
+		 * @return array
+		 */
 		public function sendJs($code)
 		{
 			$test = \Database\Cache::get('gevents_' . $this->id);
@@ -34,6 +44,11 @@
 			}
 		}
 		
+		/**
+		 * Get all events
+		 * @param boolean $delete
+		 * @return array
+		 */
 		public function getEvents($delete = true)
 		{
 			$test = \Database\Cache::get('gevents_' . $this->id);

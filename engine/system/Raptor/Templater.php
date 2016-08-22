@@ -31,6 +31,11 @@
 			}
 		}
 		
+		/**
+		 * Checking if template exists. 
+		 *
+		 * @param string $tpl
+		 */
 		public static function exists($tpl = 'empty')
 		{
 			if(file_exists($tpl) or file_exists(Config::ROOT . Core::SEPARATOR . 'templates' . Core::SEPARATOR . $tpl . '.html'))

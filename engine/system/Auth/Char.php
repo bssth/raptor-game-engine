@@ -32,17 +32,31 @@
 				$this->location = (object)['id' => '0', 'name' => 'неизвестная локация'];
 		}
 		
+		/**
+		 * Get field in table 
+		 * @return mixed
+		 */
 		public function __get($k)
 		{
 			$arr = \Database\Cache::get('char_' . $this->id);
 			return (isset($arr[$k])) ? $arr[$k] : null;
 		}
 		
+		/**
+		 * Check if character is permitted in $perm
+		 * @param string $perm
+		 * @return boolean
+		 */
 		public function checkPermission($perm)
 		{
 			return (in_array('admin.all', $this->perms) or in_array((string)$perm, $this->perms));
 		}
 		
+		/**
+		 * Gives/takes permission to character
+		 * @param string $perm
+		 * @param boolean $status
+		 */
 		public function setPermission($perm, $status = true)
 		{
 			if(!is_bool($status)) {
@@ -61,6 +75,11 @@
 			return true; 
 		}
 		
+		/**
+		 * Teleports character to location
+		 * @param string $id
+		 * @return boolean
+		 */
 		public function setLocation($id)
 		{
 			$this->__set('location', $id);
@@ -76,6 +95,9 @@
 			}
 		}
 		
+		/**
+		 * Sets field in table
+		 */
 		public function __set($k, $v)
 		{
 			$arr = \Database\Cache::get('char_' . $this->id);
@@ -85,6 +107,10 @@
 			\Raptor\EventListener::invoke('changed_char', $k, $v); 
 		}
 		
+		/**
+		 * Checks if the character is online
+		 * @return boolean
+		 */
 		public function isOnline()
 		{
 			return ($this->online > time());
@@ -95,6 +121,10 @@
 			return (string)$this->id;
 		}
 		
+		/**
+		 * Set character status to online for 300 seconds
+		 * @return boolean
+		 */
 		public function setOnline()
 		{
 			if($this->isOnline()) {
@@ -109,7 +139,11 @@
 			\Raptor\EventListener::invoke('on_online', $this->id); 
 			return true;
 		}
-
+	
+		/**
+		 * Get list of character actions
+		 * @return array
+		 */
 		public static function getActions()
 		{
 			$test = \Database\Cache::get('char_act');
@@ -122,6 +156,10 @@
 			return $data;
 		}
 		
+		/**
+		 * Check all timers if they are timed-out
+		 * @return void
+		 */
 		public function checkTimers()
 		{
 			$list = \Database\Cache::get('timers_char_' . $this->id);
@@ -146,6 +184,10 @@
 			return true;
 		}
 		
+		/**
+		 * Gets list of active premium features or modifiers
+		 * @return array 
+		 */
 		public function getPremium()
 		{
 			$test = \Database\Cache::get('charbought_' . $this->id);
@@ -159,6 +201,11 @@
 			return is_array($data) ? $data : [];
 		}
 		
+		/**
+		 * Set premium feature of modifier
+		 * @param string $id
+		 * @param integer $timeout
+		 */
 		public function setPremium($id, $timeout)
 		{
 			\Database\Current::insert('char_bought', [
@@ -171,6 +218,12 @@
 			return true;
 		}
 		
+		/**
+		 * Starts a timer for character
+		 * @param string $id
+		 * @param integer $time
+		 * @param array $vars
+		 */
 		public function setTimer($id = 'noname', $time = 0, $vars = [])
 		{
 			$list = \Database\Cache::get('timers_char_' . $this->id);
@@ -184,6 +237,11 @@
 			return true;
 		}
 		
+		/**
+		 * Get list of online characters
+		 * @param boolean $as_obj
+		 * @return array
+		 */
 		public static function onlineList($as_obj = false)
 		{
 			$test = \Database\Cache::get('online_list');
@@ -213,6 +271,11 @@
 			}
 		}
 		
+		/**
+		 * Create new character
+		 * @param string $name
+		 * @param string $player 
+		 */
 		public static function create($name = null, $player = null)
 		{
 			if(!is_string($name) or !is_string($player))
@@ -249,6 +312,11 @@
 			return true;
 		}
 		
+		/**
+		 * Select character by query 
+		 * @param array $query
+		 * @return object|null
+		 */
 		public static function select($query)
 		{
 			$result = \Database\Current::getOne('characters', $query);
@@ -256,12 +324,20 @@
 			return (is_array($result)) ? (new Char($result['_id'])) : null;
 		}
 		
+		/**
+		 * Delete current character
+		 * @return integer
+		 */
 		public function delete()
 		{
 			\Database\Cache::delete('char_' . $this->id);
 			return \Database\Current::remove('characters', array('_id' => $this->id));
 		}
 		
+		/**
+		 * Add character data to cache from database
+		 * @return boolean
+		 */
 		public function precache()
 		{
 			$test = \Database\Cache::get('char_' . $this->id);

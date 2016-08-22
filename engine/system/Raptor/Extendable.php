@@ -7,8 +7,10 @@
 	
 	class Extendable
 	{
-		
-		protected $_functions = array(); // array with dynamic functions
+		/**
+		 * Array with dynamic functions
+		 */
+		protected $_functions = array();
 		
 		/** 
 		 * Creates dynamic function. Notice that class instance will always be given in last argument of function and you can't use $this variable
