@@ -1,0 +1,101 @@
+<?php
+	try 
+	{
+		if(isset($_GET['add'])) {
+			\Database\Current::insert('text_fields', array('variable' => $_GET['add'], 'value' => $_GET['val']));
+			\Database\Cache::delete('text_fields');
+			die('Надпись добавлена');
+		}
+		
+		if(isset($_POST['variable'])) {
+			$apply = \Database\Current::update('text_fields', array('variable' => $_POST['variable']), $_POST);
+			\Database\Cache::delete('text_fields');
+		}
+		
+		if(isset($_GET['edit'])) {
+			$params = \Database\Current::getOne('text_fields', array('variable' => $_GET['edit']));
+		} else {
+			$params = \Database\Current::getAll('text_fields', array());
+		}
+	}
+	catch(Exception $e) {
+		die("Неизвестная ошибка");
+	}
+?>
+			<?php if(isset($_GET['edit'])) { ?>
+				<?php if(isset($apply) and $apply >= 1) { ?>
+				<script>alert('Надпись изменена');</script>
+				<?php } ?>
+				<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3>Надпись<h3>
+							</div>
+							<!-- /.panel-heading -->
+							<div class="panel-body">
+								<div class="row"> 
+									<div class="col-lg-12">
+										<form role="form" method="POST" action="">
+											<div class="form-group">
+												<label for="disabledSelect">Переменная</label>
+												<input class="form-control" type="text" name="variable" value="<?=isset($params['variable']) ? $params['variable'] : '';?>">
+												<p class="help-block">Изменение кода может нарушить работу игры</p>
+											</div>
+											<div class="form-group">
+												<label for="disabledSelect">Значение</label>
+												<input class="form-control" type="text" name="value" value="<?=isset($params['value']) ? $params['value'] : '';?>">
+											</div>
+											<button type="submit" class="btn btn-default">Сохранить</button>
+										</form>
+									</div>
+									<!-- /.col-lg-6 (nested) -->
+								</div>
+							</div>
+							<!-- /.panel-body -->
+						</div>
+						<!-- /.panel -->
+					</div>
+					<!-- /.col-lg-12 -->
+			<?php } else { ?>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								Надписи и тексты [<a href='/admin/texts' onclick='return add_new();'>Создать</a>]
+							</div>
+							<!-- /.panel-heading -->
+							<div class="panel-body">
+										<table class="table table-condensed">
+											<thead>
+												<td><b>Код</b></td>
+												<td><b>Значение</b></td>
+												<td><b></b></td>
+											</thead>
+											<?php foreach($params as $v) { ?>
+											<tr>
+												<td><?=$v['variable'];?></td>
+												<td><font size=2><?=$v['value'];?></font></td>
+												<td><a onclick='return Admin.change_tab(this.href);' href='?edit=<?=$v['variable'];?>'><b>Изменить</b></a></td>
+											</tr>
+											<?php } ?>
+										</table>
+							</div>
+							<!-- /.panel-body -->
+						</div>
+						<!-- /.panel -->
+					</div>
+					<!-- /.col-lg-12 -->
+				</div>
+				
+				<script>
+					function add_new()
+					{
+						if(!confirm("Вы уверены?")) { return false; }
+						name = prompt("Придумайте код (на латыни, без пробелов)", "");
+						value = prompt("Укажите значение кода", "");
+						if(!name) return false;
+						$.get('/admin/texts', {'add': name, 'val': value}, function(data) { alert(data); window.location = '?'; });
+						return false;
+					}
+				</script>
+			<?php } ?>

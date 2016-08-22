@@ -127,3 +127,11 @@ CREATE TABLE IF NOT EXISTS `currency` (
   PRIMARY KEY (`_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 ALTER TABLE `currency` ADD `tag` VARCHAR(25) NOT NULL AFTER `_id`; 
+ALTER TABLE `currency` ADD UNIQUE(`tag`);
+
+CREATE TABLE IF NOT EXISTS `text_fields` (
+  `variable` varchar(80) NOT NULL,
+  `value` varchar(80) NOT NULL,
+  PRIMARY KEY (`variable`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+ALTER TABLE `text_fields` ADD `_id` INT NOT NULL DEFAULT '0' COMMENT 'unused' ; 
