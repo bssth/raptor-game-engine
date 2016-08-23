@@ -84,13 +84,13 @@
 												<td><b>Название</b></td>
 												<td><b></b></td>
 											</thead>
-											<?php foreach($params as $v) { ?>
+											<?php if(is_array($params)) { foreach($params as $v) { ?>
 											<tr>
 												<td><?=$v['_id'];?></td>
 												<td><img src='<?=$v['image'];?>'> <?=$v['name'];?></td>
 												<td><a onclick='return Admin.change_tab(this.href);' href='?edit=<?=$v['_id'];?>'><b>Изменить</b></a></td>
 											</tr>
-											<?php } ?>
+											<?php } } ?>
 										</table>
 							</div>
 							<!-- /.panel-body -->

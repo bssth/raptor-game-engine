@@ -108,7 +108,7 @@
 				}
 				$ans[] = $a;
 			}
-			return $ans;
+			return is_array($ans) ? $ans : [];
 		}
 		
 		public function insert($table, $array)
