@@ -40,10 +40,10 @@ CREATE TABLE IF NOT EXISTS `characters` (
   `status` varchar(80) NOT NULL DEFAULT '',
   PRIMARY KEY (`_id`),
   UNIQUE KEY `name` (`name`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
 
 INSERT INTO `characters` (`_id`, `name`, `player`, `info`, `inventory`, `money`, `online`, `ban`, `location`, `pos_x`, `pos_y`, `pos_z`, `vworld`, `perms`, `status`) VALUES
-(1, 'admin', '1', 'a:0:{}', 'a:0:{}', 'a:0:{}', 1471609179, 0, 1, 0, 0, 0, 0, 'a:1:{i:0;s:9:"admin.all";}', 'Administrator');
+(1, 'admin', '1', 'a:0:{}', 'a:0:{}', 'a:0:{}', 1471609179, 0, 0, 0, 0, 0, 0, 'a:1:{i:0;s:9:"admin.all";}', 'Administrator');
 
 CREATE TABLE IF NOT EXISTS `char_act` (
   `_id` varchar(80) NOT NULL,
