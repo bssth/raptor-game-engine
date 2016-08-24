@@ -62,7 +62,7 @@
 					</ul>
 				</div>
 				<div class="row" style='margin-top: 10px;'>
-					<?=$char->location->asHTML();?>
+					<?=($char->__get('location') == 0 ? '<h3>Вы не находитесь в какой-либо локации</h3>' : $char->location->asHTML());?>
 				</div>
 			</div>
 			<div class="col-md-3">
