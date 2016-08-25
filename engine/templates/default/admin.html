@@ -185,6 +185,10 @@
 			$.get(url, {'embed': 1}, function(data) {
 				$('#page-wrapper')[0].innerHTML = data;
 				history.pushState({}, 'Панель администратора', url);
+				
+				$.each(document.getElementById('page-wrapper').getElementsByTagName('script'), function(k, v) {
+					eval(v.innerHTML);
+				});
 			});
 			return false;
 		}

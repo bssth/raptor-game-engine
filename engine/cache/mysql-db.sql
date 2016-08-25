@@ -135,3 +135,11 @@ CREATE TABLE IF NOT EXISTS `text_fields` (
   PRIMARY KEY (`variable`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 ALTER TABLE `text_fields` ADD `_id` INT NOT NULL DEFAULT '0' COMMENT 'unused' ; 
+
+CREATE TABLE IF NOT EXISTS `inv_items` (
+  `_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(80) NOT NULL,
+  `vars` text NOT NULL,
+  `image` varchar(120) NOT NULL,
+  PRIMARY KEY (`_id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;

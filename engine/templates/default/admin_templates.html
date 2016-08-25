@@ -15,9 +15,8 @@
 	function set_script()
 	{
 		if(confirm("Вы уверены? Вы точно проверили синтаксис и прочее?"))
-		{
 			$.post('/admin/templates', {'tpl': '<?=$_REQUEST['edit'];?>', 'set': $('#code_sc')[0].value}, function(data) { alert(data); });
-		}
+
 		return false;
 	}
 	
