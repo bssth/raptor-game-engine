@@ -62,7 +62,7 @@
 											</div> 
 											<div class="form-group"> 
 												<label>Параметры локации</label>
-												<input class="form-control" name="vars" value="<?=isset($params['vars']) ? $params['vars'] : '';?>">
+												<input class="form-control" name="vars" value="<?=isset($params['vars']) ? str_replace('"', "'", $params['vars']) : '';?>">
 												<p class="help-block">Для каждого типа локации - свой формат параметров. В типе "картинка" - JSON объект, где ключ "image" - картинка локации</p>
 											</div> 
 											<button type="submit" class="btn btn-default">Сохранить</button>
