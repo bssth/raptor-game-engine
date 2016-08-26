@@ -143,3 +143,7 @@ CREATE TABLE IF NOT EXISTS `inv_items` (
   `image` varchar(120) NOT NULL,
   PRIMARY KEY (`_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+ALTER TABLE `char_act` ADD `code` VARCHAR(25) NOT NULL AFTER `_id`, ADD UNIQUE (`code`) ; 
+UPDATE `char_act` SET `code` = 'test' WHERE `_id` = 'test'; 
+ALTER TABLE `char_act` CHANGE `_id` `_id` INT NOT NULL AUTO_INCREMENT; 

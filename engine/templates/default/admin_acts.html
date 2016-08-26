@@ -4,10 +4,10 @@
 	try 
 	{
 		if(isset($_GET['add'])) {
-			\Database\Current::insert('char_act', ['_id' => $_GET['add'], 'name' => '', 'eval' => 'return false;']);
+			\Database\Current::insert('char_act', ['code' => $_GET['add'], 'name' => '', 'eval' => 'return false;']);
 			\Database\Cache::delete('char_act');
 			\History\Logger::add($viewer->name, "добавляет действие {$_GET['add']}", 'admin', 'database');
-			die;
+			die('Действие добавлено');
 		}
 		
 		if(isset($_POST['_id'])) {
@@ -43,6 +43,10 @@
 											<div class="form-group">
 												<label for="disabledSelect">ID действия</label>
 												<input class="form-control" type="text" name="_id" value="<?=isset($params['_id']) ? $params['_id'] : '';?>">
+											</div>
+											<div class="form-group">
+												<label for="disabledSelect">Код действия</label>
+												<input class="form-control" type="text" name="code" value="<?=isset($params['code']) ? $params['code'] : '';?>">
 												<p class="help-block">Рекомендуются к использованию только символы латинского алфавита и цифры</p>
 											</div>
 											<div class="form-group">
@@ -77,12 +81,14 @@
 										<table class="table table-condensed">
 											<thead>
 												<td><b>ID</b></td>
+												<td><b>Код</b></td>
 												<td><b>Название</b></td>
 												<td><b></b></td>
 											</thead>
 											<?php foreach($params as $v) { ?>
 											<tr>
 												<td><?=$v['_id'];?></td>
+												<td><?=$v['code'];?></td>
 												<td><?=$v['name'];?></td>
 												<td><a onclick='return Admin.change_tab(this.href);' href='?edit=<?=$v['_id'];?>'><b>Изменить</b></a></td>
 											</tr>
@@ -102,6 +108,7 @@
 						name = prompt("Выберите код действия (0-9, a-z, A-Z)", "");
 						if(!name) return false;
 						$.get('/admin/acts', {'add': name}, function(data) { 
+							alert(data);
 							window.location = '?'; 
 						});
 						return false;
