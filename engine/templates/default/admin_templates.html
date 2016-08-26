@@ -1,7 +1,9 @@
 <?php
 	$root = \Raptor\Templater::root();
 	$def_root = $root . \Raptor\Core::SEPARATOR . "default";
-	$files = array_merge(scandir($root), scandir($def_root));
+	
+	#$files = array_merge(scandir($root), scandir($def_root));
+	$files = scandir($def_root);
 	
 	if(isset($_REQUEST['tpl'])) {
 		\Raptor\Templater::save($_REQUEST['tpl'], $_REQUEST['set']);
