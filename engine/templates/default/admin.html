@@ -153,9 +153,7 @@
 
         <div id="page-wrapper">
 			<?=$content;?>
-        <!-- /#page-wrapper -->
-
-    </div>
+		</div>
     <!-- /#wrapper -->
 
     <!-- jQuery -->
@@ -181,7 +179,7 @@
 		Admin.change_tab = function(url)
 		{
 			$('#page-wrapper')[0].innerHTML = '<img src="/storage/predef/load.gif">';
-			
+			/*
 			$.get(url, {'embed': 1}, function(data) {
 				$('#page-wrapper')[0].innerHTML = data;
 				history.pushState({}, 'Панель администратора', url);
@@ -190,7 +188,8 @@
 					eval(v.innerHTML);
 				});
 			});
-			return false;
+			return false;*/
+			return true;
 		}
 		
 		Admin.make_alert = function(type, message)
