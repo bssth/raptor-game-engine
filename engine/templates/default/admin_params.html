@@ -49,6 +49,11 @@
 												<p class="help-block">Изменение кода параметра может нарушить работу игры</p>
 											</div>
 											<div class="form-group">
+												<label>Описание параметра</label>
+												<input class="form-control" name="desc" value="<?=isset($params['desc']) ? $params['desc'] : '';?>">
+												<p class="help-block">Данное название по умолчанию отображается в профиле персонажей и админке</p>
+											</div>
+											<div class="form-group">
 												<label>Название параметра</label>
 												<input class="form-control" name="name" value="<?=isset($params['name']) ? $params['name'] : '';?>">
 												<p class="help-block">Данное название по умолчанию отображается в профиле персонажей и админке</p>

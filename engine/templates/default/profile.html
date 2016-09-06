@@ -83,7 +83,7 @@
 					<?php $params = $char->param->getAllParams(); 
 					foreach($params['values'] as $k => $v) { ?>
 					<tr>
-						<td><b><?=$params['list'][$k]['name'];?></b></td>
+						<td><b><?=$params['list'][$k]['name'];?></b><br><font size=1><?=$params['list'][$k]['desc'];?></font></td>
 						<td><?=$v;?></td>
 					</tr>
 					<?php } ?>

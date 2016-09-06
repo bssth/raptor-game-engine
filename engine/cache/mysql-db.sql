@@ -1,3 +1,7 @@
+--
+-- VERSION 1.0
+--
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
 SET NAMES utf8;
@@ -147,3 +151,8 @@ CREATE TABLE IF NOT EXISTS `inv_items` (
 ALTER TABLE `char_act` ADD `code` VARCHAR(25) NOT NULL AFTER `_id`, ADD UNIQUE (`code`) ; 
 UPDATE `char_act` SET `code` = 'test' WHERE `_id` = 'test'; 
 ALTER TABLE `char_act` CHANGE `_id` `_id` INT NOT NULL AUTO_INCREMENT; 
+
+--
+-- VERSION 1.1
+--
+ALTER TABLE `char_params` ADD `desc` VARCHAR(180) NOT NULL DEFAULT ' ' AFTER `name`; 
