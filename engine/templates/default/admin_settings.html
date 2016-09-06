@@ -1,1 +1,51 @@
-<h3>Раздел на стадии разработки</h3>
+				<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								<h3>Настройки игры<h3>
+							</div>
+							<!-- /.panel-heading -->
+							<div class="panel-body">
+								<div class="row"> 
+									<div class="col-lg-12">
+										<form role="form" method="POST" action="">
+											<div class="form-group">
+												<label for="disabledSelect">Корень игры</label>
+												<input class="form-control" type="text" disabled="disabled" value="<?=\Raptor\Config::ROOT;?>">
+												<p class="help-block">Директория <b>engine</b> текущей игры. Данное свойство можно изменить лишь напрямую в конфигурации</p>
+											</div>
+											<div class="form-group">
+												<label for="disabledSelect">Директория игры по отношению домена</label>
+												<input class="form-control" type="text" disabled="disabled" value="<?=\Raptor\Config::WEB_ROOT;?>">
+												<p class="help-block">Данное свойство можно изменить лишь напрямую в конфигурации</p>
+											</div>
+											<div class="form-group">
+												<label for="disabledSelect">Режим отладки</label>
+												<input class="form-control" type="text" disabled="disabled" value="<?=(\Raptor\Config::debug == true) ? 'Активен' : 'Отключен';?>">
+												<p class="help-block">Низкоуровневый доступ к движку. Данное свойство можно изменить лишь напрямую в конфигурации</p>
+											</div>
+											<div class="form-group">
+												<label for="disabledSelect">Название игры</label>
+												<input class="form-control" type="text" disabled="disabled" value="<?=\Raptor\Config::game_title;?>">
+												<p class="help-block">Для самой игры и каталога. Данное свойство можно изменить лишь напрямую в конфигурации</p>
+											</div>
+											<div class="form-group">
+												<label for="disabledSelect">Тип базы данных</label>
+												<input class="form-control" type="text" disabled="disabled" value="<?=\Raptor\Config::db_type;?>">
+												<p class="help-block">Данное свойство можно изменить лишь напрямую в конфигурации</p>
+											</div>
+											<div class="form-group">
+												<label for="disabledSelect">фывфыв</label>
+												<input class="form-control" type="text" name="" value="<?=isset($params['']) ? $params[''] : '';?>">
+												<p class="help-block">ццыы</p>
+											</div>
+											<button type="submit" class="btn btn-default">Сохранить</button>
+										</form>
+									</div>
+									<!-- /.col-lg-6 (nested) -->
+								</div>
+							</div>
+							<!-- /.panel-body -->
+						</div>
+						<!-- /.panel -->
+					</div>
+					<!-- /.col-lg-12 -->
