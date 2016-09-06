@@ -7,6 +7,9 @@ Game.chat_limit = 13; // count of messages after previous will be deleted
 $( document ).ready(function() {
     Game.init_chat();
 	Game.online_polling();
+	
+	if(typeof Notification != 'undefined')
+		Notification.requestPermission();
 });
 
 Game.modal = function(url) {
@@ -20,6 +23,14 @@ Game.modal = function(url) {
 	{
 		return false;
 	}
+}
+
+Game.get_notify = function(n_title = "Уведомление", n_body, n_tag = "default", n_icon = "/favicon.ico") {
+	return (new Notification(n_title, {
+		tag: n_tag,
+		body: n_body,
+		icon: n_icon
+	}));
 }
 
 Game.init_chat = function()
@@ -98,10 +109,10 @@ Game.get_message = function(author, message)
 	if($('#chat-messages').length >= 1)
 	{
 		$('#chat-messages')[0].innerHTML += Game.cache.chat_message.replace('%NICK%', author).replace('%MESSAGE%', message);
+		
 		if( $('#chat-messages')[0].children.length >= Game.chat_limit )
-		{
 			$('#chat-messages')[0].children[0].remove();
-		}
+		
 		return true;
 	}
 	return false;
