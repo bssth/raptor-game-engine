@@ -1,1 +1,62 @@
-<h3>Раздел на стадии разработки</h3>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="panel panel-default">
+							<div class="panel-heading">
+								Движок
+							</div>
+							<!-- /.panel-heading -->
+							<div class="panel-body">
+										<table class="table table-condensed">
+											<tr>
+												<td><b>Актуальность раздела "Движок"</b></td>
+												<td><?=date('d.m.Y H:i', filemtime(__FILE__));?></td>
+											</tr>
+											<tr>
+												<td><b>Режим работы</b></td>
+												<td><?=(\Raptor\Config::debug == true) ? 'Отладка' : 'Стандартный';?></td>
+											</tr>
+											<tr>
+												<td><b>Последний раз конфигурация обновлялась...</b></td>
+												<td><?=date('d.m.Y H:i', filemtime(\Raptor\Config::ROOT . '/config.php'));?></td>
+											</tr>
+											<tr>
+												<td><b>Версия ядра</b></td>
+												<td><i><?=filemtime(\Raptor\Config::ROOT . '/system/Raptor/Core.php');?></i><br><font size=1><?=date('d.m.Y H:i', filemtime(\Raptor\Config::ROOT . '/system/Raptor/Core.php'));?></font></td>
+											</tr>
+											<tr>
+												<td><b>Конфигурация</b></td>
+												<td><?php var_dump((new ReflectionClass(new \Raptor\Config))->getConstants()); ?></td>
+											</tr>
+											<tr>
+												<td><b>Модули</b></td>
+												<td><?php var_dump(scandir(\Raptor\Config::ROOT . \Raptor\Core::SEPARATOR . \Raptor\Core::MODS . \Raptor\Core::SEPARATOR)); ?></td>
+											</tr>
+											
+											<tr>
+												<td><b></b></td>
+												<td></td>
+											</tr>
+											<tr>
+												<td><b></b></td>
+												<td></td>
+											</tr>
+											<tr>
+												<td><b></b></td>
+												<td></td>
+											</tr>
+											<tr>
+												<td><b></b></td>
+												<td></td>
+											</tr>
+											<tr>
+												<td><b></b></td>
+												<td></td>
+											</tr>
+										</table>
+							</div>
+							<!-- /.panel-body -->
+						</div>
+						<!-- /.panel -->
+					</div>
+					<!-- /.col-lg-12 -->
+				</div>
