@@ -170,8 +170,12 @@
 			
 			foreach(scandir($dir) as $f)
 			{
-				if($f == '.' or $f == '..') { continue; }
-
+				if($f == '.' or $f == '..') 
+					continue;
+				
+				if(file_exists($dir . self::SEPARATOR . $f . self::SEPARATOR . 'disable.lock'))
+					continue;
+				
 				if(!file_exists($dir . self::SEPARATOR . $f . self::SEPARATOR . str_replace('\\', '/', $class) . self::EXT)) { continue; }
 				
 				require_once($dir . self::SEPARATOR . $f . self::SEPARATOR . str_replace('\\', '/', $class) . self::EXT);

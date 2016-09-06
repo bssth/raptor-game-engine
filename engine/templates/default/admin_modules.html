@@ -1,1 +1,37 @@
-<h3>Раздел на стадии разработки</h3>
+<?php
+	$dir = \Raptor\Config::ROOT . \Raptor\Core::SEPARATOR . \Raptor\Core::MODS . \Raptor\Core::SEPARATOR;
+?>
+<div class="row">
+			<h4>Для деактивации модуля создайте в его директории файл <b>disable.lock</b></h4>
+			<table class="table">
+				<thead>
+					<tr>
+						<th>
+							Модуль
+						</th>
+						<th>
+							
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<?php 
+						foreach(scandir($dir) as $f)
+						{
+							if($f == '.' or $f == '..') 
+								continue;
+						?>
+							<tr>
+								<td>
+									<b><?=$f;?></b>
+								</td>
+								<td>
+									<?=(file_exists($dir . \Raptor\Core::SEPARATOR . $f . \Raptor\Core::SEPARATOR . 'disable.lock')) ? 'Деактивирован' : '<b>Активен</b>';?>
+								</td>
+							</tr>
+						<?php
+						}
+					?>
+				</tbody>
+			</table>
+</div>
