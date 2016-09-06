@@ -129,26 +129,28 @@
 		 */
 		public static function web_init()
 		{
-			$uri = (isset($_SERVER['REQUEST_URI']) and strlen($_SERVER['REQUEST_URI']) > 1) ? substr($_SERVER['REQUEST_URI'], 1) : 'index/index';
-
-			if(strpos($uri, '?') != false and strpos($uri, '?') >= 0) { 
+			if(!isset($_SERVER['REQUEST_URI']))
+				self::web_error(403);
+			
+			$uri = (isset($_SERVER['REQUEST_URI']) and strlen($_SERVER['REQUEST_URI']) > 1) ? $_SERVER['REQUEST_URI'] : '/index/index';
+			
+			if(strstr($uri, \Raptor\Config::WEB_ROOT))
+				$uri = substr($uri, strlen(\Raptor\Config::WEB_ROOT), strlen($uri));
+			
+			if(strpos($uri, '?') != false and strpos($uri, '?') >= 0)
 				$uri = trim(strstr($uri, '?', true), '?'); 
-			}
 			
 			$route = explode('/', $uri);
-			
 			$driver = '\\Controller\\' . ucfirst(isset($route[0]) ? $route[0] : 'Index');
 			$action = 'action' . ucfirst(isset($route[1]) ? $route[1] : 'Index');
 			
-			if(!class_exists($driver)) {
+			if(!class_exists($driver))
 				self::web_error(404);
-			}
 			
 			$class = new $driver;
 			
-			if(!method_exists($class, $action) and !method_exists($class, '__call')) {
+			if(!method_exists($class, $action) and !method_exists($class, '__call'))
 				self::web_error(404);
-			}
 			
 			print( is_string($result = $class->$action()) ? $result : '500 Internal Server Error' );
 		}

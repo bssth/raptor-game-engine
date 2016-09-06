@@ -5,28 +5,24 @@
 	class Config
 	{
 		
-		const ROOT = __DIR__; // DO NOT TOUCH
-		const debug = true; // show error reportings
+		const ROOT = __DIR__; // you can change it if you have problem with directories
+		const WEB_ROOT = '/'; // in-browser directory where game is placed
+		const debug = true; // show error reportings	
 		
-		// Game config
 		const game_title = 'My New Game';
 		
-		// Database
 		const db_type = 'Mysql'; // current database type (may be Mongo, Mysql)
 		const db_host = 'localhost';
 		const db_database = 'raptor';
 		const db_user = 'root';
 		const db_password = '';
 		
-		// Socket IO
 		const secret_key = ''; // super secret password for socket.io server controlling
 		const rsync_server = '127.0.0.1:8080'; // Raptor Sync Server ip and port
 		const rchat_server = '127.0.0.1:8581'; // Raptor Chat Server ip and port
 		
-		// Cache
 		// const cache_type = 'Memcache'; -- Is not available now, using only memcache
 		const cache_host = '127.0.0.1';
 		const cache_port = 11211;
 		// const cache_prefix = 'raptor_'; // prefix will be added to all cache variable names -- Is not available now
-		
 	}
