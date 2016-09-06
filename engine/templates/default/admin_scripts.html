@@ -14,7 +14,7 @@
 	{
 		if(confirm("Вы уверены? Вы точно проверили синтаксис и прочее?"))
 		{
-			$.post('/admin/scripts', {'code': $('#code_sc')[0].value}, function(data) { alert(data); });
+			$.post('<?=\Raptor\Config::WEB_ROOT;?>admin/scripts', {'code': $('#code_sc')[0].value}, function(data) { alert(data); });
 		}
 		return false;
 	}

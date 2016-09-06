@@ -67,26 +67,26 @@
 					value = prompt("Введите новое значение для параметра " + key);
 					if(!value) return false;
 					if(!confirm("Вы уверены, что хотите изменить параметр")) return false;
-					$.post('/admin/char', {'id': window.charid, 'param': key, 'value': value}, function(data) { alert(data); });
+					$.post('<?=\Raptor\Config::WEB_ROOT;?>admin/char', {'id': window.charid, 'param': key, 'value': value}, function(data) { alert(data); });
 					return true;
 				}
 				
 				function add_perm(perm)
 				{
 					if(!confirm("Вы уверены, что хотите повысить права доступа?")) return false;
-					$.post('/admin/char', {'id': window.charid, 'perm': perm, 'value': '1'}, function(data) { alert(data); });
+					$.post('<?=\Raptor\Config::WEB_ROOT;?>admin/char', {'id': window.charid, 'perm': perm, 'value': '1'}, function(data) { alert(data); });
 				}
 				
 				function remove_perm(perm)
 				{
 					if(!confirm("Вы уверены, что хотите понизить права доступа?")) return false;
-					$.post('/admin/char', {'id': window.charid, 'perm': perm, 'value': '0'}, function(data) { alert(data); });
+					$.post('<?=\Raptor\Config::WEB_ROOT;?>admin/char', {'id': window.charid, 'perm': perm, 'value': '0'}, function(data) { alert(data); });
 				}
 				
 				function change_data(key, value)
 				{
 					if(!key || !value) return false;
-					$.post('/admin/char', {'id': window.charid, 'key': key, 'value': value}, function(data) { alert(data); });
+					$.post('<?=\Raptor\Config::WEB_ROOT;?>admin/char', {'id': window.charid, 'key': key, 'value': value}, function(data) { alert(data); });
 				}
 			</script>
 			<div class="row">
@@ -214,7 +214,7 @@
 										</tr>
 										<tr>
 											<td><b>Игрок</b></td>
-											<td><a href='/admin/player?id=<?=$char->player;?>'><?=(new \Auth\Player($char->player))->login;?></a></td>
+											<td><a href='<?=\Raptor\Config::WEB_ROOT;?>admin/player?id=<?=$char->player;?>'><?=(new \Auth\Player($char->player))->login;?></a></td>
 											<td>[<a href='#' onclick="change_request('player', 'Введите ID нового игрока-владельца');">Передать</a>]</td>
 										</tr>
 										<tr>

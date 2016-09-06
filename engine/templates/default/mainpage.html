@@ -8,8 +8,8 @@
     <meta name="description" content="">
     <meta name="author" content="">
     <title><?=\Raptor\Config::game_title;?></title>
-    <link href="/storage/predef/bootstrap.min.css" rel="stylesheet">
-    <link href="/storage/predef/index.css" rel="stylesheet">
+    <link href="<?=\Raptor\Config::WEB_ROOT;?>storage/predef/bootstrap.min.css" rel="stylesheet">
+    <link href="<?=\Raptor\Config::WEB_ROOT;?>storage/predef/index.css" rel="stylesheet">
 	<script>
 		<?=($error === true) ? "alert('Неверный логин или пароль');" : ''?>
 		<?=(isset($_GET['ok']) ? "alert('Вы успешно зарегистрировались');" : '');?>
@@ -133,9 +133,9 @@
 		</div>
 	</div>
 
-	<script src="/storage/predef/jquery.js"></script>
-    <script src="/storage/predef/bootstrap.min.js"></script>
-	<script type="text/javascript" src="/storage/predef/mainpage.js"></script>
+	<script src="<?=\Raptor\Config::WEB_ROOT;?>storage/predef/jquery.js"></script>
+    <script src="<?=\Raptor\Config::WEB_ROOT;?>storage/predef/bootstrap.min.js"></script>
+	<script type="text/javascript" src="<?=\Raptor\Config::WEB_ROOT;?>storage/predef/mainpage.js"></script>
 	<script type="text/javascript" src="http://vk.com/js/api/share.js?90" charset="windows-1251"></script>
 	<script type="text/javascript" src="http://vk.com/js/api/openapi.js?115"></script>
 </body>

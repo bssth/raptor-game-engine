@@ -81,7 +81,7 @@
 					<div class="col-lg-12">
 						<div class="panel panel-default">
 							<div class="panel-heading">
-								Локации [<a href='/admin/locations' onclick='return add_new();'>Создать</a>]
+								Локации [<a href='<?=\Raptor\Config::WEB_ROOT;?>admin/locations' onclick='return add_new();'>Создать</a>]
 							</div>
 							<!-- /.panel-heading -->
 							<div class="panel-body">
@@ -113,7 +113,7 @@
 						if(!confirm("Вы уверены?")) { return false; }
 						name = prompt("Выберите название локации", "");
 						if(!name) return false;
-						$.get('/admin/locations', {'add': name}, function(data) { window.location = '?'; });
+						$.get('<?=\Raptor\Config::WEB_ROOT;?>admin/locations', {'add': name}, function(data) { window.location = '?'; });
 						return false;
 					}
 				</script>

@@ -107,7 +107,7 @@
                     <ul class="dropdown-menu dropdown-alerts">
 						<?php $c = 0; foreach(\History\Logger::getCat('admin') as $l) { $c++ ?> 
 						<li>
-                            <a onclick='return Admin.change_tab(this.href);' href="/admin/logs">
+                            <a onclick='return Admin.change_tab(this.href);' href="<?=\Raptor\Config::WEB_ROOT;?>admin/logs">
                                 <div>
                                     <i class="fa fa-<?=$l['icon'];?> fa-fw"></i> <b><?=$l['char'];?></b> <?=$l['desc'];?>
                                 </div>
@@ -123,8 +123,8 @@
                         <i class="fa fa-user fa-fw"></i> <?=$char->name;?> <i class="fa fa-caret-down"></i>
                     </a>
                     <ul class="dropdown-menu dropdown-user">
-						<li><a onclick='return Admin.change_tab(this.href);' href="/admin/char?id=<?=$char->_id;?>"><i class="fa fa-male fa-fw"></i> Мой персонаж</a>
-						<li><a onclick='return Admin.change_tab(this.href);' href="/admin/player?id=<?=$char->player;?>"><i class="fa fa-male fa-fw"></i> Мой игрок</a>
+						<li><a onclick='return Admin.change_tab(this.href);' href="<?=\Raptor\Config::WEB_ROOT;?>admin/char?id=<?=$char->_id;?>"><i class="fa fa-male fa-fw"></i> Мой персонаж</a>
+						<li><a onclick='return Admin.change_tab(this.href);' href="<?=\Raptor\Config::WEB_ROOT;?>admin/player?id=<?=$char->player;?>"><i class="fa fa-male fa-fw"></i> Мой игрок</a>
 						<li><a target="_blank" href="/p"><i class="fa fa-external-link fa-fw"></i> В игру</a>
                         <li class="divider"></li>
                         <li><a href="/auth/logout"><i class="fa fa-sign-out fa-fw"></i> Выход</a>

@@ -107,7 +107,7 @@
 					{
 						name = prompt("Выберите код действия (0-9, a-z, A-Z)", "");
 						if(!name) return false;
-						$.get('/admin/acts', {'add': name}, function(data) { 
+						$.get('<?=\Raptor\Config::WEB_ROOT;?>admin/acts', {'add': name}, function(data) { 
 							alert(data);
 							window.location = '?'; 
 						});

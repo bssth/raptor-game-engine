@@ -10,7 +10,7 @@
     <meta name="description" content="RAPTOR Game Engine game">
     <meta name="author" content="RAPTOR Game Engine">
 
-    <link href="/storage/predef/bootstrap.min.css" rel="stylesheet">
+    <link href="<?=\Raptor\Config::WEB_ROOT;?>storage/predef/bootstrap.min.css" rel="stylesheet">
 
   </head>
   <body>
@@ -77,7 +77,7 @@
 									<div class="media-body">
 										<div class="media">
 											<a class="pull-left" href="#">
-												<img class="media-object img-circle" style="max-height:40px;" src="/storage/predef/avatar.png" />
+												<img class="media-object img-circle" style="max-height:40px;" src="<?=\Raptor\Config::WEB_ROOT;?>storage/predef/avatar.png" />
 											</a>
 											<div class="media-body" >
 												<a type="button" id="charact_<?=$ch->id;?>" role="button" class="dropdown-toggle" data-toggle="dropdown" href="#"><?=$ch->name;?> <b class="caret"></b></a>
@@ -115,8 +115,8 @@
 		</div>
 	</div>
 
-  <script src="/storage/predef/jquery.min.js"></script>
-  <script src="/storage/predef/bootstrap.min.js"></script>
-  <script src="/storage/predef/raptorge.js"></script>
+  <script src="<?=\Raptor\Config::WEB_ROOT;?>storage/predef/jquery.min.js"></script>
+  <script src="<?=\Raptor\Config::WEB_ROOT;?>storage/predef/bootstrap.min.js"></script>
+  <script src="<?=\Raptor\Config::WEB_ROOT;?>storage/predef/raptorge.js"></script>
   </body>
 </html>

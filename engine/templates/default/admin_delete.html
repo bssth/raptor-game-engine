@@ -31,7 +31,7 @@
 				function delete_char()
 				{
 					if(!confirm("Вы уверены, что хотите удалить " + $('#login-find')[0].value + "?\nЭто действие невозможно отменить. Если что-то закреплено за этим персонажем через сторонние модули, оно может быть не удалено и возникнут различные ошибки")) return false;
-					$.get('/admin/delete', {'login': $('#login-find')[0].value}, function(data) {
+					$.get('<?=\Raptor\Config::WEB_ROOT;?>admin/delete', {'login': $('#login-find')[0].value}, function(data) {
 						alert(data);
 					});
 					return false;
