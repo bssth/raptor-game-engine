@@ -43,7 +43,7 @@
 			session_write_close(); // stop session writing
 			
 			session_start();
-			set_time_limit(15);
+			//set_time_limit(15);
 			
 			require_once(\Raptor\Config::ROOT . self::SEPARATOR . self::CACHE . self::SEPARATOR . 'scripts.php');
 			\Raptor\EventListener::invoke('ready'); // invoke event when script is ready

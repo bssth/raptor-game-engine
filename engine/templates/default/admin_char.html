@@ -227,11 +227,6 @@
 											<td><?=($char->isOnline() ? '<b>Онлайн</b> (осталось '.($char->online - time()).' секунд)' : '<b>Оффлайн</b> (был онлайн '.round((time()-$char->online)/86400).' дней назад)')?></td>
 											<td>[<a href='#' onclick="change_request('online', 'Введите UNIX время');">Изменить</a>]</td>
 										</tr>
-										<tr>
-											<td><b>Дата разбана</b></td>
-											<td><?=date('d.m.Y H:i', $char->ban);?></td>
-											<td>[<a href='#' onclick="change_ban();">(За/раз)блокировать</a>]</td>
-										</tr>
 										<tr><td></td><td>&nbsp;</td><td></td></tr>
 										<?php foreach($params['values'] as $k => $v) { ?>
 											<tr>
