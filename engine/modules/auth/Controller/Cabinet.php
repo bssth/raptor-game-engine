@@ -22,6 +22,30 @@
 			return (new \Raptor\Templater('cabinet'))->set('player', $player)->set('chars', $chars)->set('error', isset($_REQUEST['error']))->render();
 		}
 		
+		public function actionPassword()
+		{
+			if(!isset($_SESSION['id'])) {
+				header('Location: /index');
+				return '';
+			}
+			if(isset($_SESSION['cid'])) {
+				header('Location: /p');
+				return '';
+			}
+			if(!isset($_REQUEST['new'])) {
+				return 'Вы не указали пароль';
+			}
+			
+			$player = new \Auth\Player($_SESSION['id']);
+			try {
+				$player->password = sha1($_REQUEST['new']);
+				return 'Пароль изменен';
+			}
+			catch(\Raptor\Exception $e) {
+				return 'Возникла ошибка';
+			}
+		}
+		
 		public function actionSelect()
 		{
 			if(!isset($_SESSION['id'])) {

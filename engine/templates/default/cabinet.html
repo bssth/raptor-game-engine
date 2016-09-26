@@ -78,6 +78,7 @@
                 <h2>Привет, <?=$player->login;?></h2>
                 <p>Начните играть прямо сейчас, или ознакомьтесь со всеми функциями личного кабинета для более комфортной игры!</p>
                 <button type="button" class="btn btn-success" data-toggle="modal" data-target=".bs-example-modal-lg"><i class="glyphicon glyphicon-plus-sign"></i> Новый персонаж (у вас <?=count($chars);?>)</button>
+				<button type="button" onclick="return new_password()" class="btn btn-success">Сменить пароль</button>
                 <table class="table table-striped">
                     <thead>
                         <tr>
@@ -111,5 +112,16 @@
         <!-- Placed at the end of the document so the pages load faster -->
         <script src="<?=\Raptor\Config::WEB_ROOT;?>storage/predef/jquery-1.11.0.js"></script>
         <script src="<?=\Raptor\Config::WEB_ROOT;?>storage/predef/bootstrap.min.js"></script>
+		<script>
+			function new_password()
+			{
+				password = prompt('Придумайте новый пароль');
+				if(!password) return;
+				$.get('<?=\Raptor\Config::WEB_ROOT;?>cabinet/password', {'new': 'admin'}, function(data) {
+					alert(data);
+				});
+				return false;
+			}
+		</script>
     </body>
 </html>
