@@ -153,6 +153,18 @@ UPDATE `char_act` SET `code` = 'test' WHERE `_id` = 'test';
 ALTER TABLE `char_act` CHANGE `_id` `_id` INT NOT NULL AUTO_INCREMENT; 
 
 --
--- VERSION 1.1
+-- VERSION 1.0.5
 --
 ALTER TABLE `char_params` ADD `desc` VARCHAR(180) NOT NULL DEFAULT ' ' AFTER `name`; 
+
+CREATE TABLE IF NOT EXISTS `unitpay_payments` (
+  `_id` int(10) NOT NULL AUTO_INCREMENT,
+  `unitpayId` varchar(255) NOT NULL,
+  `account` varchar(255) NOT NULL,
+  `sum` float NOT NULL,
+  `itemsCount` int(11) NOT NULL DEFAULT '1',
+  `dateCreate` datetime NOT NULL,
+  `dateComplete` datetime DEFAULT NULL,
+  `status` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;

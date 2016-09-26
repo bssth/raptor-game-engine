@@ -20,6 +20,9 @@
 					<div class='col-md-6'>
 							<img src='<?=$v['image'];?>'> <br> <b><?=$v['name'];?></b>
 							<p>У вас <b><?=$char->money->{$v['tag']};?></b></p>
+							<?php if(\Raptor\Config::UP_CURRENCY == $v['_id']) { ?>
+								<p><a href='#' onclick='return buy_currency("<?=$v['name'];?>")'>Купить <?=$v['name'];?></a></p>
+							<?php } ?>
 							<p><font size=1><?=$v['desc'];?></font></p>
 					</div>
 					<?php } ?>
@@ -28,5 +31,14 @@
     <script src="<?=\Raptor\Config::WEB_ROOT;?>storage/predef/jquery.min.js"></script>
     <script src="<?=\Raptor\Config::WEB_ROOT;?>storage/predef/bootstrap.min.js"></script>
     <script src="<?=\Raptor\Config::WEB_ROOT;?>storage/js/scripts.js"></script>
+	<script>
+		function buy_currency(label)
+		{
+			count = prompt('Сколько единиц валюты купить?');
+			if(!count) return;
+			window.location = 'https://unitpay.ru/pay/<?=\Raptor\Config::UP_PUBLIC_KEY;?>?sum='+count+'&account=<?=$_SESSION['cid'];?>&desc=Покупка+' + label;
+			return false;
+		}
+	</script>
   </body>
 </html>

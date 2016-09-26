@@ -4,25 +4,43 @@
 	
 	class Config
 	{
-		
+		/**
+		 * Basic game Settings
+		 */
 		const ROOT = __DIR__; // you can change it if you have problem with directories
 		const WEB_ROOT = '/'; // in-browser directory where game is placed
 		const debug = true; // show error reportings	
-		
 		const game_title = 'My New Game';
 		
+		/**
+		 * Database settings
+		 */
 		const db_type = 'Mysql'; // current database type (may be Mongo, Mysql)
 		const db_host = 'localhost';
 		const db_database = 'raptor';
 		const db_user = 'root';
 		const db_password = '';
 		
+		/**
+		 * Node.JS implementation
+		 */
 		const secret_key = ''; // super secret password for socket.io server controlling
 		const rsync_server = '127.0.0.1:8080'; // Raptor Sync Server ip and port
 		const rchat_server = '127.0.0.1:8581'; // Raptor Chat Server ip and port
 		
+		/**
+		 * Cache settings
+		 */
 		// const cache_type = 'Memcache'; -- Is not available now, using only memcache
 		const cache_host = '127.0.0.1';
 		const cache_port = 11211;
 		// const cache_prefix = 'raptor_'; // prefix will be added to all cache variable names -- Is not available now
+		
+		/**
+		 * Unitpay settings (if needed)
+		 */
+		const UP_PUBLIC_KEY = ''; // Ваш публичный ключ
+		const UP_SECRET_KEY = ''; // Ваш секретный ключ (из настроек проекта в личном кабинете unitpay.ru )
+		const UP_ITEM_PRICE = 10; // Стоимость единицы валюты в руб.
+		const UP_CURRENCY = 1; // ID нужной валюты
 	}
