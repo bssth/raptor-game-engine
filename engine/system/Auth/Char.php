@@ -309,6 +309,8 @@
 				'perms' => array()
 			));
 			
+			\Raptor\EventListener::invoke('character_creation', $name);
+			
 			return true;
 		}
 		

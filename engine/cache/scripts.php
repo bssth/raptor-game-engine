@@ -30,6 +30,12 @@
 		// $login - логин игрока. По нему можно найти его в БД
 	});
 	
+	new \Raptor\EventListener('character_creation', function($e, $name) 
+	{ 
+		// вызывается при создании персонажа. 
+		// $name - имя персонажа. По нему можно найти его в БД
+	});
+	
 	new \Raptor\EventListener('set_perms', function($e, $perm, $status) 
 	{ 
 		// вызывается при изменении прав доступа. 
