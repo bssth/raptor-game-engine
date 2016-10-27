@@ -117,7 +117,7 @@
 			{
 				password = prompt('Придумайте новый пароль');
 				if(!password) return;
-				$.get('<?=\Raptor\Config::WEB_ROOT;?>cabinet/password', {'new': 'admin'}, function(data) {
+				$.get('<?=\Raptor\Config::WEB_ROOT;?>cabinet/password', {'new': password}, function(data) {
 					alert(data);
 				});
 				return false;

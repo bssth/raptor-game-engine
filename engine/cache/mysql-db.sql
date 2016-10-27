@@ -166,5 +166,5 @@ CREATE TABLE IF NOT EXISTS `unitpay_payments` (
   `dateCreate` datetime NOT NULL,
   `dateComplete` datetime DEFAULT NULL,
   `status` tinyint(4) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`_id`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
